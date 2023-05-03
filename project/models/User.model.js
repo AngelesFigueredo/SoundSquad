@@ -6,24 +6,40 @@ const userSchema = new Schema(
     username: {
       type: String,
       trim: true,
-      required: false,
-      unique: true
+      required: true,
+      unique: true,
+      lowercase: true,
     },
+
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
-      trim: true
+      trim: true,
     },
+
     password: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+
+    profileImg: {
+      type: String,
+      default: "images/user-icon.png",
+    },
+
+    role: {
+      type: String,
+      enum: ["STANDARD", "PREMIUM"],
+      default: "STANDARD",
+      required: true,
+    },
   },
+
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
-    timestamps: true
+    // this second object adds extra properties: `createdAt` and `updatedAt`
+    timestamps: true,
   }
 );
 
