@@ -1,0 +1,5 @@
+install: 
+    1. axios
+    2. mongoose
+    3. dotenv
+    4.express
