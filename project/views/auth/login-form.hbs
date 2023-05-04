@@ -1,14 +1,24 @@
-<form action="/login" method="POST">
-  <div>
-    <label for="usernameOrEmail">Username or Email:</label>
-    <input required type="text" name="usernameOrEmail">
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input required type="password" name="password">
-  </div>
-  <button type="submit">Login</button>
-</form>
-{{#if errorMessage}}
-  <p class="error-message">{{errorMessage}}</p>
-{{/if}}
+<h1>Inicio de sesión</h1>
+<hr>
+
+    <form action="/login" method="POST">
+
+      <div>
+        <label for="usernameOrEmail">Username or Email:</label>
+        <input required type="text" name="usernameOrEmail">
+        <br>
+      </div>
+
+      <div>
+        <label for="password">Password:</label>
+        <input required type="password" name="password">
+      </div>
+      <br>
+
+      <div><button type="submit">Login</button></div>
+
+          {{#if errorMessage}}
+          <p class="error-message">{{errorMessage}}</p>
+          {{/if}}
+
+    </form>

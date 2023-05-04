@@ -4,7 +4,7 @@ const User = require("../models/User.model");
 const saltRounds = 10;
 
 // Signup
-router.get("/sign-up", (req, res, next) => res.render("auth/signup"));
+router.get("/sign-up", (req, res, next) => res.render("auth/signup-form"));
 
 router.post("/sign-up", (req, res, next) => {
   const { userPwd, profileImg } = req.body;
