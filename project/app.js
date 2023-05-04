@@ -29,6 +29,7 @@ const indexRoutes = require("./routes/index.routes");
 const authRoutes = require("./routes/auth.routes");
 const auddRoutes = require("./routes/audD/audD.routes")
 
+
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/", auddRoutes)

@@ -1,0 +1,10 @@
+<h1>Song details page</h1>
+
+{{#with songDetails}}
+
+<h5>Song title: {{title}}</h5>
+<h5>Artista: {{artist}}</h5>
+<h5>Album: {{album}}</h5>
+
+<img src="{{spotify.album.images.[0].url}}" alt="">
+{{/with}}
