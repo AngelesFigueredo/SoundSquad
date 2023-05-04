@@ -1,0 +1,3 @@
+Para que funcione hay que instalar axios 
+
+poner en el readme → npm i axios
