@@ -1,7 +1,7 @@
 <h1>Registro</h1>
 <hr>
 
-    <form action="/registro" method="POST" enctype="multipart/form-data">
+    <form action="/sign-up" method="POST" enctype="multipart/form-data">
 
         <div>
             <label for="usernameInput">Nombre de usuario</label>
@@ -28,7 +28,13 @@
                         <li class="eight-characters">Al menos ocho caracteres</li>
                     </ul>
                 </div>
+            <br>
+        </div>
 
+        <div>
+            <label for="pwdInput2">Repita su contraseña</label>
+            <input required type="password" id="pwdInput2" name="userPwd2">
+            <div>Requerido</div>
             <br>
         </div>
 
@@ -41,9 +47,7 @@
         <div><button type="submit">Completar registro</button></div>
 
             {{#if errorMessage}}
-            <div id="errorMessage">
             <p>{{errorMessage}}</p>
-            </div>
             {{/if}}
 
     </form>

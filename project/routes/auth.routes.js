@@ -7,15 +7,18 @@ const saltRounds = 10;
 router.get("/sign-up", (req, res, next) => res.render("auth/signup-form"));
 
 router.post("/sign-up", (req, res, next) => {
-  const { userPwd, profileImg } = req.body;
+  const { userPwd1, userPwd2, profileImg } = req.body;
 
-  if (profileImg !== String || profileImg === "") {
-    profileImg = undefined;
+  if (userPwd1 !== userPwd2) {
+    res.render("auth/signup-form", {
+      errorMessage: "Passwords don't match",
+    });
+    return;
   }
 
   bcrypt
     .genSalt(saltRounds)
-    .then((salt) => bcrypt.hash(userPwd, salt))
+    .then((salt) => bcrypt.hash(userPwd1, salt))
     .then((hashedPassword) =>
       User.create({ ...req.body, password: hashedPassword })
     )
@@ -36,12 +39,12 @@ router.post("/login", (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        res.render("auth/login", {
+        res.render("auth/login-form", {
           errorMessage: "User not found",
         });
         return;
       } else if (bcrypt.compareSync(password, user.password) === false) {
-        res.render("auth/login", {
+        res.render("auth/login-form", {
           errorMessage: "Incorrect password",
         });
         return;
