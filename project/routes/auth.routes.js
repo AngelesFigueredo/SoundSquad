@@ -22,6 +22,10 @@ router.post("/sign-up", (req, res, next) => {
     });
 });
 
+router.get("/take-photo", (req, res, next) => {
+  res.render("auth/photo-form.hbs");
+});
+
 // Login
 router.get("/login", (req, res, next) => res.render("auth/login-form"));
 router.post("/login", (req, res, next) => {
