@@ -1,0 +1,56 @@
+<h1>Registro</h1>
+<hr>
+
+    <form action="/sign-up" method="POST" enctype="multipart/form-data">
+
+        <div>
+            <label for="usernameInput">Nombre de usuario</label>
+            <input required type="text" id="usernameInput" name="username">
+            <div>Requerido</div>
+            <br>
+        </div>
+
+        <div>
+            <label for="emailInput">Dirección de email</label>
+            <input required type="email" id="emailInput" name="email">
+            <div>Requerido</div>
+            <br>
+        </div>
+
+        <div>
+            <label for="pwdInput">Contraseña</label>
+            <input required type="password" id="pwdInput" name="userPwd" pattern="^(?=.*[A-Z]).{8,}$">
+            <div>Requerido</div>
+                <div class="password-requirements">
+                <p>La contraseña debe contener:</p>
+                    <ul>
+                        <li class="uppercase">Una letra mayúscula</li>
+                        <li class="pwd-length">Al menos ocho caracteres</li>
+                    </ul>
+                </div>
+            <br>
+        </div>
+
+        <div>
+            <label for="pwdInput2">Repita su contraseña</label>
+            <input required type="password" id="pwdInput2" name="userPwd2">
+            <p id="pwd-check-message"></p>
+            <div>Requerido</div>
+            <br>
+        </div>
+
+        <div>
+            <label for="imageInput">Imagen</label>
+            <input type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
+        </div>
+        <br>
+
+        <div><button type="submit">Completar registro</button></div>
+
+            {{#if errorMessage}}
+            <p>{{errorMessage}}</p>
+            {{/if}}
+
+    <script src="scripts/check-pwd.js"></script>
+    </form>
+

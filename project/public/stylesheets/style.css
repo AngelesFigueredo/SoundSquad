@@ -10,3 +10,11 @@ a {
 h1 {
   color: 15px;
 }
+
+.invalid {
+  color: red;
+}
+
+.valid {
+  color: green;
+}
