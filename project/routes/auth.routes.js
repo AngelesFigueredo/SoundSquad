@@ -27,18 +27,20 @@ router.post("/sign-up", (req, res, next) => {
 });
 
 // Login
-router.get("/login", (req, res, next) => res.render("auth/login"));
+router.get("/login", (req, res, next) => res.render("auth/login-form"));
 router.post("/login", (req, res, next) => {
-  const { email, userPwd } = req.body;
+  const { usernameOrEmail, password } = req.body;
 
-  User.findOne({ email })
+  User.findOne({
+    $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
+  })
     .then((user) => {
       if (!user) {
         res.render("auth/login", {
-          errorMessage: "Email not registered",
+          errorMessage: "User not found",
         });
         return;
-      } else if (bcrypt.compareSync(userPwd, user.password) === false) {
+      } else if (bcrypt.compareSync(password, user.password) === false) {
         res.render("auth/login", {
           errorMessage: "Incorrect password",
         });

@@ -1,5 +1,5 @@
-let finalAudio = null;
-let mediaRecorder = null;
+let finalAudio
+let mediaRecorder
 const chunks = [];
 
 const startRecording = () => {
@@ -29,8 +29,6 @@ const stopRecording = () => {
     };
   });
 };
-
-// add event listeners to buttons
 const startBtn = document.getElementById('start-btn');
 const stopBtn = document.getElementById('stop-btn');
 startBtn.addEventListener('click', startRecording);
