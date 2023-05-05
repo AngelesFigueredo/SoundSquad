@@ -3,4 +3,10 @@
 <button id="start-btn">Start Recording</button>
 <button id="stop-btn">Stop Recording</button>
 <audio id="audio-player" controls></audio>
+
+<form id="audio-form" action="/song-details" method="POST">
+    <input type="hidden" name="audioData" id="audio-data">
+</form>
+
 <script src="/scripts/record-audio.js"></script>
+
