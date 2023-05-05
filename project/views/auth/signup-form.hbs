@@ -25,7 +25,7 @@
                 <p>La contraseña debe contener:</p>
                     <ul>
                         <li class="uppercase">Una letra mayúscula</li>
-                        <li class="eight-characters">Al menos ocho caracteres</li>
+                        <li class="pwd-length">Al menos ocho caracteres</li>
                     </ul>
                 </div>
             <br>
@@ -34,6 +34,7 @@
         <div>
             <label for="pwdInput2">Repita su contraseña</label>
             <input required type="password" id="pwdInput2" name="userPwd2">
+            <p id="pwd-check-message"></p>
             <div>Requerido</div>
             <br>
         </div>
@@ -50,4 +51,6 @@
             <p>{{errorMessage}}</p>
             {{/if}}
 
+    <script src="scripts/check-pwd.js"></script>
     </form>
+

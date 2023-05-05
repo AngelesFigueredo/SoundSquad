@@ -9,13 +9,6 @@ router.get("/sign-up", (req, res, next) => res.render("auth/signup-form"));
 router.post("/sign-up", (req, res, next) => {
   const { userPwd1, userPwd2, profileImg } = req.body;
 
-  if (userPwd1 !== userPwd2) {
-    res.render("auth/signup-form", {
-      errorMessage: "Passwords don't match",
-    });
-    return;
-  }
-
   bcrypt
     .genSalt(saltRounds)
     .then((salt) => bcrypt.hash(userPwd1, salt))
