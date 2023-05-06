@@ -2,16 +2,19 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const saltRounds = 10;
+const multer = require("multer");
 
 // Signup
 router.get("/sign-up", (req, res, next) => res.render("auth/signup-form"));
 
-router.post("/sign-up", (req, res, next) => {
-  const { userPwd1, userPwd2, profileImg } = req.body;
+router.post("/sign-up", multer().none(), (req, res, next) => {
+  const { password, password2, profileImg } = req.body;
+
+  console.log(req.body);
 
   bcrypt
     .genSalt(saltRounds)
-    .then((salt) => bcrypt.hash(userPwd1, salt))
+    .then((salt) => bcrypt.hash(password, salt))
     .then((hashedPassword) =>
       User.create({ ...req.body, password: hashedPassword })
     )
