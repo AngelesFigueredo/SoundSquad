@@ -19,7 +19,7 @@
 
         <div>
             <label for="pwdInput">Contraseña</label>
-            <input required type="password" id="pwdInput" name="userPwd" pattern="^(?=.*[A-Z]).{8,}$">
+            <input required type="password" id="pwdInput" name="password" pattern="^(?=.*[A-Z]).{8,}$">
             <div>Requerido</div>
                 <div class="password-requirements">
                 <p>La contraseña debe contener:</p>
@@ -33,7 +33,7 @@
 
         <div>
             <label for="pwdInput2">Repita su contraseña</label>
-            <input required type="password" id="pwdInput2" name="userPwd2">
+            <input required type="password" id="pwdInput2" name="password2">
             <p id="pwd-check-message"></p>
             <div>Requerido</div>
             <br>
@@ -51,7 +51,6 @@
             {{#if errorMessage}}
             <p>{{errorMessage}}</p>
             {{/if}}
-
-    <script src="scripts/check-pwd.js"></script>
     </form>
+    <script src="scripts/check-pwd.js"></script>
 

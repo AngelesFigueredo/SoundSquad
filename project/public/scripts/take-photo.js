@@ -6,7 +6,6 @@ const repeatBtn = document.querySelector("#repeat-btn");
 const submitPhotoBtn = document.querySelector("#submit-photo");
 const profilePicInput = document.querySelector("#profile-pic");
 const cancelBtn = document.querySelector("#cancel-photo");
-let photoUrl;
 
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
@@ -26,7 +25,7 @@ captureBtn.addEventListener("click", () => {
   const dataURL = canvas.toDataURL("image/png");
   const img = document.createElement("img");
   img.src = dataURL;
-  photoUrl = dataURL;
+  console.log(dataURL);
   profilePicInput.parentNode.insertBefore(img, profilePicInput.nextSibling);
 });
 
