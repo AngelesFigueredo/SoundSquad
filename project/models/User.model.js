@@ -35,6 +35,22 @@ const userSchema = new Schema(
       default: "STANDARD",
       required: true,
     },
+
+    description: {
+      type: String,
+    },
+
+    favouriteArtists: {
+      type: ["String"],
+    },
+
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+
+    playlists: [{ type: Schema.Types.ObjectId, ref: "Song" }],
+
+    posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+
+    events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   },
 
   {
