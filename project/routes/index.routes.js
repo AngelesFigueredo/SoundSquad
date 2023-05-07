@@ -16,7 +16,7 @@ router.get("/", (req, res, next) => {
 router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   try {
     const myProfile = User.findById(req.session.currentUser._id);
-    res.render("my-profile", { user });
+    res.render("main/profile", { user });
   } catch (error) {
     res.render("error", { error });
   }
