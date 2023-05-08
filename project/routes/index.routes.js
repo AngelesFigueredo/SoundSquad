@@ -7,6 +7,7 @@ const {
   checkRole,
 } = require("../middlewares/route-guard");
 const User = require("../models/User.model");
+const Post = require("../models/Post.model");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -17,7 +18,8 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   try {
     try {
       const user = await User.findById(req.session.currentUser._id);
-      res.render("main/profile", { user, session: req.session });
+      const posts = await Post.find({ author: user._id });
+      res.render("main/profile", { posts, user, session: req.session });
     } catch {
       res.redirect("/login");
     }
@@ -37,7 +39,8 @@ router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
 
 router.get("/home", isLoggedIn, async (req, res, next) => {
   try {
-    res.render("main/home", { session: req.session });
+    const posts = await Post.find().sort({ createdAt: -1 }).limit(2);
+    res.render("main/home", { posts, session: req.session });
   } catch (error) {
     res.render("error", { error });
   }

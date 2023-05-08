@@ -1,2 +1,7 @@
 <h1>home</h1>
+<a href="/post-create">Publica un nuevo post!</a>
 <a href="/audd">Shazam!</a>
+
+{{#each posts}}
+{{>postPartial this}}
+{{/each}}

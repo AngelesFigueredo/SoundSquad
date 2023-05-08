@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
+const Post = require("../models/Post.model");
 const multer = require("multer");
 
 const uploader = require("../config/cloudinary.config");
@@ -12,46 +13,49 @@ const {
   checkRole,
 } = require("../middlewares/route-guard");
 
-
 // Signup
 router.get("/sign-up", isLoggedOut, (req, res, next) =>
   res.render("auth/signup-form")
 );
 
+router.post(
+  "/sign-up",
+  [isLoggedOut, uploader.single("profileImg")],
+  (req, res, next) => {
+    const { password, password2, profileImg } = req.body;
 
-router.post("/sign-up", [isLoggedOut, uploader.single("profileImg")] , (req, res, next) => {
-  const { password, password2, profileImg } = req.body;
-
-  if (password === password2) {
-    bcrypt
-      .genSalt(saltRounds)
-      .then((salt) => bcrypt.hash(password, salt))
-      .then((hashedPassword) =>
-        User.create({ ...req.body, password: hashedPassword })
-      )
-      .then(() => res.redirect("/"))
-      .catch((error) => {
-        console.log(error);
-        next(error);
+    if (password === password2) {
+      bcrypt
+        .genSalt(saltRounds)
+        .then((salt) => bcrypt.hash(password, salt))
+        .then((hashedPassword) =>
+          User.create({ ...req.body, password: hashedPassword })
+        )
+        .then(() => res.redirect("/"))
+        .catch((error) => {
+          console.log(error);
+          next(error);
+        });
+    } else {
+      res.render("auth/signup-form", {
+        errorMessage: "Las contraseñas no coinciden",
+        session: req.session,
       });
-  } else {
-    res.render("auth/signup-form", {
-      errorMessage: "Las contraseñas no coinciden",
-      session: req.session,
-    });
+    }
   }
-});
+);
 
 router.get("/take-photo", (req, res, next) => {
   res.render("auth/photo-form.hbs", { session: req.session });
 });
 
 // Login
-router.get("/login", isLoggedOut, (req, res, next) =>
-  res.render("auth/login-form", { session: req.session })
-);
-router.post("/login", isLoggedOut, (req, res, next) => {
+router.get("/login", isLoggedOut, (req, res, next) => {
+  res.render("auth/login-form", { session: req.session });
+});
+router.post("/login", isLoggedOut, async (req, res, next) => {
   const { usernameOrEmail, password } = req.body;
+  const posts = await Post.find().sort({ createdAt: -1 }).limit(2);
 
   User.findOne({
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
@@ -70,7 +74,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
         return;
       } else {
         req.session.currentUser = user;
-        res.render("main/home", { session: req.session });
+        res.render("main/home", { posts, session: req.session });
       }
     })
     .catch((error) => next(error));
