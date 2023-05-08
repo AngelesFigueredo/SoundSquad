@@ -1,20 +1,25 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
-const saltRounds = 10;
 const multer = require("multer");
+
+const uploader = require("../config/cloudinary.config");
+const saltRounds = 10;
+
 const {
   isLoggedIn,
   isLoggedOut,
   checkRole,
 } = require("../middlewares/route-guard");
 
+
 // Signup
 router.get("/sign-up", isLoggedOut, (req, res, next) =>
   res.render("auth/signup-form")
 );
 
-router.post("/sign-up", isLoggedOut, (req, res, next) => {
+
+router.post("/sign-up", [isLoggedOut, uploader.single("profileImg")] , (req, res, next) => {
   const { password, password2, profileImg } = req.body;
 
   if (password === password2) {

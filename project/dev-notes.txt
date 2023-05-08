@@ -2,4 +2,7 @@ install:
     1. axios
     2. mongoose
     3. dotenv
-    4.express
+    4. express
+    5. cloudinary
+    6. multer   
+    7. multer-storage-cloudinary
