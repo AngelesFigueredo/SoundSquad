@@ -3,11 +3,18 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const saltRounds = 10;
 const multer = require("multer");
+const {
+  isLoggedIn,
+  isLoggedOut,
+  checkRole,
+} = require("../middlewares/route-guard");
 
 // Signup
-router.get("/sign-up", (req, res, next) => res.render("auth/signup-form"));
+router.get("/sign-up", isLoggedOut, (req, res, next) =>
+  res.render("auth/signup-form")
+);
 
-router.post("/sign-up", multer().none(), (req, res, next) => {
+router.post("/sign-up", isLoggedOut, (req, res, next) => {
   const { password, password2, profileImg } = req.body;
 
   if (password === password2) {
@@ -25,6 +32,7 @@ router.post("/sign-up", multer().none(), (req, res, next) => {
   } else {
     res.render("auth/signup-form", {
       errorMessage: "Las contraseñas no coinciden",
+      session: req.session,
     });
   }
 });
@@ -34,8 +42,10 @@ router.get("/take-photo", (req, res, next) => {
 });
 
 // Login
-router.get("/login", (req, res, next) => res.render("auth/login-form"));
-router.post("/login", (req, res, next) => {
+router.get("/login", isLoggedOut, (req, res, next) =>
+  res.render("auth/login-form", { session: req.session })
+);
+router.post("/login", isLoggedOut, (req, res, next) => {
   const { usernameOrEmail, password } = req.body;
 
   User.findOne({
@@ -62,7 +72,7 @@ router.post("/login", (req, res, next) => {
 });
 
 // Logout
-router.get("/logout", (req, res) => {
+router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy(() => res.redirect("/"));
 });
 
