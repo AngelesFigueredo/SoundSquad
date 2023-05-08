@@ -2,7 +2,7 @@ const isLoggedIn = (req, res, next) => {
   if (req.session.currentUser) {
     next();
   } else {
-    res.render("auth/login", { errorMessage: "You must log-in." });
+    res.render("auth/login-form", { errorMessage: "You must log-in." });
     return;
   }
 };

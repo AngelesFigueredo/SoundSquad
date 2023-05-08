@@ -24,6 +24,18 @@ const userSchema = new Schema(
       required: true,
     },
 
+    name: {
+      type: String,
+    },
+
+    lastName: {
+      type: String,
+    },
+
+    age: {
+      type: Number,
+    },
+
     profileImg: {
       type: String,
       default: "images/user-icon.png",
@@ -31,10 +43,26 @@ const userSchema = new Schema(
 
     role: {
       type: String,
-      enum: ["STANDARD", "PREMIUM"],
+      enum: ["STANDARD", "PREMIUM", "ADMIN"],
       default: "STANDARD",
       required: true,
     },
+
+    description: {
+      type: String,
+    },
+
+    favouriteArtists: {
+      type: ["String"],
+    },
+
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+
+    playlists: [{ type: Schema.Types.ObjectId, ref: "Song" }],
+
+    posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+
+    events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
   },
 
   {

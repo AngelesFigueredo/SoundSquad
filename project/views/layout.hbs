@@ -11,8 +11,27 @@
 
    <body>
 
-      {{{body}}}
+      <header>
+         <nav>
+            <ul>
+            <li><a href="/home">Home</a></l>
+	   	   <li><a href="/my-profile">Mi perfil</a></li>
+	   	   <li><a href="/my-playlists">Mis playlists</a></li>
 
+	   	   <li><a href="/shop">Hazte premium!</a></li>
+            <li><a href="/audd">Shazam!</a></li>
+               {{#if session.currentUser}}
+                  <li>Has iniciado sesión de {{session.currentUser.username}}</li>
+                  <li><a href="/logout">Cerrar sesión</a></li>
+               {{else}}
+                  <li><a href="/login">Inicia sesión</a></li>
+               {{/if}}
+	         </ul>
+         </nav>
+      </header>
+
+      {{{body}}}
+      
       <script src="/js/script.js"></script>
       
    </body>

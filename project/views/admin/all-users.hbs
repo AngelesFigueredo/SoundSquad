@@ -1,0 +1,6 @@
+<h2>Users list</h2>
+{{#each users}}
+{{this.username}}
+<a href="/admin/users/{{this._id}}">Ver perfil del usuario</a>
+<br>
+{{/each}}

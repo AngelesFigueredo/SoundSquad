@@ -1,0 +1,11 @@
+{{#with user}}
+<h2>{{this.username}}'s profile</h2>
+<h3>Name: {{this.name}} {{this.lastName}}</h3>
+<h3>Age: {{this.age}}</h3>
+<h4>Bio: {{this.description}}</h4>
+
+<a href="/edit/{{this._id}}">Edita tu perfil</a>
+
+{{/with}}
+
+<a href="/audd">Shazam!</a>
