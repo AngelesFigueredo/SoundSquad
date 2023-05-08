@@ -1,0 +1,30 @@
+<h2>Editar perfil</h2>
+
+{{#with user}}
+
+<form action="/edit/{{this._id}}" method="POST">
+    <label>Nombre:
+        <input type="text" name="name" value="{{this.name}}"/>
+    </label>
+
+    <label>Apellidos:
+        <input type="text" name="lastName" value="{{this.lastName}}"/>
+    </label>
+
+    <label>Edad:
+        <input type="number" name="age" value="{{this.age}}"/>
+    </label>
+
+    <label>BIO:
+        <input type="text" name="description" value="{{this.desciption}}"/>
+    </label>
+
+    {{!-- <label>Foto de perfil: 
+        <input type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
+        <a href="/take-photo">Hazte una foto de perfil</a>
+    </label> --}}
+
+{{/with}}
+
+<button type="submit"> Editar perfil </button>
+</form>

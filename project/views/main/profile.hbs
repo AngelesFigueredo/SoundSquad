@@ -1,21 +1,9 @@
-{{#if user}}
-<h2>{{username}}'s details</h2>
-{{!-- {{#with movie}}
-<p>Title: {{title}}</p>
-<p>Genre: {{genre}}</p>
-<p>Plot: {{plot}}</p>
+{{#with user}}
+<h2>{{this.username}}'s profile</h2>
+<h3>Name: {{this.name}} {{this.lastName}}</h3>
+<h3>Age: {{this.age}}</h3>
+<h4>Bio: {{this.description}}</h4>
 
-<h2>Cast:</h2>
-{{#each cast}}
-<p>Name: {{name}}</p>
-<p>Occupation: {{occupation}} </p>
-<p>Catch Phrase: {{catchPhrase}}</p>
-{{/each}}
+<a href="/edit/{{this._id}}">Edita tu perfil</a>
 
-<a href="/movies/{{_id}}/edit">Edit movie</a>
-
-<form action="/movies/{{_id}}/delete" method="post">
-    <button type="submit">🗑</button>
-</form>
-{{/with}} --}}
-{{/if}}
+{{/with}}

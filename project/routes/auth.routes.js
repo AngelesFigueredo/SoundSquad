@@ -30,7 +30,7 @@ router.post("/sign-up", multer().none(), (req, res, next) => {
 });
 
 router.get("/take-photo", (req, res, next) => {
-  res.render("auth/photo-form.hbs");
+  res.render("auth/photo-form.hbs", { session: req.session });
 });
 
 // Login
@@ -55,7 +55,7 @@ router.post("/login", (req, res, next) => {
         return;
       } else {
         req.session.currentUser = user;
-        res.redirect("/");
+        res.render("main/home", { session: req.session });
       }
     })
     .catch((error) => next(error));

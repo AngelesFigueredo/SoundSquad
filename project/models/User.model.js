@@ -24,6 +24,18 @@ const userSchema = new Schema(
       required: true,
     },
 
+    name: {
+      type: String,
+    },
+
+    lastName: {
+      type: String,
+    },
+
+    age: {
+      type: Number,
+    },
+
     profileImg: {
       type: String,
       default: "images/user-icon.png",
