@@ -10,23 +10,27 @@ router.get("/sign-up", (req, res, next) => res.render("auth/signup-form"));
 router.post("/sign-up", multer().none(), (req, res, next) => {
   const { password, password2, profileImg } = req.body;
 
-  console.log(req.body);
-
-  bcrypt
-    .genSalt(saltRounds)
-    .then((salt) => bcrypt.hash(password, salt))
-    .then((hashedPassword) =>
-      User.create({ ...req.body, password: hashedPassword })
-    )
-    .then(() => res.redirect("/"))
-    .catch((error) => {
-      console.log(error);
-      next(error);
+  if (password === password2) {
+    bcrypt
+      .genSalt(saltRounds)
+      .then((salt) => bcrypt.hash(password, salt))
+      .then((hashedPassword) =>
+        User.create({ ...req.body, password: hashedPassword })
+      )
+      .then(() => res.redirect("/"))
+      .catch((error) => {
+        console.log(error);
+        next(error);
+      });
+  } else {
+    res.render("auth/signup-form", {
+      errorMessage: "Las contraseñas no coinciden",
     });
+  }
 });
 
 router.get("/take-photo", (req, res, next) => {
-  res.render("auth/photo-form.hbs");
+  res.render("auth/photo-form.hbs", { session: req.session });
 });
 
 // Login
@@ -38,27 +42,28 @@ router.post("/login", (req, res, next) => {
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
   })
     .then((user) => {
+      console.log(user);
       if (!user) {
         res.render("auth/login-form", {
           errorMessage: "User not found",
         });
         return;
-      } else if (bcrypt.compareSync(password, user.password) === false) {
+      } else if (!bcrypt.compareSync(password, user.password)) {
         res.render("auth/login-form", {
           errorMessage: "Incorrect password",
         });
         return;
       } else {
         req.session.currentUser = user;
-        res.redirect("/");
+        res.render("main/home", { session: req.session });
       }
     })
     .catch((error) => next(error));
 });
 
 // Logout
-router.post("/logout", (req, res, next) => {
-  req.session.destroy(() => res.redirect("/login"));
+router.get("/logout", (req, res) => {
+  req.session.destroy(() => res.redirect("/"));
 });
 
 module.exports = router;
