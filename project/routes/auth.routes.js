@@ -1,16 +1,17 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
-const saltRounds = 10;
 const multer = require("multer");
+const uploader = require("../config/cloudinary.config");
+const saltRounds = 10;
 
 // Signup
 router.get("/sign-up", (req, res, next) => res.render("auth/signup-form"));
 
-router.post("/sign-up", multer().none(), (req, res, next) => {
-  const { password, password2, profileImg } = req.body;
+router.post("/sign-up",uploader.single("profileImg"), (req, res, next) => {
+  const { password } = req.body;
 
-  console.log(req.body);
+  console.log("el body es ", req.body);
 
   bcrypt
     .genSalt(saltRounds)
