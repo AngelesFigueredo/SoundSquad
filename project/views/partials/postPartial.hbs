@@ -1,2 +1,8 @@
+<div class="card">
+<h2>Post de {{this.author.username}}</h2>
 <h2>{{this.title}}</h2>
 <h3>{{this.content}}</h3>
+{{#each this.comments}}
+{{>commentPartial this}}
+{{/each}}
+</div>

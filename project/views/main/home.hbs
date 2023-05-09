@@ -5,3 +5,11 @@
 {{#each posts}}
 {{>postPartial this}}
 {{/each}}
+<form action="/{{_id}}/comment" method="POST">
+
+  <label> Deja un comentario:
+    <textarea type="text" name="content"> </textarea>
+  </label>
+
+  <button type="submit"> Publica tu comentario! 📝</button>
+</form>

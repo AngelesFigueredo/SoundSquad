@@ -61,7 +61,6 @@ router.post("/login", isLoggedOut, async (req, res, next) => {
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
   })
     .then((user) => {
-      console.log(user);
       if (!user) {
         res.render("auth/login-form", {
           errorMessage: "User not found",

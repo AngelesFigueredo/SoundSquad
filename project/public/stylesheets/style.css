@@ -58,3 +58,11 @@ nav .active a {
   background-color: #333;
   color: #fff;
 }
+
+.blue-background {
+  background-color: rgb(173, 173, 255);
+}
+
+.card {
+  border: 1px solid #333;
+}
