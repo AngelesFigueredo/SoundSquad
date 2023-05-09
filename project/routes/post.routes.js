@@ -14,8 +14,16 @@ router.get("/post-create", async (req, res) => {
 router.get("/post/:id/details", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const post = await Post.findById(id);
-    res.render("posts/details", { post });
+    const post = await Post.findById(id)
+      .populate("author comments")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "User",
+        },
+      });
+    res.render("posts/details", { post, session: req.session });
   } catch (error) {
     res.render("error", { error });
   }

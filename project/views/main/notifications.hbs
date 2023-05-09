@@ -1,3 +1,13 @@
+{{#unless friendRequests}}
+  {{#unless dms}}
+    {{#unless posts}}
+      {{#unless comments}}
+        <p>No tienes notificaciones</p>
+      {{/unless}}
+    {{/unless}}
+  {{/unless}}
+{{/unless}}
+
 {{#if friendRequests}}
 <h2>Solicitudes de amistad</h2>
 {{/if}}
@@ -9,7 +19,7 @@
 {{#if posts}}
 <h2>Menciones en posts:</h2>
 {{#each posts}}
-  <a href="/post/{{this._id}}/details"><p>{{this.author.username}} te ha mencionado en su post</p></a>
+  <a class ="new-notification" href="/post/{{this._id}}/details"><p>{{this.author.username}} te ha mencionado en su post</p></a>
 {{/each}}
 <br>
 {{/if}}
@@ -17,7 +27,9 @@
 {{#if comments}}
 <h2>Menciones en comentarios:</h2>
 {{#each comments}}
-  <a href="/post/{{this.fatherPost._id}}/details"><p>{{this.author.username}} te ha mencionado en un comentario de un post de {{this.fatherPost.author.username}}</p></a>
+  <a class ="new-notification" href="/post/{{this.fatherPost._id}}/details"><p>{{this.author.username}} te ha mencionado en un comentario de un post de {{this.fatherPost.author.username}}</p></a>
 {{/each}}
 <br>
 {{/if}}
+
+ <script src="scripts/check-notifications.js"></script>

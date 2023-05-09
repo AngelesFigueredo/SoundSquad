@@ -66,3 +66,7 @@ nav .active a {
 .card {
   border: 1px solid #333;
 }
+
+.new-notification {
+  font-weight: bold;
+}
