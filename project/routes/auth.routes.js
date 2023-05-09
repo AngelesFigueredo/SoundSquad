@@ -21,15 +21,16 @@ router.get("/sign-up", isLoggedOut, (req, res, next) =>
 router.post(
   "/sign-up",
   [isLoggedOut, uploader.single("profileImg")],
-  (req, res, next) => {
-    const { password, password2, profileImg } = req.body;
-
+  async(req, res, next) => {
+    const { password, password2 } = req.body;
+    const profileImg = req.file.path
+    
     if (password === password2) {
       bcrypt
         .genSalt(saltRounds)
         .then((salt) => bcrypt.hash(password, salt))
         .then((hashedPassword) =>
-          User.create({ ...req.body, password: hashedPassword })
+          User.create({ ...req.body, profileImg, password: hashedPassword })
         )
         .then(() => res.redirect("/"))
         .catch((error) => {
