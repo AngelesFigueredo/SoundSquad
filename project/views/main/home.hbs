@@ -1,2 +1,28 @@
 <h1>home</h1>
+<a href="/post-create">Publica un nuevo post!</a>
 <a href="/audd">Shazam!</a>
+
+{{#each posts}}
+
+<div class="card">
+{{>postPartial this}}
+
+{{!-- {{#with session}}
+    {{#if (eq this.author._id currentUser._id)}}
+        <form action="posts/{{this._id}}/delete" method="POST">
+            <button type="submit">🗑</button>
+        </form>
+    {{/if}}
+{{/with}} --}}
+
+<form action="/{{_id}}/comment" method="POST">
+
+  <label> Deja un comentario:
+    <textarea type="text" name="content"> </textarea>
+  </label>
+
+  <button type="submit"> Publica tu comentario! 📝</button>
+</form>
+</div>
+<br>
+{{/each}}

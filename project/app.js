@@ -30,10 +30,14 @@ const indexRoutes = require("./routes/index.routes");
 const authRoutes = require("./routes/auth.routes");
 const auddRoutes = require("./routes/audD/audD.routes");
 const adminRoutes = require("./routes/admin.routes");
+const postRoutes = require("./routes/post.routes");
+const commentRoutes = require("./routes/comment.routes");
 
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/", auddRoutes);
+app.use("/", postRoutes);
+app.use("/", commentRoutes);
 app.use("/admin", adminRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
