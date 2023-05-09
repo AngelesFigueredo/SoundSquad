@@ -5,14 +5,12 @@ const postSchema = new Schema(
     author: { type: Schema.Types.ObjectId, ref: "User" },
     title: String,
     content: String,
-    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-    mentions: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,
   }
 );
 
-const Post = model("Post", postSchema);
+const Message = model("Message", postSchema);
 
-module.exports = Post;
+module.exports = Message;

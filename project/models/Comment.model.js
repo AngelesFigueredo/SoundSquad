@@ -4,6 +4,8 @@ const commentSchema = new Schema(
   {
     author: { type: Schema.Types.ObjectId, ref: "User" },
     content: String,
+    mentions: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    fatherPost: { type: Schema.Types.ObjectId, ref: "Post" },
   },
   {
     timestamps: true,

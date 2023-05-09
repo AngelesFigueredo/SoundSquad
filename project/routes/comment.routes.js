@@ -11,8 +11,24 @@ const Comment = require("../models/Comment.model");
 router.post("/:postId/comment", async (req, res) => {
   const { content } = req.body;
   const { currentUser } = req.session;
+  const mentions = content.match(/@(\w+)/g) || [];
+  const usernames = mentions.map((mention) => mention.substring(1));
+  const mentionedUsers = await User.find({ username: { $in: usernames } });
+  const mentionsIds = mentionedUsers.map((user) => user._id);
 
-  const comment = await Comment.create({ content, author: currentUser._id });
+  const comment = await Comment.create({
+    content,
+    author: currentUser._id,
+    mentions: mentionsIds,
+    fatherPost: req.params.postId,
+  });
+
+  mentionedUsers.forEach(async (user) => {
+    await User.findByIdAndUpdate(user._id, {
+      $push: { commentMentions: comment._id },
+    });
+  });
+
   await Post.findByIdAndUpdate(req.params.postId, {
     $push: { comments: comment._id },
   });

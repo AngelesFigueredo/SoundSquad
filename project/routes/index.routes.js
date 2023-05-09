@@ -18,7 +18,12 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   try {
     try {
       const user = await User.findById(req.session.currentUser._id);
-      const posts = await Post.find({ author: user._id });
+      const posts = await Post.find({ author: user._id })
+        .populate("author comments")
+        .populate({
+          path: "comments",
+          populate: { path: "author", model: "User" },
+        });
       res.render("main/profile", { posts, user, session: req.session });
     } catch {
       res.redirect("/login");
@@ -52,6 +57,42 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
       });
 
     res.render("main/home", { posts, session: req.session });
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.get("/notifications", isLoggedIn, async (req, res, next) => {
+  try {
+    const currentUser = req.session.currentUser;
+    const user = await User.findById(currentUser._id)
+      .populate({
+        path: "postMentions",
+        populate: {
+          path: "author",
+          model: "User",
+        },
+      })
+      .populate({
+        path: "commentMentions",
+        populate: [
+          {
+            path: "fatherPost",
+            model: "Post",
+            populate: {
+              path: "author",
+              model: "User",
+            },
+          },
+          {
+            path: "author",
+            model: "User",
+          },
+        ],
+      });
+    const posts = user.postMentions;
+    const comments = user.commentMentions;
+    res.render("main/notifications", { posts, comments, session: req.session });
   } catch (error) {
     res.render("error", { error });
   }

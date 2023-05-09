@@ -63,6 +63,14 @@ const userSchema = new Schema(
     posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 
     events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
+
+    postMentions: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+
+    commentMentions: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+
+    friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
+
+    directMessages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
   },
 
   {

@@ -12,7 +12,12 @@
 <h2>Mis publicaciones:</h2>
 
 {{#each posts}}
+<div class="card">
 {{>postPartial this}}
+    <form action="/post/{{this._id}}/delete" method="POST">
+        <button type="submit">🗑</button>
+    </form>     
+</div>
 <br>
 {{/each}}
 </div>
