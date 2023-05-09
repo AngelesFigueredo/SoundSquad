@@ -58,7 +58,12 @@ const userSchema = new Schema(
 
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
-    playlists: [{ type: Schema.Types.ObjectId, ref: "Song" }],
+    playlists: [
+      {
+        title: String,
+        songs: [{ type: Schema.Types.ObjectId, ref: "Song" }],
+      },
+    ],
 
     posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 
