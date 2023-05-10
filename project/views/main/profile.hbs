@@ -15,7 +15,7 @@
 {{#each posts}}
 <div class="card">
 {{>postPartial this}}
-    <form action="/post/{{this._id}}/delete" method="POST">
+    <form action="/posts/{{this._id}}/my-profile/delete" method="POST">
         <button type="submit">🗑</button>
     </form>     
 </div>

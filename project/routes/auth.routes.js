@@ -70,6 +70,7 @@ router.post("/login", async (req, res, next) => {
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
   })
     .then((user) => {
+      console.log(user);
       if (!user) {
         res.redirect("/login");
         return;
@@ -79,6 +80,7 @@ router.post("/login", async (req, res, next) => {
       } else {
         req.session.currentUser = user;
         req.app.locals.isLogged = true;
+        req.app.locals.currentUser = user.toObject();
         res.redirect("/home");
       }
     })

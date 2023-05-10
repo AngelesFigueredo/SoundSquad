@@ -59,11 +59,15 @@ router.post("/post-create", async (req, res) => {
   }
 });
 
-router.post("/post/:id/delete", async (req, res) => {
+router.post("/posts/:id/:lastroute/delete", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id, lastroute } = req.params;
     await Post.findByIdAndDelete(id);
-    res.redirect("/my-profile");
+    if (lastroute === "my-profile") {
+      res.redirect("/my-profile");
+    } else if (lastroute === "home") {
+      res.redirect("/home");
+    }
   } catch (error) {
     res.render("error", { error });
   }
