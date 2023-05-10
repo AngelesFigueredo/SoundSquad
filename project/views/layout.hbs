@@ -19,7 +19,7 @@
 	   	   <li><a href="/my-profile">Mi perfil</a></li>
 	   	   <li><a href="/shop">Hazte premium!</a></li>
             <li><a href="/audd">Shazam!</a></li>
-               {{#if session.currentUser}}
+               {{#if isLogged}}
                   <li>Has iniciado sesión de {{session.currentUser.username}}</li>
                   <li><a href="/logout">Cerrar sesión</a></li>
                   <li><a href="/notifications">Notificaciones</a></li>

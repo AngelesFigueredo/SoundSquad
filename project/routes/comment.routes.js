@@ -35,4 +35,14 @@ router.post("/:postId/comment", async (req, res) => {
   res.redirect("/home");
 });
 
+router.post("/comment/:id/delete", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Comment.findByIdAndDelete(id);
+    res.redirect("/home");
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
 module.exports = router;

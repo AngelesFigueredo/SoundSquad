@@ -8,4 +8,9 @@
 
 {{#each this.comments}}
 {{>commentPartial this}}
+{{#if (ifEquals this.author._id ../../currentUser._id)}}
+    <form action="comment/{{_id}}/delete" method="POST" id="delete-form">
+      <button type="submit">🗑 comentario</button>
+    </form>
+  {{/if}}
 {{/each}}

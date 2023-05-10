@@ -47,7 +47,7 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
   try {
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .limit(2)
+      .limit(4)
       .populate("author comments")
       .populate({
         path: "comments",
@@ -56,8 +56,10 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
           model: "User",
         },
       });
-
-    res.render("main/home", { posts, session: req.session });
+    res.render("main/home", {
+      posts,
+      currentUser: req.session.currentUser,
+    });
   } catch (error) {
     res.render("error", { error });
   }

@@ -21,19 +21,18 @@ router.get("/sign-up", isLoggedOut, (req, res, next) =>
 router.post(
   "/sign-up",
   [isLoggedOut, uploader.single("profileImg")],
-  async(req, res, next) => {
-    console.log(req.body)
+  async (req, res, next) => {
+    console.log(req.body);
     let { password, password2, profileImg } = req.body;
     // si nos viene la url desde una cosa que se ha subido
-    if(req.file && req.file.path){
-      profileImg = req.file.path
+    if (req.file && req.file.path) {
+      profileImg = req.file.path;
     }
-    if(req.body.picUrl){
-      profileImg= req.body.picUrl
+    if (req.body.picUrl) {
+      profileImg = req.body.picUrl;
     }
-    // si nos viene de una foto que hemos tomado 
+    // si nos viene de una foto que hemos tomado
 
-    
     if (password === password2) {
       bcrypt
         .genSalt(saltRounds)
@@ -60,10 +59,10 @@ router.get("/take-photo", (req, res, next) => {
 });
 
 // Login
-router.get("/login", isLoggedOut, (req, res, next) => {
+router.get("/login", (req, res, next) => {
   res.render("auth/login-form", { session: req.session });
 });
-router.post("/login", isLoggedOut, async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   const { usernameOrEmail, password } = req.body;
   const posts = await Post.find().sort({ createdAt: -1 }).limit(2);
 
@@ -72,18 +71,15 @@ router.post("/login", isLoggedOut, async (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        res.render("auth/login-form", {
-          errorMessage: "User not found",
-        });
+        res.redirect("/login");
         return;
       } else if (!bcrypt.compareSync(password, user.password)) {
-        res.render("auth/login-form", {
-          errorMessage: "Incorrect password",
-        });
+        res.redirect("/login");
         return;
       } else {
         req.session.currentUser = user;
-        res.render("main/home", { posts, session: req.session });
+        req.app.locals.isLogged = true;
+        res.redirect("/home");
       }
     })
     .catch((error) => next(error));
@@ -91,6 +87,7 @@ router.post("/login", isLoggedOut, async (req, res, next) => {
 
 // Logout
 router.get("/logout", isLoggedIn, (req, res) => {
+  req.app.locals.isLogged = false;
   req.session.destroy(() => res.redirect("/"));
 });
 
