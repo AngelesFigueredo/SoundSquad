@@ -1,14 +1,14 @@
-<h2>Post de {{this.author.username}}</h2>
-<h2>{{this.title}}</h2>
-<h3>{{this.content}}</h3>
+<h2>Post de {{post.author.username}}</h2>
+<h2>{{post.title}}</h2>
+<h3>{{post.content}}</h3>
 
-{{#unless this.comments}}
+{{#unless post.comments}}
 <p>Este post no tiene comentarios</p>
 {{/unless}}
 
-{{#each this.comments}}
+{{#each post.comments}}
 {{>commentPartial this}}
-{{#if (ifEquals this.author._id ../currentUser._id)}}
+{{#if (ifEquals post.author._id ../user._id)}}
     <form action="comment/{{_id}}/delete" method="POST" id="delete-form">
       <button type="submit">🗑 comentario</button>
     </form>

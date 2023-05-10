@@ -4,7 +4,7 @@
 
 {{#each posts}}
 <div class="card">
-{{>postPartial this }}
+{{>postPartial post=this user=currentUser}}
 
 
 {{#if (ifEquals author._id ../currentUser._id)}}
@@ -24,4 +24,5 @@
 
 </div>
 <br>
+
 {{/each}}
