@@ -25,6 +25,7 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
           path: "comments",
           populate: { path: "author", model: "User" },
         });
+        console.log({user})
       res.render("main/profile", { posts, user, session: req.session });
     } catch {
       res.redirect("/login");
