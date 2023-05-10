@@ -6,6 +6,7 @@ const repeatBtn = document.querySelector("#repeat-btn");
 const submitPhotoBtn = document.querySelector("#submit-photo");
 const profilePicInput = document.querySelector("#profile-pic");
 const cancelBtn = document.querySelector("#cancel-photo");
+let imgUrl;
 
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
@@ -19,17 +20,46 @@ if (navigator.mediaDevices.getUserMedia) {
     });
 }
 
-captureBtn.addEventListener("click", () => {
+captureBtn.addEventListener("click", (event) => {
   event.preventDefault();
   context.drawImage(video, 0, 0, canvas.width, canvas.height);
   const dataURL = canvas.toDataURL("image/png");
-  const img = document.createElement("img");
-  img.src = dataURL;
-  console.log(dataURL);
-  profilePicInput.parentNode.insertBefore(img, profilePicInput.nextSibling);
+  const myImg = document.createElement("img");
+  myImg.src = dataURL;
+  profilePicInput.parentNode.insertBefore(myImg, profilePicInput.nextSibling);
+  imgUrl = dataURL;
 });
 
-submitPhotoBtn.addEventListener("click", () => {
+repeatBtn.addEventListener("click", (event) => {
   event.preventDefault();
-  console.log(dataURL);
+  imgUrl = null;
+  context.clearRect(0, 0, canvas.width, canvas.height);
 });
+
+submitPhotoBtn.addEventListener("click", async (event) => {
+ 
+  event.preventDefault();
+  if (imgUrl) {
+    const formData = new FormData();
+    formData.append("file", imgUrl);
+    formData.append("upload_preset", "vcpmg7bd"); 
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/dioxc2frd/image/upload",
+      formData
+    );
+    console.log("Image uploaded successfully: ", response.data.secure_url);
+    imgUrl = response.data.secure_url;
+    localStorage.setItem("img", JSON.stringify(imgUrl))
+    window.location.replace("/sign-up")
+  } else {
+    console.log("No image has been upload");
+  }
+});
+
+cancelBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  localStorage.clear()
+  window.location.replace("/sign-up")
+  context.clearRect(0, 0, canvas.width, canvas.height);
+});
+

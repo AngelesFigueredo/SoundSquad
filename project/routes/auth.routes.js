@@ -22,8 +22,17 @@ router.post(
   "/sign-up",
   [isLoggedOut, uploader.single("profileImg")],
   async(req, res, next) => {
-    const { password, password2 } = req.body;
-    const profileImg = req.file.path
+    console.log(req.body)
+    let { password, password2, profileImg } = req.body;
+    // si nos viene la url desde una cosa que se ha subido
+    if(req.file && req.file.path){
+      profileImg = req.file.path
+    }
+    if(req.body.picUrl){
+      profileImg= req.body.picUrl
+    }
+    // si nos viene de una foto que hemos tomado 
+
     
     if (password === password2) {
       bcrypt
