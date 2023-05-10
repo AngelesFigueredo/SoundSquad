@@ -9,27 +9,43 @@
 {{/unless}}
 
 {{#if friendRequests}}
-<h2>Solicitudes de amistad</h2>
+  <h2>Solicitudes de amistad</h2>
+  {{#each friendRequests}}
+    <p>{{this.username}} te ha enviado una solicitud de amistad</p>
+
+    <form action="/friend-requests/{{this._id}}/accept" method="POST">
+      <button type="submit">Aceptar</button>
+    </form>
+
+    <form action="/friend-requests/{{this._id}}/cancel" method="POST">
+      <button type="submit">Cancelar</button>
+    </form>
+
+  {{/each}}
 {{/if}}
 
 {{#if dms}}
-<h2>Mensajes directos:</h2>
+  <h2>Mensajes directos:</h2>
 {{/if}}
 
 {{#if posts}}
-<h2>Menciones en posts:</h2>
-{{#each posts}}
-  <a class ="new-notification" href="/post/{{this._id}}/details"><p>{{this.author.username}} te ha mencionado en su post</p></a>
-{{/each}}
-<br>
+  <h2>Menciones en posts:</h2>
+  {{#each posts}}
+    <a class="new-notification" href="/post/{{this._id}}/details"><p
+      >{{this.author.username}} te ha mencionado en su post</p></a>
+  {{/each}}
+  <br />
 {{/if}}
 
 {{#if comments}}
-<h2>Menciones en comentarios:</h2>
-{{#each comments}}
-  <a class ="new-notification" href="/post/{{this.fatherPost._id}}/details"><p>{{this.author.username}} te ha mencionado en un comentario de un post de {{this.fatherPost.author.username}}</p></a>
-{{/each}}
-<br>
+  <h2>Menciones en comentarios:</h2>
+  {{#each comments}}
+    <a class="new-notification" href="/post/{{this.fatherPost._id}}/details"><p
+      >{{this.author.username}}
+        te ha mencionado en un comentario de un post de
+        {{this.fatherPost.author.username}}</p></a>
+  {{/each}}
+  <br />
 {{/if}}
 
- <script src="scripts/check-notifications.js"></script>
+<script src="scripts/check-notifications.js"></script>

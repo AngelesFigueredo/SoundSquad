@@ -25,9 +25,42 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
           path: "comments",
           populate: { path: "author", model: "User" },
         });
-      res.render("main/profile", { posts, user, session: req.session });
+      res.render("main/profile", {
+        posts,
+        user,
+        session: req.session,
+        myProfile: true,
+      });
     } catch {
       res.redirect("/login");
+    }
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.get("/profile/:id", async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const myUser = await User.findById(req.session.currentUser._id);
+    if (myUser.friends.includes(user._id)) {
+      res.render("main/profile", {
+        user,
+        myProfile: false,
+        friendship: "true",
+      });
+    } else if (!myUser.sentFriendRequests.includes(user._id)) {
+      res.render("main/profile", {
+        user,
+        myProfile: false,
+        friendship: "pending",
+      });
+    } else {
+      res.render("main/profile", {
+        user,
+        myProfile: false,
+        friendship: "false",
+      });
     }
   } catch (error) {
     res.render("error", { error });
@@ -92,10 +125,20 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
             model: "User",
           },
         ],
+      })
+      .populate({
+        path: "friendRequests",
+        model: "User",
       });
     const posts = user.postMentions;
     const comments = user.commentMentions;
-    res.render("main/notifications", { posts, comments, session: req.session });
+    const friendRequests = user.friendRequests;
+    res.render("main/notifications", {
+      posts,
+      comments,
+      friendRequests,
+      session: req.session,
+    });
   } catch (error) {
     res.render("error", { error });
   }
@@ -113,6 +156,80 @@ router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(id, body);
     res.redirect("/my-profile");
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.post("/friend-requests/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { currentUser } = req.session;
+  try {
+    await Promise.all([
+      User.findByIdAndUpdate(id, {
+        $push: { friendRequests: currentUser._id },
+      }),
+      User.findByIdAndUpdate(currentUser._id, {
+        $push: { sentFriendRequests: id },
+      }),
+    ]);
+    res.redirect(`/profile/${id}`);
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.post("/friend-requests/:id/accept", async (req, res, next) => {
+  const { id } = req.params;
+  const { currentUser } = req.session;
+  try {
+    await Promise.all([
+      User.findByIdAndUpdate(id, {
+        $push: { friends: currentUser._id },
+        $pull: { sentFriendRequests: currentUser._id },
+      }),
+      User.findByIdAndUpdate(currentUser._id, {
+        $push: { friends: id },
+        $pull: { friendRequests: id },
+      }),
+    ]);
+    res.redirect("/notifications");
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.post("/friend-requests/:id/cancel", async (req, res, next) => {
+  const { id } = req.params;
+  const { currentUser } = req.session;
+  try {
+    await Promise.all([
+      User.findByIdAndUpdate(id, {
+        $pull: { friendRequests: currentUser._id },
+      }),
+      User.findByIdAndUpdate(currentUser._id, {
+        $pull: { sentFriendRequests: id },
+      }),
+    ]);
+    res.redirect("/notifications");
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.post("/unfollow/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { currentUser } = req.session;
+  try {
+    await Promise.all([
+      User.findByIdAndUpdate(id, {
+        $pull: { friends: currentUser._id },
+      }),
+      User.findByIdAndUpdate(currentUser._id, {
+        $pull: { friends: id },
+      }),
+    ]);
+    res.redirect(`/profile/${id}`);
   } catch (error) {
     res.render("error", { error });
   }
