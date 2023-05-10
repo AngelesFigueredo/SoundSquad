@@ -7,6 +7,21 @@
   {{#if ../myProfile}}
     <a href="/{{this._id}}/my-playlists">Mis playlists</a></li>
     <a href="/edit/{{this._id}}">Edita tu perfil</a>
+
+    <div class="blue-background">
+      <h2>Mis publicaciones:</h2>
+
+      {{#each posts}}
+        <div class="card">
+          {{> postPartial this}}
+          <form action="/posts/{{this._id}}/my-profile/delete" method="POST">
+            <button type="submit">🗑</button>
+          </form>
+        </div>
+        <br>
+      {{/each}}
+    </div>
+
   {{else}}
     <a href="/{{this._id}}/my-playlists">Ver playlists de {{this.username}}</a></li>
     <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
@@ -30,19 +45,5 @@
   {{/if}}
 
 {{/with}}
-
-<div class="blue-background">
-  <h2>Mis publicaciones:</h2>
-
-  {{#each posts}}
-    <div class="card">
-      {{> postPartial this}}
-      <form action="/posts/{{this._id}}/my-profile/delete" method="POST">
-        <button type="submit">🗑</button>
-      </form>
-    </div>
-    <br>
-  {{/each}}
-</div>
 
 <a href="/audd">Shazam!</a>

@@ -187,10 +187,12 @@ router.post("/friend-requests/:id/accept", async (req, res, next) => {
       User.findByIdAndUpdate(id, {
         $push: { friends: currentUser._id },
         $pull: { sentFriendRequests: currentUser._id },
+        $pull: { friendRequests: currentUser._id },
       }),
       User.findByIdAndUpdate(currentUser._id, {
         $push: { friends: id },
         $pull: { friendRequests: id },
+        $pull: { sentFriendRequests: id },
       }),
     ]);
     res.redirect("/notifications");
@@ -206,9 +208,11 @@ router.post("/friend-requests/:id/cancel", async (req, res, next) => {
     await Promise.all([
       User.findByIdAndUpdate(id, {
         $pull: { friendRequests: currentUser._id },
+        $pull: { sentFriendRequests: currentUser._id },
       }),
       User.findByIdAndUpdate(currentUser._id, {
         $pull: { sentFriendRequests: id },
+        $pull: { friendRequests: id },
       }),
     ]);
     res.redirect("/notifications");
