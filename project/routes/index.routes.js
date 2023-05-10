@@ -8,6 +8,7 @@ const {
 } = require("../middlewares/route-guard");
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
+const Playlist = require("../models/Playlist.model");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -96,6 +97,12 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   } catch (error) {
     res.render("error", { error });
   }
+});
+
+router.get(":id/playlists", isLoggedIn, async (req, res, next) => {
+  const user = req.session.currentUser;
+  const playlists = await Playlist.find({ followers: { $in: [user._id] } });
+  res.render("main/playlists", { playlists });
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {

@@ -7,4 +7,17 @@
 <h5>Album: {{album}}</h5>
 
 <img src="{{spotify.album.images.[0].url}}" alt="">
+
+{{!-- <form action="/{{spotify.id}}/addtoplaylist" method="POST">
+<select name="playlists" id="playlists">
+    {{#with user}}
+    {{#each this.playlists}}
+    <option value="{{songDetails.spotify.id}}">{{this.playlists.title}}</option>
+    {{/each}}
+    {{/with}}
+    <option>Create new playlist</option>
+</select>
+<button type="submit">Añadir canción</button>
+</form> --}}
+
 {{/with}}
