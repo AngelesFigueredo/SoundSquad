@@ -21,15 +21,25 @@ router.get("/sign-up", isLoggedOut, (req, res, next) =>
 router.post(
   "/sign-up",
   [isLoggedOut, uploader.single("profileImg")],
-  (req, res, next) => {
-    const { password, password2, profileImg } = req.body;
+  async(req, res, next) => {
+    console.log(req.body)
+    let { password, password2, profileImg } = req.body;
+    // si nos viene la url desde una cosa que se ha subido
+    if(req.file && req.file.path){
+      profileImg = req.file.path
+    }
+    if(req.body.picUrl){
+      profileImg= req.body.picUrl
+    }
+    // si nos viene de una foto que hemos tomado 
 
+    
     if (password === password2) {
       bcrypt
         .genSalt(saltRounds)
         .then((salt) => bcrypt.hash(password, salt))
         .then((hashedPassword) =>
-          User.create({ ...req.body, password: hashedPassword })
+          User.create({ ...req.body, profileImg, password: hashedPassword })
         )
         .then(() => res.redirect("/"))
         .catch((error) => {

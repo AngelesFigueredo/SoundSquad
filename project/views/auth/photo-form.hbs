@@ -1,12 +1,12 @@
-<form>
+<form action="/sign-up" method="POST" enctype="multipart/form-data">
+
   <input type="file" id="profile-pic" accept="image/*" capture>
   <video id="video"></video>
   <button id="capture-btn">Take Photo</button>
   <button id="repeat-btn">Repeat Photo</button>
-  <button id="submit-photo">Usar foto</button>
+  <button id="submit-photo" type="submit">Usar foto</button>
   <button id="cancel-photo">Cancelar</button>
+  <input type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
 
-</form>
-
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="scripts/take-photo.js"></script>

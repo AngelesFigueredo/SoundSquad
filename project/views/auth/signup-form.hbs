@@ -41,8 +41,13 @@
 
         <div>
             <label for="profileImg">Imagen</label>
-            <input type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
-            <a href="/take-photo">Hazte una foto de perfil</a>
+
+            <input hidden id="pic-url" name="picUrl">
+            <p hidden id="taken-pic" > Ya tienes una imagen que haz tomado</p>
+            <button hidden id="upload-button">Subir otra imagen</button>
+
+            <input type="file" id="image-input" name="profileImg" accept="image/jpeg, image/png">
+            <a href="/take-photo">Hazte una nueva</a>
         </div>
         <br>
 
@@ -53,4 +58,6 @@
             {{/if}}
     </form>
     <script src="scripts/check-pwd.js"></script>
+    <script src="scripts/check-profilePic.js"></script>
+
 
