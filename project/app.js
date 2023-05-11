@@ -34,6 +34,10 @@ const adminRoutes = require("./routes/admin.routes");
 const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 
+// live chat
+const server = require("http").createServer(app);
+const WebSocket = require("ws");
+
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/", auddRoutes);

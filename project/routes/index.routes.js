@@ -9,6 +9,7 @@ const {
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const Playlist = require("../models/Playlist.model");
+const Message = require("../models/Message.model");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -163,10 +164,68 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get("/messages", async (req, res, next) => {
+  try {
+    const { currentUser } = req.session;
+    if (!currentUser) {
+      // Redirect to login page or show an error message
+      res.redirect("/login");
+      return;
+    }
+
+    const user = await User.findById(currentUser._id).populate({
+      path: "directMessages",
+      populate: { path: "author", model: "User" },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const authors = user.directMessages
+      ? user.directMessages.map((msg) => msg.author)
+      : [];
+    const uniqueAuthors = [...new Set(authors)].sort((a, b) =>
+      a.username.localeCompare(b.username)
+    );
+
+    res.render("main/messages", { authors: uniqueAuthors, user });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
   const user = req.session.currentUser;
   const playlists = await Playlist.find({ followers: { $in: [user._id] } });
   res.render("main/playlists", { playlists });
+});
+
+router.get("/new-message/:id", async (req, res, next) => {
+  const user = User.findById(req.params.id);
+  try {
+    res.render("main/new-message", { user });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/new-message/:id", async (req, res, next) => {
+  const { body } = req;
+  try {
+    const { body } = req;
+    const { currentUser } = req.session;
+
+    await Message.create({
+      ...body,
+      author: currentUser._id,
+    });
+
+    res.render("main/messages", { posts });
+  } catch (error) {
+    console.log(error);
+    res.render("error", { error });
+  }
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {

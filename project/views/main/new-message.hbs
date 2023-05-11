@@ -1,0 +1,28 @@
+<h1>Nuevo mensaje</h1>
+<hr />
+
+<form action="/new-message/{{user._id}}" method="POST">
+
+  <div>
+    <label for="for">Destinatario:</label>
+    {{#each friends}}
+    <select name="for" id="for-select">
+      <option value="{{this._id}}">{{this.username}}</option>
+    </select>
+    <br />
+  </div>
+
+  <div>
+    <label for="message">Mensaje:</label>
+    <input required type="text" name="message" />
+  </div>
+
+  <br />
+
+  <div><button type="submit">Login</button></div>
+
+  {{#if errorMessage}}
+    <p>{{errorMessage}}</p>
+  {{/if}}
+
+</form>

@@ -1,0 +1,9 @@
+<h1>Mensajes directos</h1>
+{{#unless authors}}
+  <p>No tienes mensajes directos</p>
+  <a href="/new-message/{{user._id}}">Manda un mensaje</a>
+{{/unless}}
+
+{{#each authors}}
+  <a href="/">{{this.username}}</a>
+{{/each}}
