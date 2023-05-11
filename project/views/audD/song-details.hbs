@@ -1,23 +1,120 @@
 <h1>Song details page</h1>
 
-{{#with songDetails}}
+{{#if songDetails}}
+    {{#with songDetails}}
 
-<h5>Song title: {{title}}</h5>
-<h5>Artista: {{artist}}</h5>
-<h5>Album: {{album}}</h5>
+    <h5>Song title: {{title}}</h5>
+    <h5>Artista: {{artist}}</h5>
+    <h5>Album: {{album}}</h5>
 
-<img src="{{spotify.album.images.[0].url}}" alt="">
+    <img src="{{spotify.album.images.[0].url}}" alt="">
+    <form action="/concerts-audd" method="POST">
+        <input type="text" name="artist" value="{{artist}}">
+        <button type="submit">Ver futuros conciertos</button>
+    </form>
 
-{{!-- <form action="/{{spotify.id}}/addtoplaylist" method="POST">
-<select name="playlists" id="playlists">
-    {{#with user}}
-    {{#each this.playlists}}
-    <option value="{{songDetails.spotify.id}}">{{this.playlists.title}}</option>
-    {{/each}}
+    {{!-- <form action="/{{spotify.id}}/addtoplaylist" method="POST">
+    <select name="playlists" id="playlists">
+        {{#with user}}
+        {{#each this.playlists}}
+        <option value="{{songDetails.spotify.id}}">{{this.playlists.title}}</option>
+        {{/each}}
+        {{/with}}
+        <option>Create new playlist</option>
+    </select>
+    <button type="submit">Añadir canción</button>
+    </form> --}}
+
     {{/with}}
-    <option>Create new playlist</option>
-</select>
-<button type="submit">Añadir canción</button>
-</form> --}}
+{{else}}
+    <h5>Song not found</h5>
+    <a href="/audd"><button> Try again</button></a>
 
-{{/with}}
+{{/if}}
+
+
+{{!-- 
+
+  -----SONG DETAILS EXAMPLE-----
+{
+artist: 'Miley Cyrus',
+title: 'Flowers',
+album: 'Flowers',
+release_date: '2023-01-13',
+label: 'SME - Columbia',
+timecode: '01:43',
+song_link: 'https://lis.tn/MJCDDv',
+apple_music: {
+previews: [ [Object] ],
+artwork: {
+width: 3000,
+height: 3000,
+url:
+'https://is4-ssl.mzstatic.com/image/thumb/Music123/v4/9e/80/c7/9e80c757-6994-4338-9e79-b92d5f75f788/196589561725.jpg/{w}x{h}bb.jpg',
+bgColor: '082443',
+textColor1: '8cb5e2',
+textColor2: '77aede',
+textColor3: '7198c2',
+textColor4: '6193bf'
+},
+artistName: 'Miley Cyrus',
+url: 'https://music.apple.com/us/album/flowers/1663973555?app=music&at=1000l33QU&i=1663973562&mt=1',
+discNumber: 1,
+genreNames: [ 'Pop', 'Music' ],
+durationInMillis: 200600,
+releaseDate: '2023-01-12',
+name: 'Flowers',
+isrc: 'USSM12209777',
+albumName: 'Endless Summer Vacation',
+playParams: { id: '1663973562', kind: 'song' },
+trackNumber: 1,
+composerName: 'Miley Cyrus, Michael Pollack & Gregory "Aldae" Hein'
+},
+spotify: {
+album: {
+name: 'Flowers',
+artists: [Array],
+album_group: 'single',
+album_type: 'single',
+id: '7I0tjwFtxUwBC1vgyeMAax',
+uri: 'spotify:album:7I0tjwFtxUwBC1vgyeMAax',
+available_markets: [Array],
+href: 'https://api.spotify.com/v1/albums/7I0tjwFtxUwBC1vgyeMAax',
+images: [Array],
+external_urls: [Object],
+release_date: '2023-01-13',
+release_date_precision: 'day'
+},
+external_ids: { isrc: 'USSM12209777' },
+popularity: 98,
+is_playable: null,
+linked_from: null,
+artists: [ [Object] ],
+available_markets: [
+'AR', 'AU', 'AT', 'BE', 'BO', 'BR', 'BG', 'CA', 'CL', 'CO',
+'CR', 'CY', 'CZ', 'DK', 'DO', 'DE', 'EC', 'EE', 'SV', 'FI',
+'FR', 'GR', 'GT', 'HN', 'HK', 'HU', 'IS', 'IE', 'IT', 'LV',
+'LT', 'LU', 'MY', 'MT', 'MX', 'NL', 'NZ', 'NI', 'NO', 'PA',
+'PY', 'PE', 'PH', 'PL', 'PT', 'SG', 'SK', 'ES', 'CH', 'TW',
+'TR', 'UY', 'US', 'GB', 'AD', 'LI', 'MC', 'ID', 'JP', 'TH',
+'VN', 'RO', 'IL', 'ZA', 'SA', 'AE', 'BH', 'QA', 'OM', 'KW',
+'EG', 'MA', 'DZ', 'TN', 'LB', 'JO', 'PS', 'IN', 'BY', 'KZ',
+'MD', 'UA', 'AL', 'BA', 'HR', 'ME', 'MK', 'RS', 'SI', 'KR',
+'BD', 'PK', 'LK', 'GH', 'KE', 'NG', 'TZ', 'UG', 'AG', 'AM',
+... 83 more items
+],
+disc_number: 1,
+duration_ms: 200454,
+explicit: false,
+external_urls: {
+spotify: 'https://open.spotify.com/track/0yLdNVWF3Srea0uzk55zFn'
+},
+href: 'https://api.spotify.com/v1/tracks/0yLdNVWF3Srea0uzk55zFn',
+id: '0yLdNVWF3Srea0uzk55zFn',
+name: 'Flowers',
+preview_url:
+'https://p.scdn.co/mp3-preview/9fbe346e805ed219204f53324f94557ab557b6d3?cid=e44e7b8278114c7db211c00ea273ac69',
+track_number: 1,
+uri: 'spotify:track:0yLdNVWF3Srea0uzk55zFn'
+}
+} --}}

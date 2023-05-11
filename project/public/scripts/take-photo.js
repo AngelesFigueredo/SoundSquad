@@ -8,6 +8,8 @@ const profilePicInput = document.querySelector("#profile-pic");
 const cancelBtn = document.querySelector("#cancel-photo");
 let imgUrl;
 
+
+
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({ video: true })
@@ -55,6 +57,7 @@ submitPhotoBtn.addEventListener("click", async (event) => {
     console.log("No image has been upload");
   }
 });
+
 
 cancelBtn.addEventListener("click", (event) => {
   event.preventDefault();
