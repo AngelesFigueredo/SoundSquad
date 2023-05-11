@@ -94,7 +94,10 @@ router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
 
 router.get("/home", isLoggedIn, async (req, res, next) => {
   try {
-    const posts = await Post.find()
+    const id = req.session.currentUser._id;
+    const user = await User.findById(id);
+    const idsForPosts = [user._id, ...user.friends];
+    const posts = await Post.find({ author: { $in: idsForPosts } })
       .sort({ createdAt: -1 })
       .limit(4)
       .populate("author comments")
