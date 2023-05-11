@@ -41,25 +41,41 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
 
 router.get("/profile/:id", async (req, res, next) => {
   try {
+    const { id } = req.params;
     const user = await User.findById(req.params.id);
+    const currentUser = req.session.currentUser;
     const myUser = await User.findById(req.session.currentUser._id);
+
+    if (currentUser._id === id) {
+      res.redirect("/my-profile");
+    }
+
     if (myUser.friends.includes(user._id)) {
+      console.log("holi", user);
       res.render("main/profile", {
         user,
         myProfile: false,
         friendship: "true",
       });
-    } else if (!myUser.sentFriendRequests.includes(user._id)) {
+    } else if (myUser.sentFriendRequests.includes(user._id)) {
       res.render("main/profile", {
         user,
         myProfile: false,
-        friendship: "pending",
+        friendship: "pendingOut",
       });
+    } else if (myUser.friendRequests.includes(user._id)) {
+      res.render("main/profile"),
+        {
+          user,
+          myProfile: false,
+          friendship: "pendingIn",
+        };
     } else {
       res.render("main/profile", {
         user,
         myProfile: false,
         friendship: "false",
+        myUser,
       });
     }
   } catch (error) {
@@ -144,7 +160,7 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get(":id/playlists", isLoggedIn, async (req, res, next) => {
+router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
   const user = req.session.currentUser;
   const playlists = await Playlist.find({ followers: { $in: [user._id] } });
   res.render("main/playlists", { playlists });
@@ -159,6 +175,14 @@ router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
   } catch (error) {
     res.render("error", { error });
   }
+});
+
+router.get("/:id/friends", async (req, res, next) => {
+  const user = await User.findById(req.params.id).populate(
+    "friends",
+    "username"
+  );
+  res.render("main/friends", { friends: user.friends });
 });
 
 router.post("/friend-requests/:id", async (req, res, next) => {
@@ -187,12 +211,10 @@ router.post("/friend-requests/:id/accept", async (req, res, next) => {
       User.findByIdAndUpdate(id, {
         $push: { friends: currentUser._id },
         $pull: { sentFriendRequests: currentUser._id },
-        $pull: { friendRequests: currentUser._id },
       }),
       User.findByIdAndUpdate(currentUser._id, {
         $push: { friends: id },
         $pull: { friendRequests: id },
-        $pull: { sentFriendRequests: id },
       }),
     ]);
     res.redirect("/notifications");

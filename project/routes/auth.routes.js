@@ -72,10 +72,15 @@ router.post("/login", async (req, res, next) => {
     .then((user) => {
       console.log(user);
       if (!user) {
-        res.redirect("/login");
+        res.render("auth/login-form", {
+          errorMessage: "No se ha encontrado al usuario",
+        });
         return;
       } else if (!bcrypt.compareSync(password, user.password)) {
-        res.redirect("/login");
+        res.render("auth/login-form", {
+          errorMessage: "Contraseña incorrecta",
+        });
+
         return;
       } else {
         req.session.currentUser = user;
