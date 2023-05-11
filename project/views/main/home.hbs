@@ -8,7 +8,7 @@
 
 
 {{#if (ifEquals author._id ../currentUser._id)}}
-    <form action="posts/{{_id}}/delete" method="POST" id="delete-form">
+    <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
       <button type="submit">🗑</button>
     </form>
   {{/if}}
