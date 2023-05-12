@@ -28,10 +28,10 @@ router.post(
     if(req.file && req.file.path){
       profileImg = req.file.path
     }
+    // si nos viene de una foto que hemos tomado 
     if(req.body.picUrl){
       profileImg= trimUrl(req.body.picUrl)
     }
-    // si nos viene de una foto que hemos tomado 
 
     
     if (password === password2) {

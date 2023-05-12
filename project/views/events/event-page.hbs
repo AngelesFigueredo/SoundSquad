@@ -1,0 +1,38 @@
+
+{{#if notifications}}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{notifications}} personas se quieren unir a este evento</h5>
+           
+            {{#each joinRequests}}
+                <div class="card d-flex flex-row" >
+                    {{this.username}}
+                    {{!-- <form action="/event-details/{{event._id}}"> --}}
+                        {{!-- <input type="text" name="userId" value="{{this._id}}">
+                        <input type="text" name="eventId" value="{{event.id}}"> --}}
+                        <button id="accept" >✅aceptar</button> 
+                        <button id="decline" value="{{this._id}}">❌rechazar</button>
+                    {{!-- </form> --}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/if}}
+
+<div class="card">
+    <div class="card-body">
+        <img src="{{event.profilePic}}" alt="Profile image" style="width:7rem">
+        <h5 class="card-title">{{event.name}}</h5>
+        <a href="/show-participants"><h6 class="card-subtitle mb-2 text-muted">participantes {{event.members.length}}</h6></a>
+        <a href="/concert-details/{{event.co}}" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+    </div>
+</div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Insertar chat en live</h6>
+        </div>
+    </div>
+
+<script src="/scripts/accept-decline.js"></script>

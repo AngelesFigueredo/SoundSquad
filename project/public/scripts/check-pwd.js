@@ -42,3 +42,4 @@ confirmPasswordInput.addEventListener("keyup", () => {
     checkPasswordMessage.innerHTML = "";
   }
 });
+
