@@ -7,7 +7,7 @@ const eventSchema = new Schema(
       type: String,
       default: "/images/event-default.jpg"
     },
-    admin: { type: Schema.Types.ObjectId, ref: "User"},
+    admin: [{ type: Schema.Types.ObjectId, ref: "User"}],
     concertApiId: {
         type: String,
         }, 

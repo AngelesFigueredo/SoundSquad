@@ -22,10 +22,10 @@
 <div class="card">
     <div class="card-body">
         <img src="{{event.profilePic}}" alt="Profile image" style="width:7rem">
-        <h5 class="card-title">{{event.name}}</h5>
-        <a href="/show-participants"><h6 class="card-subtitle mb-2 text-muted">participantes {{event.members.length}}</h6></a>
-        <a href="/concert-details/{{event.co}}" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
+        <a href="/show-event/{{event._id}}"><h5 class="card-title">{{event.name}}</h5></a>
+        <h6 class="card-subtitle mb-2 text-muted">participantes {{event.members.length}}</h6>
+        <a href="/concert-details/{{event.concertApiId}}" class="card-link">Detalles del concierto</a>
+    
     </div>
 </div>
 
@@ -35,4 +35,4 @@
         </div>
     </div>
 
-<script src="/scripts/accept-decline.js"></script>
+<script src="/scripts/events/accept-decline.js"></script>

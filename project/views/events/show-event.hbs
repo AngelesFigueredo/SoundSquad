@@ -1,0 +1,58 @@
+
+
+{{#if event}}
+    {{#with event}}
+        <div class="card">
+            <div class="card-body">
+                <img src="{{profilePic}}" style="width: 10rem;">
+                <h5 class="card-title">{{name}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{description}}</h6>
+                <ul>
+                    <h6>PARTICIPANTES →</h6>
+                    {{#each members}}
+                        <li class="d-flex flex-row">
+                            <img src="{{this.profileImg}}" style="width: 5rem;">
+                            {{this.username}}
+                            {{#if this.isAdmin}}
+                                {{#if this.isYou}}   <b>(you)</b>
+                                {{else}}    <b>(admin)</b>    {{/if}}
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+
+                <button class="leave">Abandonar el evento</button>
+                <div class="card pop-up" hidden>
+                    <form action="/leave-event/{{_id}}" method="POST">
+                        ¿Estás seguro que quieres abandonar este evento?
+                        <input hidden type="text" name="userId" value="{{session.currentUser._id}}">
+                        <button type="submit">Sí</button> 
+                    </form>
+                        <button class="no">No</button>
+                </div>
+            </div>
+        </div>
+        {{#if isAdmin}}
+            <div class="card" >
+                Aquí puedes borrar este evento
+                <button class="delete">Borrar</button>
+                <div class="card pop-up-delete" hidden style="width: 10rem;">
+                    <form action="/delete-event/{{_id}}" method="POST">
+                        ¿Estás seguro que quieres borrar este evento?
+                        se perderá para siempre
+                        <button type="submit">Sí</button>
+                    </form>
+                    <button class="no-delete">No</button>
+                </div>
+                Edita este evento 
+                <a href="/edit-event/{{_id}}"><button>Editar evento</button></a>
+            </div>
+        {{/if}}
+    {{/with}}
+{{else}}
+
+<h1>HA HABIDO ALGÚN PROBLEMITA</h1>
+
+{{/if}}
+
+<script src="/scripts/events/leave-event.js"></script>

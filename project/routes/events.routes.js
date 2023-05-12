@@ -53,30 +53,102 @@ router.post("/send-join-request/:eventId", async(req, res, next)=>{
     res.redirect(`/join/${req.params.eventId}`)
 })
 
+
+// single event main page
 router.get("/event-details/:eventId", isEventMember, async(req, res, next) => {
     const eventId = req.params.eventId
     const event = await Event.findById(eventId).populate("joinRequests")
-    const isAdmin = event.admin == req.session.currentUser._id
+    const isAdmin = event.admin.includes(req.session.currentUser._id) 
     let notifications
     let joinRequests
     if(isAdmin){ 
         notifications = event.joinRequests.length
-        
     }
     if(notifications){
         joinRequests = event.joinRequests
-        console.log("esto tendría que ser sole el join request", joinRequests)
+        // console.log("esto tendría que ser sole el join request", joinRequests)
     }
-    
     
     res.render("events/event-page", 
     { session: req.session, event, isAdmin, notifications, joinRequests});
 });
-
-router.get("/show-participants", async(req, res, next) => {
-    res.send("/show-partipants")
+// event's data
+router.get("/show-event/:eventId",isEventMember, async(req, res, next) => {
+    const eventId = req.params.eventId
+    const userId = req.session.currentUser._id
+    const event = await Event.findById(eventId).populate("members")
+    event.isAdmin = event.admin.includes(req.session.currentUser._id)
+    event.members.forEach((member)=>{
+            member.isAdmin = event.admin.includes(member._id)
+            member.isYou = member._id == userId
+    })
+    
+    res.render("events/show-event", {session: req.session, event})
 });
 
-router.post("/accept")
+// leave a event 
+router.post("/leave-event/:eventId",isEventMember, async(req, res, next) => {
+    const eventId = req.params.eventId
+    const userId = req.session.currentUser._id
+    await Event.findByIdAndUpdate(eventId,  { $pull: { members: userId } })
+    //In case the event is left empty
+    const event = await Event.findById(eventId)
+    console.log("se supone que esto nos esta sacando del evento", event)
+    if(event.members.length == 0){
+        res.redirect(`/delete-event/${eventId}`)
+    }else{
+        res.redirect(`/join/${eventId}`)
+    }
+});
+
+router.post("/delete-event/:eventId", async(req, res, next) => {
+    const eventId = req.params.eventId
+    await Event.findByIdAndDelete(eventId)
+    res.redirect("/home")
+});
+
+router.get("/edit-event/:eventId", async(req, res, next) => {
+    const eventId = req.params.eventId
+    const userId = req.session.currentUser._id
+    const event = await Event.findById(eventId).populate("members")
+    event.members.forEach((member)=>{
+            member.isAdmin = event.admin.includes(member._id)
+            member.isYou = member._id == userId
+    })
+    
+    res.render("events/edit", {session: req.session, event})
+});
+
+router.post("/edit-event/:eventId", async(req, res, next) => {
+    const eventId = req.params.eventId
+    const {name, description} = req.body
+    await Event.findByIdAndUpdate(eventId, {name, description})
+    
+    res.redirect(`/show-event/${eventId}`)
+});
+
+router.post("/make-admin/:newAdminId", async(req, res, next) => {
+    const newAdminId = req.params.newAdminId
+    const {eventId} = req.body
+    await Event.findByIdAndUpdate(eventId, {$push: { admin: newAdminId}})
+    
+    res.redirect(`/show-event/${eventId}`)
+});
+
+
+router.post("/kick-out/:oldMember", async(req, res, next) => {
+    const oldMember = req.params.oldMember
+    const {eventId} = req.body
+    await Event.findByIdAndUpdate(eventId, {$pull: { members: oldMember}})
+    
+    res.redirect(`/show-event/${eventId}`)
+});
+router.get("/concert-details/:concertApiId",isEventMember, async(req, res, next) => {
+    res.send("//concert-details/{{event.concertApiId}}")
+});
+
+
+
+
 
 module.exports = router;
