@@ -1,28 +1,36 @@
 <h1>Nuevo mensaje</h1>
 <hr />
 
-<form action="/new-message/{{user._id}}" method="POST">
+<form action="/new-message" method="POST">
 
   <div>
-    <label for="for">Destinatario:</label>
-    {{#each friends}}
-    <select name="for" id="for-select">
-      <option value="{{this._id}}">{{this.username}}</option>
-    </select>
+    <label for="for-select">
+      Destinatario:
+      <select name="for" id="for-select">
+        {{#each users}}
+          <option value="{{this._id}}">{{this.username}}</option>
+        {{/each}}
+      </select>
+    </label>
     <br />
   </div>
 
   <div>
-    <label for="message">Mensaje:</label>
-    <input required type="text" name="message" />
+    <label for="content">Mensaje:</label>
+    <input required type="text" name="content" />
   </div>
+
+  {{!-- <label for="author-select"> Created by:
+    <select name="author">
+      <option disable selected value=""></option>
+      {{#each dbUsers}}
+        <option value="{{this._id}}"> {{this.username}} </option>
+      {{/each}}
+    </select>
+  </label> --}}
 
   <br />
 
-  <div><button type="submit">Login</button></div>
-
-  {{#if errorMessage}}
-    <p>{{errorMessage}}</p>
-  {{/if}}
+  <div><button type="submit">Enviar mensaje</button></div>
 
 </form>

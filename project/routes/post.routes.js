@@ -47,7 +47,15 @@ router.post("/post-create", async (req, res) => {
 
     mentionedUsers.forEach(async (user) => {
       await User.findByIdAndUpdate(user._id, {
-        $push: { postMentions: post._id },
+        $push: {
+          postMentions: post._id,
+          notifications: {
+            message: `${currentUser.username} te ha mencionado en un post`,
+            source: "postMention",
+            author: currentUser._id,
+            post: post._id,
+          },
+        },
       });
     });
 

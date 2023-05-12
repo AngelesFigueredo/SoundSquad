@@ -11,6 +11,7 @@ const Comment = require("../models/Comment.model");
 router.post("/:postId/comment", async (req, res) => {
   const { content } = req.body;
   const { currentUser } = req.session;
+  const { postId } = req.params;
   const mentions = content.match(/@(\w+)/g) || [];
   const usernames = mentions.map((mention) => mention.substring(1));
   const mentionedUsers = await User.find({ username: { $in: usernames } });
@@ -20,16 +21,24 @@ router.post("/:postId/comment", async (req, res) => {
     content,
     author: currentUser._id,
     mentions: mentionsIds,
-    fatherPost: req.params.postId,
+    post: postId,
   });
 
   mentionedUsers.forEach(async (user) => {
     await User.findByIdAndUpdate(user._id, {
-      $push: { commentMentions: comment._id },
+      $push: {
+        commentMentions: comment._id,
+        notifications: {
+          message: `${currentUser.username} te ha mencionado en un comentario`,
+          source: "commentMention",
+          author: currentUser._id,
+          fatherPost: postId,
+        },
+      },
     });
   });
 
-  await Post.findByIdAndUpdate(req.params.postId, {
+  await Post.findByIdAndUpdate(postId, {
     $push: { comments: comment._id },
   });
   res.redirect("/home");
