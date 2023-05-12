@@ -107,7 +107,7 @@ router.post("/delete-event/:eventId", async(req, res, next) => {
     res.redirect("/home")
 });
 
-router.get("/edit-event/:eventId", async(req, res, next) => {
+router.get("/edit-event/:eventId", isEventMember, async(req, res, next) => {
     const eventId = req.params.eventId
     const userId = req.session.currentUser._id
     const event = await Event.findById(eventId).populate("members")
@@ -135,7 +135,6 @@ router.post("/make-admin/:newAdminId", async(req, res, next) => {
     res.redirect(`/show-event/${eventId}`)
 });
 
-
 router.post("/kick-out/:oldMember", async(req, res, next) => {
     const oldMember = req.params.oldMember
     const {eventId} = req.body
@@ -143,12 +142,22 @@ router.post("/kick-out/:oldMember", async(req, res, next) => {
     
     res.redirect(`/show-event/${eventId}`)
 });
-router.get("/concert-details/:concertApiId",isEventMember, async(req, res, next) => {
-    res.send("//concert-details/{{event.concertApiId}}")
+
+
+//accept and reject notifications
+
+router.post("/decline-request", async(req, res, next) => {
+    const {askerId, eventId} = req.body
+    await Event.findByIdAndUpdate(eventId, {$pull: { joinRequests: askerId}})
+    res.redirect(`/event-details/${eventId}`)
 });
 
-
-
+router.post("/accept-request", async(req, res, next) => {
+    const {askerId, eventId} = req.body
+    await Event.findByIdAndUpdate(eventId, {$pull: { joinRequests: askerId}})
+    await Event.findByIdAndUpdate(eventId, {$push: { members: askerId}})
+    res.redirect(`/event-details/${eventId}`)
+})
 
 
 module.exports = router;

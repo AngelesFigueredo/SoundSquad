@@ -7,12 +7,17 @@
             {{#each joinRequests}}
                 <div class="card d-flex flex-row" >
                     {{this.username}}
-                    {{!-- <form action="/event-details/{{event._id}}"> --}}
-                        {{!-- <input type="text" name="userId" value="{{this._id}}">
-                        <input type="text" name="eventId" value="{{event.id}}"> --}}
-                        <button id="accept" >✅aceptar</button> 
-                        <button id="decline" value="{{this._id}}">❌rechazar</button>
-                    {{!-- </form> --}}
+                        <form action="/accept-request" method="POST">
+                            <input type="text" name="askerId" hidden value="{{this._id}}">
+                            <input type="text" name="eventId" value="{{../event._id}}" hidden >
+                            <button id="accept" type="submit" >✅aceptar</button>   
+                        </form>
+                        <form action="/decline-request" method="POST">
+                            <input type="text" name="askerId" hidden value="{{this._id}}">
+                            <input type="text" name="eventId" value="{{../event._id}}" hidden>
+                            <button id="decline" type="submit">❌rechazar</button>
+                        </form>
+
                 </div>
             {{/each}}
         </div>
