@@ -70,6 +70,8 @@ const userSchema = new Schema(
 
     friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
+    sentFriendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
+
     directMessages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
   },
 

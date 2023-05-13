@@ -47,7 +47,15 @@ router.post("/post-create", async (req, res) => {
 
     mentionedUsers.forEach(async (user) => {
       await User.findByIdAndUpdate(user._id, {
-        $push: { postMentions: post._id },
+        $push: {
+          postMentions: post._id,
+          notifications: {
+            message: `${currentUser.username} te ha mencionado en un post`,
+            source: "postMention",
+            author: currentUser._id,
+            post: post._id,
+          },
+        },
       });
     });
 
@@ -59,11 +67,15 @@ router.post("/post-create", async (req, res) => {
   }
 });
 
-router.post("/post/:id/delete", async (req, res) => {
+router.post("/posts/:id/:lastroute/delete", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id, lastroute } = req.params;
     await Post.findByIdAndDelete(id);
-    res.redirect("/my-profile");
+    if (lastroute === "my-profile") {
+      res.redirect("/my-profile");
+    } else if (lastroute === "home") {
+      res.redirect("/home");
+    }
   } catch (error) {
     res.render("error", { error });
   }

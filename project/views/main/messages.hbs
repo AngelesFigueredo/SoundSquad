@@ -1,0 +1,9 @@
+<h1>Mensajes directos</h1>
+{{#unless conversationsForView}}
+  <p>No tienes mensajes directos</p>
+  <a href="/new-message/{{user._id}}">Manda un mensaje</a>
+{{/unless}}
+
+{{#each conversationsForView}}
+  <a href="/messages/{{this._id}}"><p>{{#each users}}{{#if (ne this.username ../../currentUser.username)}}{{this.username}}{{/if}}{{/each}}</p></a>
+{{/each}}

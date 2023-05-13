@@ -3,26 +3,26 @@
 <a href="/audd">Shazam!</a>
 
 {{#each posts}}
-
 <div class="card">
-{{>postPartial this}}
+{{>postPartial post=this user=currentUser}}
 
-{{!-- {{#with session}}
-    {{#if (eq this.author._id currentUser._id)}}
-        <form action="posts/{{this._id}}/delete" method="POST">
-            <button type="submit">🗑</button>
-        </form>
-    {{/if}}
-{{/with}} --}}
 
-<form action="/{{_id}}/comment" method="POST">
+{{#if (ifEquals author._id ../currentUser._id)}}
+    <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
+      <button type="submit">🗑</button>
+    </form>
+  {{/if}}
 
-  <label> Deja un comentario:
-    <textarea type="text" name="content"> </textarea>
-  </label>
 
-  <button type="submit"> Publica tu comentario! 📝</button>
-</form>
+  <form action="/{{_id}}/comment" method="POST">
+    <label> Deja un comentario:
+      <textarea type="text" name="content"> </textarea>
+    </label>
+    <button type="submit"> Publica tu comentario! 📝</button>
+  </form>
+
+
 </div>
 <br>
+
 {{/each}}

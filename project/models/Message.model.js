@@ -1,9 +1,9 @@
 const { Schema, model } = require("mongoose");
 
-const postSchema = new Schema(
+const messageSchema = new Schema(
   {
+    for: { type: Schema.Types.ObjectId, ref: "User" },
     author: { type: Schema.Types.ObjectId, ref: "User" },
-    title: String,
     content: String,
   },
   {
@@ -11,6 +11,6 @@ const postSchema = new Schema(
   }
 );
 
-const Message = model("Message", postSchema);
+const Message = model("Message", messageSchema);
 
 module.exports = Message;

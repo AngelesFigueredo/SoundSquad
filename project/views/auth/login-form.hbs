@@ -1,24 +1,34 @@
 <h1>Inicio de sesión</h1>
-<hr>
+<hr />
 
-    <form action="/login" method="POST">
+<form action="/login" method="POST">
+  <div>
+    <label for="usernameOrEmail">Username or Email:</label>
+    <input required type="text" name="usernameOrEmail" />
+    <br />
+  </div>
 
-      <div>
-        <label for="usernameOrEmail">Username or Email:</label>
-        <input required type="text" name="usernameOrEmail">
-        <br>
-      </div>
+  <div>
+    <label for="password">Password:</label>
+    <div class="password-wrapper">
+      <input required type="password" name="password" id="password" />
+      <button type="button" id="toggle-password">Show</button>
+    </div>
+  </div>
+  <br />
 
-      <div>
-        <label for="password">Password:</label>
-        <input required type="password" name="password">
-      </div>
-      <br>
+  <div><button type="submit">Login</button></div>
 
-      <div><button type="submit">Login</button></div>
+  {{#if errorMessage}}
+    <p>{{errorMessage}}</p>
+  {{/if}}
+</form>
 
-          {{#if errorMessage}}
-          <p>{{errorMessage}}</p>
-          {{/if}}
-
-    </form>
+<script>
+  const togglePassword = document.getElementById('toggle-password'); 
+  const passwordInput = document.getElementById('password');
+  togglePassword.addEventListener('click', () => { if (passwordInput.type ===
+  'password') { passwordInput.type = 'text'; togglePassword.textContent =
+  'Hide'; } else { passwordInput.type = 'password'; togglePassword.textContent =
+  'Show'; } });
+</script>

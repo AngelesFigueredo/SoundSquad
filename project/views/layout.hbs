@@ -21,10 +21,11 @@
 	   	   <li><a href="/my-profile">Mi perfil</a></li>
 	   	   <li><a href="/shop">Hazte premium!</a></li>
             <li><a href="/audd">Shazam!</a></li>
-               {{#if session.currentUser}}
-                  <li>Has iniciado sesión de {{session.currentUser.username}}</li>
+               {{#if isLogged}}
+                                 <li>Sesión iniciada</li>
                   <li><a href="/logout">Cerrar sesión</a></li>
                   <li><a href="/notifications">Notificaciones</a></li>
+                  <li><a href="/messages">Mensajes</a></li>
                {{else}}
                   <li><a href="/login">Inicia sesión</a></li>
                {{/if}}
