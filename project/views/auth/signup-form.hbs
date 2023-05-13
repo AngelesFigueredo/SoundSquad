@@ -1,63 +1,76 @@
 <h1>Registro</h1>
-<hr>
+<hr />
 
-    <form action="/sign-up" method="POST" enctype="multipart/form-data">
+<form action="/sign-up" method="POST" enctype="multipart/form-data">
 
-        <div>
-            <label for="usernameInput">Nombre de usuario</label>
-            <input required type="text" id="usernameInput" name="username">
-            <div>Requerido</div>
-            <br>
-        </div>
+  <div>
+    <label for="usernameInput">Nombre de usuario</label>
+    <input required type="text" id="usernameInput" name="username" />
+    <div>Requerido</div>
+    <br />
+  </div>
 
-        <div>
-            <label for="emailInput">Dirección de email</label>
-            <input required type="email" id="emailInput" name="email">
-            <div>Requerido</div>
-            <br>
-        </div>
+  <div>
+    <label for="emailInput">Dirección de email</label>
+    <input required type="email" id="emailInput" name="email" />
+    <div>Requerido</div>
+    <br />
+  </div>
 
-        <div>
-            <label for="pwdInput">Contraseña</label>
-            <input required type="password" id="pwdInput" name="password" pattern="^(?=.*[A-Z]).{8,}$">
-            <div>Requerido</div>
-                <div class="password-requirements">
-                <p>La contraseña debe contener:</p>
-                    <ul>
-                        <li class="uppercase">Una letra mayúscula</li>
-                        <li class="pwd-length">Al menos ocho caracteres</li>
-                    </ul>
-                </div>
-            <br>
-        </div>
+  <div>
+    <label for="pwdInput">Contraseña</label>
+    <input
+      required
+      type="password"
+      id="pwdInput"
+      name="password"
+      pattern="^(?=.*[A-Z]).{8,}$"
+    />
+    <button type="button" id="toggle-password">Show</button>
+    <div>Requerido</div>
+    <div class="password-requirements">
+      <p>La contraseña debe contener:</p>
+      <ul>
+        <li class="uppercase">Una letra mayúscula</li>
+        <li class="pwd-length">Al menos ocho caracteres</li>
+      </ul>
+    </div>
+    <br />
+  </div>
 
-        <div>
-            <label for="pwdInput2">Repita su contraseña</label>
-            <input required type="password" id="pwdInput2" name="password2">
-            <p id="pwd-check-message"></p>
-            <div>Requerido</div>
-            <br>
-        </div>
+  <div>
+    <label for="pwdInput2">Repita su contraseña</label>
+    <input required type="password" id="pwdInput2" name="password2" />
+    <button type="button" id="toggle-password2">Show</button>
+    <p id="pwd-check-message"></p>
+    <div>Requerido</div>
+    <br />
+  </div>
 
-        <div>
-            <label for="profileImg">Imagen</label>
+  <div>
+    <label for="profileImg">Imagen</label>
 
-            <input hidden id="pic-url" name="picUrl">
-            <p hidden id="taken-pic" > Ya tienes una imagen que has tomado</p>
-            <button hidden id="upload-button">Subir otra imagen</button>
+    <input hidden id="pic-url" name="picUrl" />
+    <p hidden id="taken-pic"> Ya tienes una imagen que has tomado</p>
+    <button hidden id="upload-button">Subir otra imagen</button>
 
-            <input type="file" id="image-input" name="profileImg" accept="image/jpeg, image/png">
-            <a href="/take-photo">Hazte una nueva</a>
-        </div>
-        <br>
+    <input
+      type="file"
+      id="image-input"
+      name="profileImg"
+      accept="image/jpeg, image/png"
+    />
+    <a href="/take-photo">Hazte una nueva</a>
+  </div>
+  <br />
 
-        <div><button type="submit">Completar registro</button></div>
+  <div><button type="submit">Completar registro</button></div>
 
-            {{#if errorMessage}}
-            <p>{{errorMessage}}</p>
-            {{/if}}
-    </form>
-    <script src="scripts/check-pwd.js"></script>
-    <script src="scripts/check-profilePic.js"></script>
+  {{#if errorMessage}}
+    <p>{{errorMessage}}</p>
+  {{/if}}
+</form>
 
-
+{{!-- <script src="scripts/show-pwd.js"></script> --}}
+<script src="scripts/check-pwd.js"></script>
+<script src="scripts/check-profilePic.js"></script>

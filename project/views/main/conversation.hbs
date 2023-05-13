@@ -1,0 +1,40 @@
+{{#with conversation}}
+    {{#each users}}
+        {{#if (ne this.username ../../currentUser.username)}}
+            <p>Chat con {{this.username}} 💭</p>
+        {{/if}}
+    {{/each}}
+
+    {{#each messages}}
+        <p>{{this.author.username}} {{this.createdAt}}:</p>
+        <p>{{this.content}}</p>
+        <br>
+    {{/each}}
+
+
+<form action="/new-message/{{#each users}}
+        {{#if (ne this.username ../../currentUser.username)}}
+            "{{this._id}}"
+        {{/if}}
+    {{/each}}" method="POST">
+
+    <input hidden name="conversation" value="{{this._id}}"/>
+    <input hidden name="author" value="{{../../currentUser._id}}"/>
+    <input hidden name="for" 
+    value="{{#each users}}
+        {{#if (ne this.username ../../currentUser.username)}}
+            "{{this._id}}"
+        {{/if}}
+    {{/each}}"/>
+
+  <div>
+    <label for="content">Mensaje:</label>
+    <input required type="text" name="content" />
+  </div>
+
+  <br />
+
+  <div><button type="submit">Enviar mensaje</button></div>
+
+</form>
+{{/with }}

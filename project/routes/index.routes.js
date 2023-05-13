@@ -71,12 +71,12 @@ router.get("/profile/:id", async (req, res, next) => {
         myProfile: false,
         friendship: "pendingIn",
       });
-    } else if (myUser.pendingFriendRequests.includes(user._id)) {
-      res.render("main/profile", {
-        user,
-        myProfile: false,
-        friendship: "pending",
-      });
+      // } else if (myUser.pendingFriendRequests.includes(user._id)) {
+      //   res.render("main/profile", {
+      //     user,
+      //     myProfile: false,
+      //     friendship: "pending",
+      //   });
     } else {
       res.render("main/profile", {
         user,
@@ -85,6 +85,7 @@ router.get("/profile/:id", async (req, res, next) => {
       });
     }
   } catch (error) {
+    console.log(error);
     res.render("error", { error });
   }
 });
@@ -172,28 +173,15 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
 router.get("/messages", async (req, res, next) => {
   try {
     const { currentUser } = req.session;
-    const conversations = await Conversation.find({
+    const conversationsForView = await Conversation.find({
       users: currentUser._id,
     })
       .populate("users")
-      .sort({ createdAt: -1 });
-
-    // Loop through the conversations and add the otherUser property to each one
-    const conversationsWithOtherUser = conversations.map((conversation) => {
-      const otherUser = conversation.users.find(
-        (user) => String(user._id) !== String(currentUser._id)
-      );
-      const otherUserComplete = User.findById(otherUser._id);
-      const otherUserName = otherUserComplete.username;
-      return {
-        conversation: conversation,
-        otherUser: otherUser._id,
-        otherUserName,
-      };
-    });
-    // Pass the conversationsWithOtherUsers array to the view
-    res.render("main/messages", { conversationsWithOtherUser });
+      .sort({ createdAt: 1 });
+    
+    res.render("main/messages", { conversationsForView });
   } catch (error) {
+    console.log(error);
     res.render("error", { error });
   }
 });
@@ -209,69 +197,110 @@ router.get("/new-message", async (req, res, next) => {
   res.render("main/new-message", { users });
 });
 
-router.get("/new-message/:id", async (req, res, next) => {
-  const user = User.findById(req.params.id);
-  try {
-    res.render("main/new-message", { user });
-  } catch (error) {
-    res.render("error", { error });
-  }
+// router.get("/new-message/:id", async (req, res, next) => {
+//   const user = User.findById(req.params.id);
+//   try {
+//     res.render("main/new-message", { user });
+//   } catch (error) {
+//     res.render("error", { error });
+//   }
+// });
+
+router.get("/:id/friends", async (req, res, next) => {
+  const user = await User.findById(req.params.id).populate(
+    "friends",
+    "username"
+  );
+  res.render("main/friends", { friends: user.friends });
+});
+
+router.get("/messages/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { currentUser } = req.session;
+  const conversation = await Conversation.findById(id)
+    .populate({
+      path: "messages",
+      select: ["content", "author", "createdAt"],
+      populate: {
+        path: "author",
+        select: "username",
+      },
+      options: {
+        sort: { createdAt: 1 }, // sort messages by creation date in ascending order
+      },
+    })
+    .populate({
+      path: "users",
+      select: ["_id", "username"],
+    });
+
+  res.render("main/conversation", { conversation, currentUser });
 });
 
 router.post("/new-message", async (req, res, next) => {
   try {
     const { currentUser } = req.session;
-    const { userId } = req.params;
-    const { content } = req.body;
+    const { content, to } = req.body;
+    const { ObjectId } = require("mongodb");
+    const toId = new ObjectId(to);
+    const fromId = new ObjectId(currentUser._id);
 
-    // Find or create conversation
-    let conversation = await Conversation.findOneAndUpdate(
-      {
-        users: { $all: [currentUser._id, userId] },
-      },
-      {
-        $setOnInsert: { users: [currentUser._id, userId] },
-      },
-      { upsert: true, new: true }
-    );
-
-    // Create new message
     const message = await Message.create({
-      author: currentUser._id,
-      for: userId,
+      author: fromId,
+      for: toId,
       content,
     });
 
-    // Add message ObjectId to conversation messages array
-    conversation.messages.push(message._id);
-    await conversation.save();
+    let conversations = await Conversation.findOneAndUpdate(
+      {
+        $and: [{ users: fromId }, { users: toId }],
+      },
+      {
+        $push: { messages: message._id },
+      },
+      { new: true }
+    );
 
-    const conversations = await Conversation.find({
-      users: currentUser._id,
-    })
-      .populate("users")
-      .sort({ createdAt: -1 });
-
-    // Loop through the conversations and add the otherUser property to each one
-    const conversationsWithOtherUser = conversations.map((conversation) => {
-      const otherUser = conversation.users.find(
-        (user) => String(user._id) !== String(currentUser._id)
-      );
-      const otherUserComplete = User.findById(otherUser._id);
-      const otherUserName = otherUserComplete.username;
-      return {
-        conversation: conversation,
-        otherUser: otherUser._id,
-        otherUserName,
-      };
+    if (!conversations) {
+      conversations = await Conversation.create({
+        users: [fromId, toId],
+        messages: message._id,
+      });
+    }
+    const conversationsForView = await Conversation.find({
+      users: { $in: currentUser._id },
+    }).populate({
+      path: "users",
+      select: ["_id", "username"],
     });
 
-    // Pass the conversationsWithOtherUsers array to the view
-    res.render("main/messages", { conversationsWithOtherUser });
+    res.render("main/messages", {
+      conversationsForView,
+      currentUser,
+    });
   } catch (error) {
     console.log(error);
     res.render("error", { error });
   }
+});
+
+router.post("/new-message/:id", async (req, res, next) => {
+  const { currentUser } = req.session;
+  const { body } = req;
+  const { id } = req.params;
+  const { conversation } = req.body;
+
+  const message = await Message.create({
+    body,
+  });
+
+  await Conversation.findByIdAndUpdate(conversation, {
+    $push: { messages: message._id },
+  });
+
+  const fullConversation = await Conversation.findById(conversation);
+
+  res.render("main/conversation", { fullConversation, currentUser });
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
@@ -283,14 +312,6 @@ router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
   } catch (error) {
     res.render("error", { error });
   }
-});
-
-router.get("/:id/friends", async (req, res, next) => {
-  const user = await User.findById(req.params.id).populate(
-    "friends",
-    "username"
-  );
-  res.render("main/friends", { friends: user.friends });
 });
 
 router.post("/friend-requests/:id", async (req, res, next) => {

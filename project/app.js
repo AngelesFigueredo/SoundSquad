@@ -8,6 +8,7 @@ require("./db");
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
 const express = require("express");
+const moment = require("moment");
 
 // Handles the handlebars
 // https://www.npmjs.com/package/hbs
