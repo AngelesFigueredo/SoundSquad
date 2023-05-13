@@ -8,7 +8,6 @@ require("./db");
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
 const express = require("express");
-const moment = require("moment");
 
 // Handles the handlebars
 // https://www.npmjs.com/package/hbs
@@ -36,9 +35,6 @@ const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 const eventsRoutes = require("./routes/events.routes");
 
-// live chat
-const server = require("http").createServer(app);
-const WebSocket = require("ws");
 
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
