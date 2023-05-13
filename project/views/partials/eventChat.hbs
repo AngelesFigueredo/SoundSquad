@@ -1,0 +1,26 @@
+
+{{#if event}}
+
+     {{#each event.messages}}
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{#if isYou}}
+                        You
+                    {{else}}
+                        {{author.username}}
+                    {{/if}}
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{createdAt}}</h6>
+                <p class="card-text">{{content}}</p>
+            </div>
+        </div>
+    {{/each}}
+
+    <form action="/send-event-message/{{event._id}}" method="POST">
+        <input type="text" name="content">
+        <input type="text" name="author" value="{{session.currentUser._id}}" hidden>
+        <input type="text" name="to" value="{{event._id}}" hidden>
+        <button type="submit">Enviar</button>
+    </form>
+{{/if}}

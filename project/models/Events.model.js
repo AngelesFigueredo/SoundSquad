@@ -3,6 +3,7 @@ const { Schema, model } = require("mongoose");
 const eventSchema = new Schema(
   {
     name: String,
+    author: { type: Schema.Types.ObjectId, ref: "User"},
     profilePic: {
       type: String,
       default: "/images/event-default.jpg"
@@ -13,7 +14,8 @@ const eventSchema = new Schema(
         }, 
     description: String,
     members: [{type: Schema.Types.ObjectId, ref: "User" }], 
-    joinRequests: [{type: Schema.Types.ObjectId, ref: "User" }]
+    joinRequests: [{type: Schema.Types.ObjectId, ref: "User" }], 
+    messages:[{type: Schema.Types.ObjectId, ref: "Message"}]
   },
   {
     timestamps: true,

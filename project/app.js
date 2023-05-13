@@ -34,6 +34,7 @@ const adminRoutes = require("./routes/admin.routes");
 const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 const eventsRoutes = require("./routes/events.routes");
+const eventsChatRoutes = require("./routes/events-chat.routes");
 
 
 app.use("/", indexRoutes);
@@ -41,6 +42,7 @@ app.use("/", authRoutes);
 app.use("/", auddRoutes);
 app.use("/", postRoutes);
 app.use("/", commentRoutes);
+app.use("/", eventsChatRoutes);
 app.use("/", eventsRoutes);
 app.use("/admin", adminRoutes);
 

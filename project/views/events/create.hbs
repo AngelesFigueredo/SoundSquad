@@ -5,6 +5,7 @@
         <input type="text" name="name" required placeholder="Nombre de tu evento"></input>
     </label>
     <label> 
+        <input type="text" name="author" value="{{session.currentUser._id}}" hidden></input>
         <input type="text" name="admin" value="{{session.currentUser._id}}" hidden></input>
     </label>
     <label> Descripción

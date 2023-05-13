@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const Event = require("../models/Events.model")
 const {
   isEventMember
@@ -57,7 +56,25 @@ router.post("/send-join-request/:eventId", async(req, res, next)=>{
 // single event main page
 router.get("/event-details/:eventId", isEventMember, async(req, res, next) => {
     const eventId = req.params.eventId
-    const event = await Event.findById(eventId).populate("joinRequests")
+    const event = await Event.findById(eventId)
+        .populate("joinRequests")
+        .populate({
+            path: "messages",
+            select: ["content", "author", "createdAt"],
+            populate: {
+                path: "author",
+                select: ["username", 
+                "_id"],
+            },
+            options: {
+                sort: { createdAt: 1 }, 
+            },
+        })
+    const mess = event.messages.length
+    event.messages.forEach((message)=>{
+       message.isYou = message.author._id == req.session.currentUser._id
+    })
+
     const isAdmin = event.admin.includes(req.session.currentUser._id) 
     let notifications
     let joinRequests
@@ -66,10 +83,10 @@ router.get("/event-details/:eventId", isEventMember, async(req, res, next) => {
     }
     if(notifications){
         joinRequests = event.joinRequests
-        // console.log("esto tendría que ser sole el join request", joinRequests)
+        // console.log("esto tendría que ser sole el join request", joinRequests
     }
     
-    res.render("events/event-page", 
+    res.render("events/event-details", 
     { session: req.session, event, isAdmin, notifications, joinRequests});
 });
 // event's data
