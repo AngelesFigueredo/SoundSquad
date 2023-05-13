@@ -1,0 +1,26 @@
+<h1>Ver los eventos referentes a un concierto</h1>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">Crea tu propio evento para este concierto</h5>
+        <a href="/create-event/{{data.concertId}}" class="card-link"><button>Crea un event</button></a>
+    </div>
+</div>
+
+<hr>
+
+{{#if data.noEvents}}
+    <p>No se ha creado un evento para este concierto, pues ser tú quién cree el primero 😊</p>
+
+{{else}}
+    <p>Los eventos creados para este concierto son: </p>
+    {{#each data.events}}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{name}}</h5>
+                <p class="card-text">{{description}}</p>
+                <a href="/event-details/{{this._id}}" class="card-link">Detalles </a>
+            </div>
+        </div>
+    {{/each}}
+{{/if}}

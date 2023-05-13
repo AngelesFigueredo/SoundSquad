@@ -1,0 +1,13 @@
+<h1>No formas parte de este evento</h1>
+
+{{#if sentRequest}}
+    <h5>Ya has pedido acceso a este evento.</h5>
+{{else}}
+    <form action="/send-join-request/{{eventId}}" method="POST">
+        <input hidden name="userId" value="{{session.currentUser._id}}">
+        <button type="submit">Solicitar acesso</button>
+    </form>
+{{/if}}
+
+<h2>También puedes crear tu propio evento</h2>
+    <a href="/create-event/{{concertId}}"> Crea tu evento</a>

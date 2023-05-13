@@ -65,4 +65,3 @@ cancelBtn.addEventListener("click", (event) => {
   window.location.replace("/sign-up")
   context.clearRect(0, 0, canvas.width, canvas.height);
 });
-

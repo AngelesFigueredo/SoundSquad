@@ -9,7 +9,7 @@
 
     <img src="{{spotify.album.images.[0].url}}" alt="">
     <form action="/concerts-audd" method="POST">
-        <input type="text" name="artist" value="{{artist}}">
+        <input hidden type="text" name="artist" value="{{artist}}">
         <button type="submit">Ver futuros conciertos</button>
     </form>
 
