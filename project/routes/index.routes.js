@@ -217,6 +217,8 @@ router.get("/:id/friends", async (req, res, next) => {
 router.get("/messages/:id", async (req, res, next) => {
   const { id } = req.params;
   const { currentUser } = req.session;
+  let otherUser;
+
   const conversation = await Conversation.findById(id)
     .populate({
       path: "messages",
@@ -234,7 +236,13 @@ router.get("/messages/:id", async (req, res, next) => {
       select: ["_id", "username"],
     });
 
-  res.render("main/conversation", { conversation, currentUser });
+  if (conversation.users[0].username === currentUser.username) {
+    otherUser = conversation.users[1];
+  } else {
+    otherUser = conversation.users[0];
+  }
+
+  res.render("main/conversation", { conversation, currentUser, otherUser });
 });
 
 router.post("/new-message", async (req, res, next) => {
@@ -287,20 +295,21 @@ router.post("/new-message", async (req, res, next) => {
 router.post("/new-message/:id", async (req, res, next) => {
   const { currentUser } = req.session;
   const { body } = req;
-  const { id } = req.params;
-  const { conversation } = req.body;
+  const { conversation } = body;
 
   const message = await Message.create({
     body,
   });
+  console.log(body);
 
   await Conversation.findByIdAndUpdate(conversation, {
     $push: { messages: message._id },
   });
 
   const fullConversation = await Conversation.findById(conversation);
-  console.log("aversivalaruuuutaaaaa", id);
-  res.render("main/conversation", { fullConversation, currentUser });
+
+  res.redirect(`/messages/${conversation}`);
+  // res.render("main/conversation", { fullConversation, currentUser });
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
