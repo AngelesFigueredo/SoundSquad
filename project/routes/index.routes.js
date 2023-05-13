@@ -178,7 +178,7 @@ router.get("/messages", async (req, res, next) => {
     })
       .populate("users")
       .sort({ createdAt: 1 });
-    
+
     res.render("main/messages", { conversationsForView });
   } catch (error) {
     console.log(error);
@@ -299,7 +299,7 @@ router.post("/new-message/:id", async (req, res, next) => {
   });
 
   const fullConversation = await Conversation.findById(conversation);
-
+  console.log("aversivalaruuuutaaaaa", id);
   res.render("main/conversation", { fullConversation, currentUser });
 });
 
