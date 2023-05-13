@@ -9,11 +9,12 @@ const isLoggedIn = (req, res, next) => {
 
 const isLoggedOut = (req, res, next) => {
   if (req.session.currentUser) {
-    res.redirect("/login");
-  } else {
     next();
+  } else {
+    // res.redirect("/");
   }
 };
+
 const checkRole =
   (roles = []) =>
   (req, res, next) => {

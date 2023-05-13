@@ -1,5 +1,19 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
+const SpotifyWebApi = require("spotify-web-api-node");
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
+
+spotifyApi
+  .clientCredentialsGrant()
+  .then((data) => spotifyApi.setAccessToken(data.body["access_token"]))
+  .catch((error) =>
+    console.log("Something went wrong when retrieving an access token", error)
+  );
 
 const {
   isLoggedIn,
@@ -9,12 +23,36 @@ const {
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const Playlist = require("../models/Playlist.model");
-const Message = require("../models/Message.model");
-const Conversation = require("../models/Conversation.model");
+const Event = require("../models/Events.model");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
   res.render("index");
+});
+
+router.get("/home", isLoggedIn, async (req, res, next) => {
+  try {
+    const id = req.session.currentUser._id;
+    const user = await User.findById(id);
+    const idsForPosts = [user._id, ...user.friends];
+    const posts = await Post.find({ author: { $in: idsForPosts } })
+      .sort({ createdAt: -1 })
+      .limit(4)
+      .populate("author comments")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "User",
+        },
+      });
+    res.render("main/home", {
+      posts,
+      currentUser: req.session.currentUser,
+    });
+  } catch (error) {
+    res.render("error", { error });
+  }
 });
 
 router.get("/my-profile", isLoggedIn, async (req, res, next) => {
@@ -99,31 +137,6 @@ router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/home", isLoggedIn, async (req, res, next) => {
-  try {
-    const id = req.session.currentUser._id;
-    const user = await User.findById(id);
-    const idsForPosts = [user._id, ...user.friends];
-    const posts = await Post.find({ author: { $in: idsForPosts } })
-      .sort({ createdAt: -1 })
-      .limit(4)
-      .populate("author comments")
-      .populate({
-        path: "comments",
-        populate: {
-          path: "author",
-          model: "User",
-        },
-      });
-    res.render("main/home", {
-      posts,
-      currentUser: req.session.currentUser,
-    });
-  } catch (error) {
-    res.render("error", { error });
-  }
-});
-
 router.get("/notifications", isLoggedIn, async (req, res, next) => {
   try {
     const currentUser = req.session.currentUser;
@@ -170,22 +183,6 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/messages", async (req, res, next) => {
-  try {
-    const { currentUser } = req.session;
-    const conversationsForView = await Conversation.find({
-      users: currentUser._id,
-    })
-      .populate("users")
-      .sort({ createdAt: 1 });
-
-    res.render("main/messages", { conversationsForView });
-  } catch (error) {
-    console.log(error);
-    res.render("error", { error });
-  }
-});
-
 router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
   const user = req.session.currentUser;
   const playlists = await Playlist.find({ followers: { $in: [user._id] } });
@@ -214,102 +211,26 @@ router.get("/:id/friends", async (req, res, next) => {
   res.render("main/friends", { friends: user.friends });
 });
 
-router.get("/messages/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const { currentUser } = req.session;
-  let otherUser;
+// router.get("/search", async)
 
-  const conversation = await Conversation.findById(id)
-    .populate({
-      path: "messages",
-      select: ["content", "author", "createdAt"],
-      populate: {
-        path: "author",
-        select: "username",
-      },
-      options: {
-        sort: { createdAt: 1 }, // sort messages by creation date in ascending order
-      },
-    })
-    .populate({
-      path: "users",
-      select: ["_id", "username"],
-    });
-
-  if (conversation.users[0].username === currentUser.username) {
-    otherUser = conversation.users[1];
-  } else {
-    otherUser = conversation.users[0];
-  }
-
-  res.render("main/conversation", { conversation, currentUser, otherUser });
-});
-
-router.post("/new-message", async (req, res, next) => {
+router.get("/search", async (req, res, next) => {
   try {
-    const { currentUser } = req.session;
-    const { content, to } = req.body;
-    const { ObjectId } = require("mongodb");
-    const toId = new ObjectId(to);
-    const fromId = new ObjectId(currentUser._id);
+    const { query } = req.query;
 
-    const message = await Message.create({
-      author: fromId,
-      for: toId,
-      content,
-    });
+    // Use a regular expression to match users whose usernames contain the search term or a similar term
+    const regex = new RegExp(query, "i");
+    const users = await User.find({ username: regex });
 
-    let conversations = await Conversation.findOneAndUpdate(
-      {
-        $and: [{ users: fromId }, { users: toId }],
-      },
-      {
-        $push: { messages: message._id },
-      },
-      { new: true }
-    );
+    const events = await Event.find({ name: regex });
 
-    if (!conversations) {
-      conversations = await Conversation.create({
-        users: [fromId, toId],
-        messages: message._id,
-      });
-    }
-    const conversationsForView = await Conversation.find({
-      users: { $in: currentUser._id },
-    }).populate({
-      path: "users",
-      select: ["_id", "username"],
-    });
+    const artists = await spotifyApi.searchArtists(query);
+    const artistsInfo = artists.map((e)=>{console.log("git ")})
+    console.log(songs.body.artists.items);
 
-    res.render("main/messages", {
-      conversationsForView,
-      currentUser,
-    });
+    res.render("main/search-results", { users, events, query });
   } catch (error) {
-    console.log(error);
-    res.render("error", { error });
+    next(error);
   }
-});
-
-router.post("/new-message/:id", async (req, res, next) => {
-  const { currentUser } = req.session;
-  const { body } = req;
-  const { conversation } = body;
-
-  const message = await Message.create({
-    body,
-  });
-  console.log(body);
-
-  await Conversation.findByIdAndUpdate(conversation, {
-    $push: { messages: message._id },
-  });
-
-  const fullConversation = await Conversation.findById(conversation);
-
-  res.redirect(`/messages/${conversation}`);
-  // res.render("main/conversation", { fullConversation, currentUser });
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {

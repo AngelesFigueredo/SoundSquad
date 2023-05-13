@@ -1,0 +1,25 @@
+<h1>Resultados de búsqueda</h1>
+
+<h2>Usuarios:</h2>
+{{#if users}}
+  <ul>
+    {{#each users}}
+      <li><a href="/profile/{{this._id}}">{{this.username}}</a></li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No se han encontrado usuarios.</p>
+{{/if}}
+<br />
+
+<h2>Eventos:</h2>
+{{#if events}}
+  <ul>
+    {{#each events}}
+      <li><a href="/event-details/{{this._id}}"><p>{{this.name}}, by
+            {{this.author}}</p></a></li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No se han encontrado eventos.</p>
+{{/if}}

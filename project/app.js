@@ -34,6 +34,7 @@ const adminRoutes = require("./routes/admin.routes");
 const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 const eventsRoutes = require("./routes/events.routes");
+const messagesRoutes = require("./routes/messages.routes")
 
 
 app.use("/", indexRoutes);
@@ -42,6 +43,7 @@ app.use("/", auddRoutes);
 app.use("/", postRoutes);
 app.use("/", commentRoutes);
 app.use("/", eventsRoutes);
+app.use("/", messagesRoutes)
 app.use("/admin", adminRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
