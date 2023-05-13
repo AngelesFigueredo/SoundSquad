@@ -23,3 +23,53 @@
 {{else}}
   <p>No se han encontrado eventos.</p>
 {{/if}}
+
+<h2>Artistas:</h2>
+<ul id="artists-list">
+  {{#each artistsInfoShort}}
+    <li><a href="/artist/{{this.id}}">{{this.name}}</a></li>
+  {{/each}}
+</ul>
+
+{{#if artistsInfoLong}}
+  <button id="show-all-artists">Mostrar todos los artistas</button>
+{{/if}}
+
+<h2>Canciones:</h2>
+<ul id="songs-list">
+  {{#each songsInfoShort}}
+    <li><a href="/song/{{this.id}}"><p>{{this.name}}, by
+          {{this.artists}}</p></a></li>
+  {{/each}}
+</ul>
+
+{{#if songsInfoLong}}
+  <button id="show-all-songs">Mostrar todas las canciones</button>
+{{/if}}
+
+<script>
+  //artists
+  const shortArtistsList = document.querySelectorAll('#artists-list li'); 
+  const longArtistsList = `
+    {{#each artistsInfoLong}}
+      <li><a href="/artist/{{this.id}}">{{this.name}}</a></li>
+    {{/each}}`;
+  const showAllArtistsButton = document.querySelector('#show-all-artists');
+  showAllArtistsButton.addEventListener('click', () => {
+    document.querySelector('#artists-list').innerHTML = longArtistsList;
+    showAllArtistsButton.style.display = 'none';
+  });
+
+  //songs
+  const shortSongsList = document.querySelectorAll('#songs-list li'); 
+  const longSongsList = `
+    {{#each songsInfoLong}}
+      <li><a href="/song/{{this.id}}"><p>{{this.name}}, by
+      {{this.artists}}</p></a></li>
+    {{/each}}`; 
+  const showAllSongsButton = document.querySelector('#show-all-songs');
+  showAllSongsButton.addEventListener('click', () => {
+    document.querySelector('#songs-list').innerHTML = longSongsList;
+    showAllSongsButton.style.display = 'none';
+  });
+</script>
