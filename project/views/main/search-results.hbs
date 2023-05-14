@@ -47,6 +47,13 @@
   <button id="show-all-songs">Mostrar todas las canciones</button>
 {{/if}}
 
+<h2>Conciertos:</h2>
+<ul id="concerts-list">
+  {{#each concertsInfoShort}}
+    <li><a href="/concert/{{this.id}}"><p>{{this.name}} en {{this.city}} - {{this.date}}</p></a></li>
+  {{/each}}
+
+</ul>
 <script>
   //artists
   const shortArtistsList = document.querySelectorAll('#artists-list li'); 

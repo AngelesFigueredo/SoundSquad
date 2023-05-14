@@ -55,6 +55,7 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   try {
     try {
@@ -271,8 +272,40 @@ router.get("/search", async (req, res, next) => {
         id: song.id,
       };
     });
-    console.log("HOLIIIIIIII", artists.body.artists.items);
 
+    //events
+    const tmApiKey = process.env.TICKET_CONSUMER_KEY;
+    // let concertsInfoShort = undefined;
+    // let concertsInfoLong = undefined;
+
+    axios
+      .get(
+        `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${tmApiKey}&keyword=${query}`
+      )
+      .then((response) => {
+        if (response.data && response.data._embedded) {
+          let concerts = response.data._embedded.events;
+          // console.log("HOLIIIIIIIIss", concerts[0]);
+
+          concertsInfoShort = concerts.map((concert) => ({
+            name: concert.name,
+            city: concert._embedded.venues[0].city.name,
+            date: concert.dates.start.localDate,
+            id: concert.id,
+          }));
+
+          concertsInfoLong = concerts.map((concert) => ({
+            name: concert.name,
+            city: concert._embedded.venues[0].city.name,
+            date: concert.dates.start.localDate,
+            id: concert.id,
+          }));
+
+        }
+      });
+
+
+    console.log("SCOOOOOOOPE", concertsInfoLong);
     res.render("main/search-results", {
       users,
       events,
@@ -281,6 +314,8 @@ router.get("/search", async (req, res, next) => {
       artistsInfoLong,
       songsInfoShort,
       songsInfoLong,
+      concertsInfoShort,
+      concertsInfoLong,
     });
   } catch (error) {
     next(error);
