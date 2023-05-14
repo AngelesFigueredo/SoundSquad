@@ -55,7 +55,6 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
   }
 });
 
-
 router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   try {
     try {
@@ -287,7 +286,7 @@ router.get("/search", async (req, res, next) => {
           let concerts = response.data._embedded.events;
           // console.log("HOLIIIIIIIIss", concerts[0]);
 
-          concertsInfoShort = concerts.map((concert) => ({
+          concertsInfoShort = concerts.slice(0, 5).map((concert) => ({
             name: concert.name,
             city: concert._embedded.venues[0].city.name,
             date: concert.dates.start.localDate,
@@ -300,23 +299,20 @@ router.get("/search", async (req, res, next) => {
             date: concert.dates.start.localDate,
             id: concert.id,
           }));
-
         }
+
+        res.render("main/search-results", {
+          users,
+          events,
+          query,
+          artistsInfoShort,
+          artistsInfoLong,
+          songsInfoShort,
+          songsInfoLong,
+          concertsInfoShort,
+          concertsInfoLong,
+        });
       });
-
-
-    console.log("SCOOOOOOOPE", concertsInfoLong);
-    res.render("main/search-results", {
-      users,
-      events,
-      query,
-      artistsInfoShort,
-      artistsInfoLong,
-      songsInfoShort,
-      songsInfoLong,
-      concertsInfoShort,
-      concertsInfoLong,
-    });
   } catch (error) {
     next(error);
   }

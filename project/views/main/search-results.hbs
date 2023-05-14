@@ -54,6 +54,11 @@
   {{/each}}
 
 </ul>
+
+{{#if concertsInfoLong}}
+  <button id="show-all-concerts">Mostrar todos los conciertos</button>
+{{/if}}
+
 <script>
   //artists
   const shortArtistsList = document.querySelectorAll('#artists-list li'); 
@@ -78,5 +83,17 @@
   showAllSongsButton.addEventListener('click', () => {
     document.querySelector('#songs-list').innerHTML = longSongsList;
     showAllSongsButton.style.display = 'none';
+  });
+
+  //concerts
+  const shortConcertsList = document.querySelectorAll('#concerts-list li'); 
+  const longConcertsList = `
+    {{#each concertsInfoLong}}
+      <li><a href="/concert/{{this.id}}"><p>{{this.name}} en {{this.city}} - {{this.date}}</p></a></li>
+    {{/each}}`; 
+  const showAllConcertsButton = document.querySelector('#show-all-concerts');
+  showAllConcertsButton.addEventListener('click', () => {
+    document.querySelector('#concerts-list').innerHTML = longConcertsList;
+    showAllConcertsButton.style.display = 'none';
   });
 </script>
