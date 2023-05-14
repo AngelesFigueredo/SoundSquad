@@ -1,10 +1,11 @@
 {{#with playlist}}
-
-<h2>{{this.title}}</h2>
-<h3>{{this.author.username}}</h3>
-
-{{#each songs}}
-<p>{{this}}</p>
-{{/each}}
-
+  <h2>{{this.title}}</h2>
+  <h3>{{this.author.username}}</h3>
 {{/with}}
+{{#each songs}}
+  <div>
+    <h4>{{this.name}}</h4>
+    <p>{{this.album.name}}</p>
+    <audio src="{{this.preview_url}}" controls></audio>
+  </div>
+{{/each}}

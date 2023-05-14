@@ -266,8 +266,14 @@ router.get("/search", async (req, res, next) => {
 });
 
 router.get("/playlist/:id", async (req, res, next) => {
-  const playlist = await Playlist.findById(req.params.id).populate("author");
-  res.render("main/playlist-details", { playlist });
+  try {
+    const playlist = await Playlist.findById(req.params.id).populate("author");
+    const tracks = await spotifyApi.getTracks(playlist.songs);
+    const songs = tracks.body.tracks;
+    res.render("main/playlist-details", { playlist, songs });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.post("/new-playlist", async (req, res, next) => {
@@ -280,7 +286,9 @@ router.post("/new-playlist", async (req, res, next) => {
 router.post("/:id/addtoplaylist", async (req, res, next) => {
   try {
     const { playlists } = req.body;
-    await Playlist.findByIdAndUpdate(playlists, { songs: req.params.id });
+    await Playlist.findByIdAndUpdate(playlists, {
+      $push: { songs: req.params.id },
+    });
     res.redirect("/my-playlists");
   } catch (error) {
     console.log(error);
