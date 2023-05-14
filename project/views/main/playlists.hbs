@@ -1,3 +1,11 @@
+<a href="/new-playlist">Crear nueva playlist</a>
+
+{{#unless playlists}}
+<p>No tienes ninguna playlist todavía, crea la primera!</p>
+{{/unless}}
+
+
 {{#each playlists}}
 {{>playlistPartial this}}
 {{/each}}
+

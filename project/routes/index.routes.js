@@ -55,7 +55,8 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/my-profile", isLoggedIn, async (req, res, next) => {
+router.get("/my-profile", async (req, res, next) => {
+  const myProfile = true;
   try {
     try {
       const user = await User.findById(req.session.currentUser._id);
@@ -66,11 +67,14 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
           populate: { path: "author", model: "User" },
         })
         .sort({ createdAt: -1 });
+
+      console.log("miperfilvamoooooos", myProfile);
+
       res.render("main/profile", {
         posts,
         user,
         session: req.session,
-        myProfile: true,
+        myProfile,
       });
     } catch {
       res.redirect("/login");
@@ -81,6 +85,7 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
 });
 
 router.get("/profile/:id", async (req, res, next) => {
+  const myProfile = false;
   try {
     const { id } = req.params;
     const user = await User.findById(req.params.id);
@@ -88,25 +93,32 @@ router.get("/profile/:id", async (req, res, next) => {
     const myUser = await User.findById(req.session.currentUser._id);
 
     if (currentUser._id === id) {
-      res.redirect("/my-profile");
+      console.log("tevasa tu perfil", myProfile);
+      return res.redirect("/my-profile");
     }
 
     if (myUser.friends.includes(user._id)) {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "true",
       });
     } else if (myUser.sentFriendRequests.includes(user._id)) {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "pendingOut",
       });
     } else if (myUser.friendRequests.includes(user._id)) {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "pendingIn",
       });
       // } else if (myUser.pendingFriendRequests.includes(user._id)) {
@@ -116,9 +128,11 @@ router.get("/profile/:id", async (req, res, next) => {
       //     friendship: "pending",
       //   });
     } else {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "false",
       });
     }
@@ -189,6 +203,10 @@ router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
   res.render("main/playlists", { playlists });
 });
 
+router.get("/my-playlists", async (req, res, next) => {
+  res.render("main/playlists");
+});
+
 router.get("/new-message", async (req, res, next) => {
   const users = await User.find().populate("username");
   res.render("main/new-message", { users });
@@ -224,7 +242,9 @@ router.get("/search", async (req, res, next) => {
     const events = await Event.find({ name: regex });
 
     const artists = await spotifyApi.searchArtists(query);
-    const artistsInfo = artists.map((e)=>{console.log("git ")})
+    const artistsInfo = artists.map((e) => {
+      console.log("git ");
+    });
     console.log(songs.body.artists.items);
 
     res.render("main/search-results", { users, events, query });
