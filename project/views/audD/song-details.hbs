@@ -15,11 +15,11 @@
 
     <form action="/{{spotify.id}}/addtoplaylist" method="POST">
     <select name="playlists" id="playlists">
-        {{#with user}}
-        {{#each this.playlists}}
-        <option value="{{songDetails.spotify.id}}">{{this.playlists.title}}</option>
+        
+        {{#each ../user.playlists}}
+        <option value="{{this._id}}">{{this.title}}</option>
         {{/each}}
-        {{/with}}
+
         <option>Create new playlist</option>
     </select>
     <button type="submit">Añadir canción</button>

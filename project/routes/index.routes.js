@@ -142,6 +142,12 @@ router.get("/profile/:id", async (req, res, next) => {
   }
 });
 
+router.get("/new-playlist", async (req, res, next) => {
+  const { currentUser } = req.session;
+  const user = await User.findById(currentUser._id);
+  res.render("main/new-playlist", { user });
+});
+
 router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
@@ -204,7 +210,13 @@ router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
 });
 
 router.get("/my-playlists", async (req, res, next) => {
-  res.render("main/playlists");
+  const { currentUser } = req.session;
+  const myUser = await User.findById(currentUser._id).populate({
+    path: "playlists",
+    select: "title description",
+  });
+  const playlists = myUser.playlists;
+  res.render("main/playlists", { playlists });
 });
 
 router.get("/new-message", async (req, res, next) => {
@@ -250,6 +262,28 @@ router.get("/search", async (req, res, next) => {
     res.render("main/search-results", { users, events, query });
   } catch (error) {
     next(error);
+  }
+});
+
+router.get("/playlist/:id", async (req, res, next) => {
+  const playlist = await Playlist.findById(req.params.id).populate("author");
+  res.render("main/playlist-details", { playlist });
+});
+
+router.post("/new-playlist", async (req, res, next) => {
+  const { body } = req;
+  const playlist = await Playlist.create(body);
+  await User.findByIdAndUpdate(body.author, { playlists: playlist._id });
+  res.redirect("/my-playlists");
+});
+
+router.post("/:id/addtoplaylist", async (req, res, next) => {
+  try {
+    const { playlists } = req.body;
+    await Playlist.findByIdAndUpdate(playlists, { songs: req.params.id });
+    res.redirect("/my-playlists");
+  } catch (error) {
+    console.log(error);
   }
 });
 
