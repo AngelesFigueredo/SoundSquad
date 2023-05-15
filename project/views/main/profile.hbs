@@ -27,7 +27,7 @@
 
 {{else}}
   <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
-  <a href="/{{this._id}}/playlists">Ver playlists de {{this.username}}</a></li>
+  <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
   <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
   <br>
   {{#if (ifEquals ../friendship "false")}}

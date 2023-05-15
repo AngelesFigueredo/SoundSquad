@@ -249,18 +249,102 @@ router.get("/search", async (req, res, next) => {
     const { query } = req.query;
 
     // Use a regular expression to match users whose usernames contain the search term or a similar term
+
+    //Similar items
     const regex = new RegExp(query, "i");
+
+    //Users
     const users = await User.find({ username: regex });
 
+    //Events
     const events = await Event.find({ name: regex });
 
+    //Artists
     const artists = await spotifyApi.searchArtists(query);
-    const artistsInfo = artists.map((e) => {
-      console.log("git ");
-    });
-    console.log(songs.body.artists.items);
+    const sortedArtists = artists.body.artists.items.sort(
+      (a, b) => b.followers - a.followers
+    );
+    const artistsInfoShort = sortedArtists.slice(0, 5).map((artist) => ({
+      name: artist.name,
+      id: artist.id,
+      uri: artist.uri,
+    }));
 
-    res.render("main/search-results", { users, events, query });
+    const artistsInfoLong = sortedArtists.map((artist) => ({
+      name: artist.name,
+      id: artist.id,
+    }));
+
+    //Songs
+    const songs = await spotifyApi.searchTracks(query);
+    const sortedSongs = songs.body.tracks.items.sort(
+      (a, b) => b.popularity - a.popularity
+    );
+    const songsInfoShort = sortedSongs.slice(0, 5).map((song) => {
+      let artists = song.artists[0].name;
+      if (song.artists[1]) {
+        artists += ` y ${song.artists[1].name}`;
+      }
+      return {
+        name: song.name,
+        artists: artists,
+        id: song.id,
+      };
+    });
+
+    const songsInfoLong = sortedSongs.map((song) => {
+      let artists = song.artists[0].name;
+      if (song.artists[1]) {
+        artists += ` y ${song.artists[1].name}`;
+      }
+      return {
+        name: song.name,
+        artists: artists,
+        id: song.id,
+      };
+    });
+
+    //events
+    const tmApiKey = process.env.TICKET_CONSUMER_KEY;
+    let concertsInfoShort = undefined;
+    let concertsInfoLong = undefined;
+
+    axios
+      .get(
+        `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${tmApiKey}&keyword=${query}`
+      )
+      .then((response) => {
+        if (response.data && response.data._embedded) {
+          let concerts = response.data._embedded.events;
+          // console.log("HOLIIIIIIIIss", concerts[0]);
+
+          concertsInfoShort = concerts.slice(0, 5).map((concert) => ({
+            name: concert.name,
+            city: concert._embedded.venues[0].city.name,
+            date: concert.dates.start.localDate,
+            id: concert.id,
+          }));
+
+          concertsInfoLong = concerts.map((concert) => ({
+            name: concert.name,
+            city: concert._embedded.venues[0].city.name,
+            date: concert.dates.start.localDate,
+            id: concert.id,
+          }));
+        }
+
+        res.render("main/search-results", {
+          users,
+          events,
+          query,
+          artistsInfoShort,
+          artistsInfoLong,
+          songsInfoShort,
+          songsInfoLong,
+          concertsInfoShort,
+          concertsInfoLong,
+        });
+      });
   } catch (error) {
     next(error);
   }
