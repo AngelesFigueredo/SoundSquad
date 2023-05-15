@@ -57,14 +57,26 @@ router.get("/playlists-list/:id", async (req, res, next) => {
 });
 
 router.get("/my-playlists", async (req, res, next) => {
-  const { currentUser } = req.session;
-  const myUser = await User.findById(currentUser._id).populate({
-    path: "playlists",
-    select: "title description",
-  });
-  const playlists = myUser.playlists;
-  console.log(myUser);
-  res.render("main/playlists", { playlists });
+  try {
+    const { currentUser } = req.session;
+    const user = await User.findById(currentUser._id);
+    const id = user._id;
+    const ownedPlaylists = await Playlist.find({ author: currentUser._id });
+    const followedPlaylists = await Playlist.find({
+      followers: { $in: currentUser._id },
+    });
+    console.log("------------------------------", myPlaylists);
+    res.render("main/playlists", {
+      ownedPlaylists,
+      followedPlaylists,
+      currentUser,
+      user,
+      id,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 });
 
 router.get("/playlist-details/:id", async (req, res, next) => {
@@ -103,7 +115,12 @@ router.post("/follow-playlist/:id", async (req, res, next) => {
     const { currentUser } = req.session;
     const { id } = req.params;
 
-    await User.findByIdAndUpdate(currentUser._id, { $push: { playlists: id } });
+    await User.findByIdAndUpdate(currentUser._id, {
+      $addToSet: { playlists: id },
+    });
+    await Playlist.findByIdAndUpdate(id, {
+      $addToSet: { followers: currentUser._id },
+    });
     res.redirect("my-playlists");
   } catch (error) {
     console.log(error);

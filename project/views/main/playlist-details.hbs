@@ -3,7 +3,7 @@
   <h3>{{this.author.username}}</h3>
 
   {{#if (ne ../currentUser._id this.author._id)}}
-    {{#if ../currentUser.playlists.includes this._id}}
+    {{#if (../currentUser.playlists.includes this._id)}}
       <form action="/unfollow-playlist/{{this._id}}" method="POST">
         <button type="submit">Dejar de seguir playlist</button>
       </form>
