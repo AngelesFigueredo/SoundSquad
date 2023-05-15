@@ -236,6 +236,7 @@ router.get("/search", async (req, res, next) => {
     const artistsInfoShort = sortedArtists.slice(0, 5).map((artist) => ({
       name: artist.name,
       id: artist.id,
+      uri: artist.uri,
     }));
 
     const artistsInfoLong = sortedArtists.map((artist) => ({
@@ -315,6 +316,24 @@ router.get("/search", async (req, res, next) => {
       });
   } catch (error) {
     next(error);
+  }
+});
+
+router.get("/artist/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    axios
+      .get(`https://api.spotify.com/v1/artists/${id}`, {
+        headers: {
+          Authorization: "Bearer <1e0d736bc67b4da0a633e8a387a13e84>",
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        res.redirect("/");
+      });
+  } catch (error) {
+    console.log(error);
   }
 });
 

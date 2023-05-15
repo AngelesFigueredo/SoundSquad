@@ -50,7 +50,11 @@
 <h2>Conciertos:</h2>
 <ul id="concerts-list">
   {{#each concertsInfoShort}}
-    <li><a href="/concert/{{this.id}}"><p>{{this.name}} en {{this.city}} - {{this.date}}</p></a></li>
+    <li><a href="/concert/{{this.id}}"><p>{{this.name}}
+          en
+          {{this.city}}
+          -
+          {{this.date}}</p></a></li>
   {{/each}}
 
 </ul>
@@ -60,40 +64,35 @@
 {{/if}}
 
 <script>
-  //artists
-  const shortArtistsList = document.querySelectorAll('#artists-list li'); 
-  const longArtistsList = `
-    {{#each artistsInfoLong}}
-      <li><a href="/artist/{{this.id}}">{{this.name}}</a></li>
-    {{/each}}`;
-  const showAllArtistsButton = document.querySelector('#show-all-artists');
+  //artists const shortArtistsList = document.querySelectorAll('#artists-list
+  li'); const longArtistsList = `
+  {{#each artistsInfoLong}}
+    <li><a href="/artist/{{this.id}}">{{this.name}}</a></li>
+  {{/each}}`; const showAllArtistsButton =
+  document.querySelector('#show-all-artists');
   showAllArtistsButton.addEventListener('click', () => {
-    document.querySelector('#artists-list').innerHTML = longArtistsList;
-    showAllArtistsButton.style.display = 'none';
-  });
-
-  //songs
-  const shortSongsList = document.querySelectorAll('#songs-list li'); 
-  const longSongsList = `
-    {{#each songsInfoLong}}
-      <li><a href="/song/{{this.id}}"><p>{{this.name}}, by
-      {{this.artists}}</p></a></li>
-    {{/each}}`; 
-  const showAllSongsButton = document.querySelector('#show-all-songs');
+  document.querySelector('#artists-list').innerHTML = longArtistsList;
+  showAllArtistsButton.style.display = 'none'; }); //songs const shortSongsList
+  = document.querySelectorAll('#songs-list li'); const longSongsList = `
+  {{#each songsInfoLong}}
+    <li><a href="/song/{{this.id}}"><p>{{this.name}}, by
+    {{this.artists}}</p></a></li>
+  {{/each}}`; const showAllSongsButton =
+  document.querySelector('#show-all-songs');
   showAllSongsButton.addEventListener('click', () => {
-    document.querySelector('#songs-list').innerHTML = longSongsList;
-    showAllSongsButton.style.display = 'none';
-  });
-
-  //concerts
-  const shortConcertsList = document.querySelectorAll('#concerts-list li'); 
-  const longConcertsList = `
-    {{#each concertsInfoLong}}
-      <li><a href="/concert/{{this.id}}"><p>{{this.name}} en {{this.city}} - {{this.date}}</p></a></li>
-    {{/each}}`; 
-  const showAllConcertsButton = document.querySelector('#show-all-concerts');
+  document.querySelector('#songs-list').innerHTML = longSongsList;
+  showAllSongsButton.style.display = 'none'; }); //concerts const
+  shortConcertsList = document.querySelectorAll('#concerts-list li'); const
+  longConcertsList = `
+  {{#each concertsInfoLong}}
+    <li><a href="/concert/{{this.id}}"><p>{{this.name}}
+    en
+    {{this.city}}
+    -
+    {{this.date}}</p></a></li>
+  {{/each}}`; const showAllConcertsButton =
+  document.querySelector('#show-all-concerts');
   showAllConcertsButton.addEventListener('click', () => {
-    document.querySelector('#concerts-list').innerHTML = longConcertsList;
-    showAllConcertsButton.style.display = 'none';
-  });
+  document.querySelector('#concerts-list').innerHTML = longConcertsList;
+  showAllConcertsButton.style.display = 'none'; });
 </script>
