@@ -1,26 +1,75 @@
-
 {{#if event}}
-
-     {{#each event.messages}}
-        <div class="card" style="width: 100%;">
-            <div class="card-body">
-                <h5 class="card-title">
-                    {{#if isYou}}
-                        You
-                    {{else}}
-                        {{author.username}}
-                    {{/if}}
-                </h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{createdAt}}</h6>
-                <p class="card-text">{{content}}</p>
-            </div>
+<div id="event-messages">
+    {{#each event.messages}}
+    <div class="card" style="width: 100%;">
+        <div class="card-body">
+            {{!-- <h5 class="card-title">
+                {{#if isYou}}
+                You
+                {{else}}
+                {{author.username}}
+                {{/if}}
+            </h5> --}}
+            <h6 class="card-subtitle mb-2 text-muted">{{createdAt}}</h6>
+            <p class="card-text">{{content}}</p>
         </div>
+    </div>
     {{/each}}
+</div>
+<form id="message-form" method="post">
+    <input type="text" id="message-content" name="content">
+    <input type="text" id="message-author" name="author" value="{{session.currentUser._id}}" hidden>
+    <input type="text" id="message-event" name="to" value="{{event._id}}" hidden>
+    <button type="submit">Enviar</button>
+</form>
 
-    <form action="/send-event-message/{{event._id}}" method="POST">
-        <input type="text" name="content">
-        <input type="text" name="author" value="{{session.currentUser._id}}" hidden>
-        <input type="text" name="to" value="{{event._id}}" hidden>
-        <button type="submit">Enviar</button>
-    </form>
 {{/if}}
+<script src="http://localhost:4000/socket.io/socket.io.js"></script>
+
+
+
+<script>
+    
+    const socket = io('http://localhost:4000', { transports: ['websocket', 'polling', 'flashsocket']});
+
+        socket.on("connect", () => {
+            console.log("Connected to server");
+        });
+
+        socket.on("disconnect", () => {
+            console.log("Disconnected from server");
+            socket.connect()
+        });
+
+        // listen for new message events
+        socket.on("new message", (message) => {
+            const messageDiv = document.createElement("div");
+            //messageDiv.innerHTML = `
+            //    <div class="card" style="width: 100%;">
+            //    <div class="card-body">
+            //        <h5 class="card-title">
+            //        ${message.author._id == "{{session.currentUser._id}}" ? "You" : message.author}
+            //        </h5>
+            //        <h6 class="card-subtitle mb-2 text-muted">${message.createdAt}</h6>
+            //        <p class="card-text">${message.content}</p>
+            //    </div>
+            //    </div>
+            //`;
+            messageDiv.innerHTML = `
+                <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">${message.createdAt}</h6>
+                    <p class="card-text">${message.content}</p>
+                </div>
+                </div>
+            `;
+            document.getElementById("event-messages").appendChild(messageDiv);
+        });
+
+        // send message to server
+        const sendMessage = () => {
+            const content = document.getElementById("input-message").value;
+            socket.emit("create message", { content });
+        };
+
+</script>

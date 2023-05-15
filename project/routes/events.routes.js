@@ -1,9 +1,67 @@
-const express = require("express");
-const router = express.Router();
-const Event = require("../models/Events.model")
 const {
   isEventMember
 } = require("../middlewares/event-guard");
+
+const express = require("express");
+const router = express.Router();
+const Event = require("../models/Events.model")
+const Message = require("../models/Message.model")
+const app = require('express')();
+const http = require('http').Server(app);
+const cors = require('cors');
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});;
+
+
+router.use(cors());
+
+
+router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, next) => {
+  const eventId = req.params.eventId
+  const event = await Event.findById(eventId)
+    .populate("joinRequests")
+    .populate({
+      path: "messages",
+      select: ["content", "author", "createdAt"],
+      populate: {
+        path: "author",
+        select: ["username", "_id"],
+      },
+      options: {
+        sort: { createdAt: 1 },
+      },
+    })
+  event.messages.forEach((message) => {
+    message.isYou = message.author._id == req.session.currentUser._id
+  })
+  const isAdmin = event.admin.includes(req.session.currentUser._id)
+  let notifications
+  let joinRequests
+  if (isAdmin) {
+    notifications = event.joinRequests.length
+  }
+  if (notifications) {
+    joinRequests = event.joinRequests
+    // console.log("esto tendría que ser sole el join request", joinRequests
+  }
+
+  res.render("events/event-details",
+    { session: req.session, event, isAdmin, notifications, joinRequests });
+});
+
+router.post("/event-details/:eventId",  cors(), async (req, res, next) => {
+    const eventId = req.params.eventId;
+    const message = await Message.create(req.body);
+
+    await Event.findByIdAndUpdate(eventId, { $push: { messages: message } });
+    io.emit("new message", message); // emit a new message event
+    res.redirect(`/event-details/${eventId}`);
+});
+
 
 router.get("/events/:concertId", async(req, res, next) => {
     const concertId = req.params.concertId
@@ -52,43 +110,6 @@ router.post("/send-join-request/:eventId", async(req, res, next)=>{
     res.redirect(`/join/${req.params.eventId}`)
 })
 
-
-// single event main page
-router.get("/event-details/:eventId", isEventMember, async(req, res, next) => {
-    const eventId = req.params.eventId
-    const event = await Event.findById(eventId)
-        .populate("joinRequests")
-        .populate({
-            path: "messages",
-            select: ["content", "author", "createdAt"],
-            populate: {
-                path: "author",
-                select: ["username", 
-                "_id"],
-            },
-            options: {
-                sort: { createdAt: 1 }, 
-            },
-        })
-    const mess = event.messages.length
-    event.messages.forEach((message)=>{
-       message.isYou = message.author._id == req.session.currentUser._id
-    })
-
-    const isAdmin = event.admin.includes(req.session.currentUser._id) 
-    let notifications
-    let joinRequests
-    if(isAdmin){ 
-        notifications = event.joinRequests.length
-    }
-    if(notifications){
-        joinRequests = event.joinRequests
-        // console.log("esto tendría que ser sole el join request", joinRequests
-    }
-    
-    res.render("events/event-details", 
-    { session: req.session, event, isAdmin, notifications, joinRequests});
-});
 // event's data
 router.get("/show-event/:eventId",isEventMember, async(req, res, next) => {
     const eventId = req.params.eventId
@@ -110,7 +131,6 @@ router.post("/leave-event/:eventId",isEventMember, async(req, res, next) => {
     await Event.findByIdAndUpdate(eventId,  { $pull: { members: userId } })
     //In case the event is left empty
     const event = await Event.findById(eventId)
-    console.log("se supone que esto nos esta sacando del evento", event)
     if(event.members.length == 0){
         res.redirect(`/delete-event/${eventId}`)
     }else{
@@ -175,6 +195,11 @@ router.post("/accept-request", async(req, res, next) => {
     await Event.findByIdAndUpdate(eventId, {$push: { members: askerId}})
     res.redirect(`/event-details/${eventId}`)
 })
+
+http.listen(4000, () => {
+  console.log("socket.io listening on *:4000");
+});
+
 
 
 module.exports = router;
