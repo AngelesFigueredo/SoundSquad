@@ -1,34 +1,40 @@
-{{#ifEquals user._id id}}
+{{#ifIsTheSame currentUser._id id}}
 <a href="/new-playlist">Crear nueva playlist</a>
 
-{{#unless playlists}}
+{{#unless ownedPlaylists}}
 <p>No tienes ninguna playlist todavía, crea la primera!</p>
 {{/unless}}
-{{/ifEquals}}
 
-{{#if currentUserPlaylists}}
+
+{{#if ownedPlaylists}}
 <h2>Tus playlists:</h2>
-{{#each currentUserPlaylists}}
+{{#each ownedPlaylists}}
 <a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
 {{/each}}
 {{/if}}
 
-{{#if otherUserPlaylists}}
+{{#if followedPlaylists}}
 <h2>Playlists de otros usuarios:</h2>
-{{#each otherUserPlaylists}}
+{{#each followedPlaylists}}
 <a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
 {{/each}}
 {{/if}}
 
-<script>
-const currentUserPlaylists = [];
-const otherUserPlaylists = [];
-
-{{#each playlists}}
-  {{#ifEquals ../user._id author._id}}
-    currentUserPlaylists.push(this);
-  {{else}}
-    otherUserPlaylists.push(this);
-  {{/ifEquals}}
+{{else}}
+{{#if ownedPlaylists}}
+<h2>Playlists de {{user.username}}:</h2>
+{{#each ownedPlaylists}}
+<a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
 {{/each}}
-</script>
+{{/if}}
+
+{{#if followedPlaylists}}
+<h2>Playlists seguidas por {{user.username}}:</h2>
+{{#each followedPlaylists}}
+<a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
+{{/each}}
+{{/if}}
+
+{{/ifIsTheSame}}
+
+

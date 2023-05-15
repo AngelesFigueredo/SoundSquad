@@ -3,7 +3,15 @@
   <h3>{{this.author.username}}</h3>
 
   {{#if (ne ../currentUser._id this.author._id)}}
-  <a href="/follow-playlist/{{this._id}}">Seguir playlist</a>
+    {{#if ../currentUser.playlists.includes this._id}}
+      <form action="/unfollow-playlist/{{this._id}}" method="POST">
+        <button type="submit">Dejar de seguir playlist</button>
+      </form>
+    {{else}}
+      <form action="/follow-playlist/{{this._id}}" method="POST">
+        <button type="submit">Seguir playlist</button>
+      </form>
+    {{/if}}
   {{/if}}
 {{/with}}
 {{#each songs}}

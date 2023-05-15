@@ -37,9 +37,19 @@ router.get("/playlists-list/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const { currentUser } = req.session;
-    const playlists = await Playlist.find({ followers: { $in: [currentUser._id] } });
-    console.log("------------------", currentUser);
-    res.render("main/playlists", { playlists, currentUser, id });
+    const user = await User.findById(id);
+    const ownedPlaylists = await Playlist.find({ author: id });
+    const followedPlaylists = await Playlist.find({
+      followers: { $in: id },
+    });
+    console.log("------------------", id);
+    res.render("main/playlists", {
+      ownedPlaylists,
+      followedPlaylists,
+      currentUser,
+      user,
+      id,
+    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -89,10 +99,27 @@ router.post("/:id/addtoplaylist", async (req, res, next) => {
 });
 
 router.post("/follow-playlist/:id", async (req, res, next) => {
-  const { currentUser } = req.session;
-  const { id } = req.params;
+  try {
+    const { currentUser } = req.session;
+    const { id } = req.params;
 
-  await User.findByIdAndUpdate(currentUser._id, { $push: { playlists: id } });
+    await User.findByIdAndUpdate(currentUser._id, { $push: { playlists: id } });
+    res.redirect("my-playlists");
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+router.post("/unfollow-playlist/:id", async (req, res, next) => {
+  try {
+    const { currentUser } = req.session;
+    const { id } = req.params;
+
+    await User.findByIdAndUpdate(currentUser._id, { $pull: { playlists: id } });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;
