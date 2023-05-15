@@ -1,6 +1,10 @@
 {{#with playlist}}
   <h2>{{this.title}}</h2>
   <h3>{{this.author.username}}</h3>
+
+  {{#if (ne ../currentUser._id this.author._id)}}
+  <a href="/follow-playlist/{{this._id}}">Seguir playlist</a>
+  {{/if}}
 {{/with}}
 {{#each songs}}
   <div>

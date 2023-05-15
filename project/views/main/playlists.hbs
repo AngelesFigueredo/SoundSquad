@@ -4,8 +4,29 @@
 <p>No tienes ninguna playlist todavía, crea la primera!</p>
 {{/unless}}
 
-
-{{#each playlists}}
+{{#if currentUserPlaylists}}
+<h2>Tus playlists:</h2>
+{{#each currentUserPlaylists}}
 <a href="/playlist/{{this._id}}">{{>playlistPartial this}}</a>
 {{/each}}
+{{/if}}
 
+{{#if otherUserPlaylists}}
+<h2>Playlists de otros usuarios:</h2>
+{{#each otherUserPlaylists}}
+<a href="/playlist/{{this._id}}">{{>playlistPartial this}}</a>
+{{/each}}
+{{/if}}
+
+<script>
+const currentUserPlaylists = [];
+const otherUserPlaylists = [];
+
+{{#each playlists}}
+  {{#ifEquals ../user._id author._id}}
+    currentUserPlaylists.push(this);
+  {{else}}
+    otherUserPlaylists.push(this);
+  {{/ifEquals}}
+{{/each}}
+</script>
