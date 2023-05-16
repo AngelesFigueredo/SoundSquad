@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const SpotifyWebApi = require("spotify-web-api-node");
+let spotifyAccessToken;
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -10,7 +11,11 @@ const spotifyApi = new SpotifyWebApi({
 
 spotifyApi
   .clientCredentialsGrant()
-  .then((data) => spotifyApi.setAccessToken(data.body["access_token"]))
+  .then((data) => {
+    spotifyApi.setAccessToken(data.body["access_token"]);
+    spotifyAccessToken = data.body["access_token"];
+    console.log("SPOTIFY ACCESS TOKEN", spotifyAccessToken);
+  })
   .catch((error) =>
     console.log("Something went wrong when retrieving an access token", error)
   );
@@ -66,7 +71,7 @@ router.get("/my-profile", async (req, res, next) => {
           populate: { path: "author", model: "User" },
         })
         .sort({ createdAt: -1 });
-        console.log(posts)
+      console.log(posts);
       res.render("main/profile", {
         posts,
         user,
@@ -328,10 +333,16 @@ router.get("/artist/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
-    axios.get(urlSearch).then((response) => {
-      console.log(response);
-    });
-    res.render("main/artist-details");
+    axios
+      .get(urlSearch, {
+        headers: {
+          Authorization: `Bearer ${spotifyAccessToken}`,
+        },
+      })
+      .then((response) => {
+        artist = response.data
+        res.render("main/artist-details", { artist });
+      });
   } catch (error) {
     console.log(error);
   }
@@ -390,11 +401,14 @@ router.get("/concert/:id", async (req, res, next) => {
 router.get("/song/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const urlSearch = `https://api.spotify.com/vi/tracks/${id}`;
-    axios.get(urlSearch).then((response) => {
-      console.log(response);
+    const urlSearch = `https://api.spotify.com/v1/tracks/${id}`;
+    const response = await axios.get(urlSearch, {
+      headers: {
+        Authorization: `Bearer ${spotifyAccessToken}`,
+      },
     });
-    res.render("main/song-details");
+    const song = response.data
+    res.render("main/track-details", { song });
   } catch (error) {
     console.log(error);
   }

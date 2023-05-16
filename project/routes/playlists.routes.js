@@ -10,7 +10,9 @@ const spotifyApi = new SpotifyWebApi({
 
 spotifyApi
   .clientCredentialsGrant()
-  .then((data) => spotifyApi.setAccessToken(data.body["access_token"]))
+  .then((data) => {
+    spotifyApi.setAccessToken(data.body["access_token"]);
+  })
   .catch((error) =>
     console.log("Something went wrong when retrieving an access token", error)
   );
@@ -150,7 +152,7 @@ router.post("/unfollow-playlist/:id", async (req, res, next) => {
     await Playlist.findByIdAndUpdate(id, {
       $pull: { followers: currentUser._id },
     });
-    res.redirect(`/playlist-details/${id}`)
+    res.redirect(`/playlist-details/${id}`);
   } catch (error) {
     console.log(error);
   }

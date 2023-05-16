@@ -15,7 +15,7 @@ const {
 } = require("../middlewares/route-guard");
 
 // Signup
-router.get("/sign-up", isLoggedOut, (req, res, next) =>
+router.get("/sign-up", (req, res, next) =>
   res.render("auth/signup-form")
 );
 
