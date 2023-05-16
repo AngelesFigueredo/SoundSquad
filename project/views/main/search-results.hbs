@@ -23,3 +23,76 @@
 {{else}}
   <p>No se han encontrado eventos.</p>
 {{/if}}
+
+<h2>Artistas:</h2>
+<ul id="artists-list">
+  {{#each artistsInfoShort}}
+    <li><a href="/artist/{{this.id}}">{{this.name}}</a></li>
+  {{/each}}
+</ul>
+
+{{#if artistsInfoLong}}
+  <button id="show-all-artists">Mostrar todos los artistas</button>
+{{/if}}
+
+<h2>Canciones:</h2>
+<ul id="songs-list">
+  {{#each songsInfoShort}}
+    <li><a href="/song/{{this.id}}"><p>{{this.name}}, by
+          {{this.artists}}</p></a></li>
+  {{/each}}
+</ul>
+
+{{#if songsInfoLong}}
+  <button id="show-all-songs">Mostrar todas las canciones</button>
+{{/if}}
+
+<h2>Conciertos:</h2>
+<ul id="concerts-list">
+  {{#each concertsInfoShort}}
+    <li><a href="/concert/{{this.id}}"><p>{{this.name}}
+          en
+          {{this.city}}
+          -
+          {{this.date}}</p></a></li>
+  {{/each}}
+
+</ul>
+
+{{#if concertsInfoLong}}
+  <button id="show-all-concerts">Mostrar todos los conciertos</button>
+{{/if}}
+
+<script>
+  //artists const shortArtistsList = document.querySelectorAll('#artists-list
+  li'); const longArtistsList = `
+  {{#each artistsInfoLong}}
+    <li><a href="/artist/{{this.id}}">{{this.name}}</a></li>
+  {{/each}}`; const showAllArtistsButton =
+  document.querySelector('#show-all-artists');
+  showAllArtistsButton.addEventListener('click', () => {
+  document.querySelector('#artists-list').innerHTML = longArtistsList;
+  showAllArtistsButton.style.display = 'none'; }); //songs const shortSongsList
+  = document.querySelectorAll('#songs-list li'); const longSongsList = `
+  {{#each songsInfoLong}}
+    <li><a href="/song/{{this.id}}"><p>{{this.name}}, by
+    {{this.artists}}</p></a></li>
+  {{/each}}`; const showAllSongsButton =
+  document.querySelector('#show-all-songs');
+  showAllSongsButton.addEventListener('click', () => {
+  document.querySelector('#songs-list').innerHTML = longSongsList;
+  showAllSongsButton.style.display = 'none'; }); //concerts const
+  shortConcertsList = document.querySelectorAll('#concerts-list li'); const
+  longConcertsList = `
+  {{#each concertsInfoLong}}
+    <li><a href="/concert/{{this.id}}"><p>{{this.name}}
+    en
+    {{this.city}}
+    -
+    {{this.date}}</p></a></li>
+  {{/each}}`; const showAllConcertsButton =
+  document.querySelector('#show-all-concerts');
+  showAllConcertsButton.addEventListener('click', () => {
+  document.querySelector('#concerts-list').innerHTML = longConcertsList;
+  showAllConcertsButton.style.display = 'none'; });
+</script>

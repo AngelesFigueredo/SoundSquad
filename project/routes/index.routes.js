@@ -284,8 +284,8 @@ router.get("/search", async (req, res, next) => {
 
     //events
     const tmApiKey = process.env.TICKET_CONSUMER_KEY;
-    let concertsInfoShort = undefined;
-    let concertsInfoLong = undefined;
+    // let concertsInfoShort = undefined;
+    // let concertsInfoLong = undefined;
 
     axios
       .get(
@@ -302,6 +302,7 @@ router.get("/search", async (req, res, next) => {
             date: concert.dates.start.localDate,
             id: concert.id,
           }));
+
 
           concertsInfoLong = concerts.map((concert) => ({
             name: concert.name,
@@ -329,8 +330,20 @@ router.get("/search", async (req, res, next) => {
 });
 
 
+router.get("/artist/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const urlSearch = `https://api.spotify.com/v1/tracks/${id}`;
+    axios.get(urlSearch).then((response) => {
+      console.log(response);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-router.post("/edit/:id", async (req, res, next) => {
+router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
+
   const { body } = req;
   const { id } = req.params;
   try {
