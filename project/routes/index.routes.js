@@ -66,9 +66,7 @@ router.get("/my-profile", async (req, res, next) => {
           populate: { path: "author", model: "User" },
         })
         .sort({ createdAt: -1 });
-
-      console.log("miperfilvamoooooos", myProfile);
-
+        console.log(posts)
       res.render("main/profile", {
         posts,
         user,
