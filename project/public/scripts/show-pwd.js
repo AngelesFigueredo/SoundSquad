@@ -7,7 +7,7 @@ togglePassword.addEventListener("click", () => {
     passwordInput.type = "text";
     togglePassword.textContent = "Hide";
   } else {
-    passwordInput.type === "text";
+    passwordInput.type = "password";
     togglePassword.textContent = "Show";
   }
 });
@@ -16,7 +16,7 @@ togglePassword2.addEventListener("click", () => {
     passwordCheck.type = "text";
     togglePassword2.textContent = "Hide";
   } else {
-    passwordCheck.type === "text";
+    passwordCheck.type = "password";
     togglePassword2.textContent = "Show";
   }
 });

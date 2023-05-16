@@ -1,4 +1,3 @@
-const passwordInput = document.querySelector("#pwdInput");
 const confirmPasswordInput = document.querySelector("#pwdInput2");
 const uppercaseRequirement = document.querySelector(".uppercase");
 const lengthRequirement = document.querySelector(".pwd-length");

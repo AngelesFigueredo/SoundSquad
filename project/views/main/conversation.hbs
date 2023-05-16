@@ -1,40 +1,28 @@
 {{#with conversation}}
-    {{#each users}}
-        {{#if (ne this.username ../../currentUser.username)}}
-            <p>Chat con {{this.username}} 💭</p>
-        {{/if}}
-    {{/each}}
+  <p>Chat con {{../otherUser.username}} 💭</p>
 
-    {{#each messages}}
-        <p>{{this.author.username}} {{this.createdAt}}:</p>
-        <p>{{this.content}}</p>
-        <br>
-    {{/each}}
+  {{#each messages}}
+    {{#if (isNewDay ../messages @index)}}
+      <p><strong>{{getDate this.createdAt}}</strong></p>
+    {{/if}}
+    <p>{{this.author.username}} {{getTime this.createdAt}}:</p>
+    <p>{{this.content}}</p>
+    <br>
+  {{/each}}
 
-
-<form action="/new-message/{{#each users}}
-        {{#if (ne this.username ../../currentUser.username)}}
-            "{{this._id}}"
-        {{/if}}
-    {{/each}}" method="POST">
-
+  <form action="/new-message/{{../otherUser._id}}" method="POST">
     <input hidden name="conversation" value="{{this._id}}"/>
-    <input hidden name="author" value="{{../../currentUser._id}}"/>
-    <input hidden name="for" 
-    value="{{#each users}}
-        {{#if (ne this.username ../../currentUser.username)}}
-            "{{this._id}}"
-        {{/if}}
-    {{/each}}"/>
+    <input hidden name="author" value="{{../currentUser._id}}"/>
+    <input hidden name="for" value="{{../otherUser._id}}"/>
 
-  <div>
-    <label for="content">Mensaje:</label>
-    <input required type="text" name="content" />
-  </div>
+    <div>
+      <label for="content">Mensaje:</label>
+      <input required type="text" name="content" />
+    </div>
 
-  <br />
+    <br />
 
-  <div><button type="submit">Enviar mensaje</button></div>
+    <div><button type="submit">Enviar mensaje</button></div>
+  </form>
 
-</form>
-{{/with }}
+{{/with}}
