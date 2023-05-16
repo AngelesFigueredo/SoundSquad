@@ -51,17 +51,12 @@ router.post("/concerts-audd", (req, res, next) => {
     .then((response) => {
       if (response.data && response.data._embedded) {
         const events = response.data._embedded.events;
-        foundConcerts = events.filter((event) =>
-          event.name.includes(artistName)
-        );
-        console.log(foundConcerts[0]);
-        // const foundConcerts= response.data._embedded.events; //→Esto en caso de que queramos que se muestren
-        // //conciertos relacionados aunque no sean del artista
+         foundConcerts = events.filter(event => event.name.includes(artistName));
       }
-      res.render("audD/concerts", { foundConcerts });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      res.render("audD/concerts", {foundConcerts})  
+     })
+    .catch(error => {
+    console.log(error);
+  });
 });
 module.exports = router;
