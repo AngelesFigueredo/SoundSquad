@@ -22,7 +22,6 @@ const {
 } = require("../middlewares/route-guard");
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
-const Playlist = require("../models/Playlist.model");
 const Event = require("../models/Events.model");
 
 /* GET home page */
@@ -30,7 +29,7 @@ router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-router.get("/home", isLoggedIn, async (req, res, next) => {
+router.get("/home", async (req, res, next) => {
   try {
     const id = req.session.currentUser._id;
     const user = await User.findById(id);
@@ -55,7 +54,8 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/my-profile", isLoggedIn, async (req, res, next) => {
+router.get("/my-profile", async (req, res, next) => {
+  const myProfile = true;
   try {
     try {
       const user = await User.findById(req.session.currentUser._id);
@@ -66,11 +66,14 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
           populate: { path: "author", model: "User" },
         })
         .sort({ createdAt: -1 });
+
+      console.log("miperfilvamoooooos", myProfile);
+
       res.render("main/profile", {
         posts,
         user,
         session: req.session,
-        myProfile: true,
+        myProfile,
       });
     } catch {
       res.redirect("/login");
@@ -81,6 +84,7 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
 });
 
 router.get("/profile/:id", async (req, res, next) => {
+  const myProfile = false;
   try {
     const { id } = req.params;
     const user = await User.findById(req.params.id);
@@ -88,25 +92,32 @@ router.get("/profile/:id", async (req, res, next) => {
     const myUser = await User.findById(req.session.currentUser._id);
 
     if (currentUser._id === id) {
-      res.redirect("/my-profile");
+      console.log("tevasa tu perfil", myProfile);
+      return res.redirect("/my-profile");
     }
 
     if (myUser.friends.includes(user._id)) {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "true",
       });
     } else if (myUser.sentFriendRequests.includes(user._id)) {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "pendingOut",
       });
     } else if (myUser.friendRequests.includes(user._id)) {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "pendingIn",
       });
       // } else if (myUser.pendingFriendRequests.includes(user._id)) {
@@ -116,9 +127,11 @@ router.get("/profile/:id", async (req, res, next) => {
       //     friendship: "pending",
       //   });
     } else {
+      console.log("others perfil", myProfile);
+
       res.render("main/profile", {
         user,
-        myProfile: false,
+        myProfile,
         friendship: "false",
       });
     }
@@ -128,7 +141,8 @@ router.get("/profile/:id", async (req, res, next) => {
   }
 });
 
-router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
+
+router.get("/edit/:id",  async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     res.render("auth/edit-profile", { user, session: req.session });
@@ -137,7 +151,7 @@ router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/notifications", isLoggedIn, async (req, res, next) => {
+router.get("/notifications", async (req, res, next) => {
   try {
     const currentUser = req.session.currentUser;
     const user = await User.findById(currentUser._id)
@@ -183,11 +197,6 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
-  const user = req.session.currentUser;
-  const playlists = await Playlist.find({ followers: { $in: [user._id] } });
-  res.render("main/playlists", { playlists });
-});
 
 router.get("/new-message", async (req, res, next) => {
   const users = await User.find().populate("username");
@@ -294,6 +303,7 @@ router.get("/search", async (req, res, next) => {
             id: concert.id,
           }));
 
+
           concertsInfoLong = concerts.map((concert) => ({
             name: concert.name,
             city: concert._embedded.venues[0].city.name,
@@ -319,6 +329,7 @@ router.get("/search", async (req, res, next) => {
   }
 });
 
+
 router.get("/artist/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -332,6 +343,7 @@ router.get("/artist/:id", async (req, res, next) => {
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
+
   const { body } = req;
   const { id } = req.params;
   try {

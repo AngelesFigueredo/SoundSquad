@@ -13,19 +13,21 @@
         <button type="submit">Ver futuros conciertos</button>
     </form>
 
-    {{!-- <form action="/{{spotify.id}}/addtoplaylist" method="POST">
+    <form action="/{{spotify.id}}/addtoplaylist" method="POST">
     <select name="playlists" id="playlists">
-        {{#with user}}
-        {{#each this.playlists}}
-        <option value="{{songDetails.spotify.id}}">{{this.playlists.title}}</option>
+        
+        {{#each ../user.playlists}}
+        <option value="{{this._id}}">{{this.title}}</option>
         {{/each}}
-        {{/with}}
+
         <option>Create new playlist</option>
     </select>
     <button type="submit">Añadir canción</button>
-    </form> --}}
+    </form>
 
     {{/with}}
+
+    
 {{else}}
     <h5>Song not found</h5>
     <a href="/audd"><button> Try again</button></a>

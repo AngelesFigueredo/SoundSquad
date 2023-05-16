@@ -60,7 +60,7 @@ router.post("/post-create", async (req, res) => {
     });
 
     const posts = await Post.find().sort({ createdAt: -1 }).limit(2);
-    res.render("main/home", { posts });
+    res.redirect("/home");
   } catch (error) {
     console.log(error);
     res.render("error", { error });

@@ -5,11 +5,10 @@
 <h3>Name: {{this.name}} {{this.lastName}}</h3>
 <h3>Age: {{this.age}}</h3>
 <h4>Bio: {{this.description}}</h4>
-<a href="/{{this._id}}/my-playlists">Mis playlists</a></li>
 
   {{#if ../myProfile}}
   <a href="/{{this._id}}/friends">Mis amistades</a>
-  <a href="/{{this._id}}/my-playlists">Mis playlists</a></li>
+  <a href="/my-playlists">Mis playlists</a>
   <a href="/edit/{{this._id}}">Edita tu perfil</a>
 
   <div class="blue-background">
@@ -28,7 +27,7 @@
 
 {{else}}
   <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
-  <a href="/{{this._id}}/my-playlists">Ver playlists de {{this.username}}</a></li>
+  <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
   <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
   <br>
   {{#if (ifEquals ../friendship "false")}}
