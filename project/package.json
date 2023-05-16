@@ -24,6 +24,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^2.0.22",
     "serve-favicon": "^2.5.0",
+    "spotify-web-api-node": "^5.0.2",
     "ws": "^8.13.0"
   }
 }

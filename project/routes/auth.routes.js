@@ -95,7 +95,7 @@ router.post("/login", async (req, res, next) => {
 });
 
 // Logout
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", (req, res) => {
   req.app.locals.isLogged = false;
   req.session.destroy(() => res.redirect("/"));
 });

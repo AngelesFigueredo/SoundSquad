@@ -1,0 +1,48 @@
+{{#with playlist}}
+  <h2>{{this.title}}</h2>
+  <h3>{{this.author.username}}</h3>
+
+  {{#if (ne ../currentUser._id this.author._id)}}
+    <form id="follow-form" action="/follow-playlist/{{this._id}}" method="POST" style="display: none;">
+      <button id="follow-button" type="submit">Seguir playlist</button>
+    </form>
+    <form id="unfollow-form" action="/unfollow-playlist/{{this._id}}" method="POST" style="display: none;">
+      <button id="unfollow-button" type="submit">Dejar de seguir playlist</button>
+    </form>
+  {{else}}
+    <form id="follow-form" action="/follow-playlist/{{this._id}}" method="POST">
+      <button id="follow-button" type="submit">Seguir playlist</button>
+    </form>
+  {{/if}}
+{{/with}}
+
+{{#if songs}}
+  {{#each songs}}
+    <div>
+      <h4>{{this.name}}</h4>
+      <p>{{this.album.name}}</p>
+      <audio src="{{this.preview_url}}" controls></audio>
+    </div>
+  {{/each}}
+{{else}}
+  <p>Esta lista no tiene canciones</p>
+{{/if}}
+
+<script>
+  const followForm = document.querySelector("#follow-form");
+  const unfollowForm = document.querySelector("#unfollow-form");
+  const followButton = document.querySelector("#follow-button");
+  const unfollowButton = document.querySelector("#unfollow-button");
+
+  const currentUserPlaylists = "{{currentUser.playlists}}".split(","); // Split the string into an array
+  const currentPlaylistId = "{{playlist._id}}";
+
+  console.log("hola")
+  if (currentUserPlaylists.includes(currentPlaylistId)) {
+    followButton.style.display = "none";
+    unfollowForm.style.display = "block";
+  } else {
+    followButton.style.display = "block";
+    unfollowForm.style.display = "none";
+  }
+</script>
