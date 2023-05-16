@@ -1,4 +1,19 @@
 {{#with artist}}
+<img src="{{this.images.[0].url}}">
 <h2>{{this.name}}</h2>
-
 {{/with}}
+
+{{#if artistTopTracks}}
+Canciones más populares:
+{{#each artistTopTracks}}
+<p>{{this.name}}</p>
+<audio src="{{this.preview_url}}" controls></audio>
+{{/each}}
+{{/if}}
+
+{{#if artistConcerts}}
+Próximos conciertos:
+{{#each artistConcerts}}
+<a href="/concert/{{this.id}}"><p>{{this.name}} - {{this.dates.start.localDate}}</p></a>
+{{/each}}
+{{/if}}

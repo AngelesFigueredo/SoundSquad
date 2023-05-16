@@ -22,6 +22,16 @@
       <h4>{{this.name}}</h4>
       <p>{{this.album.name}}</p>
       <audio src="{{this.preview_url}}" controls></audio>
+      <form action="/{{this.id}}/addtoplaylist" method="POST">
+        <select name="playlists" id="playlists">
+                {{#each ../user.playlists}}
+        <option value="{{this._id}}">{{this.title}}</option>
+        {{/each}}
+
+        <option>Create new playlist</option>
+    </select>
+    <button type="submit">Añadir canción</button>
+    </form>
     </div>
   {{/each}}
 {{else}}
@@ -29,20 +39,22 @@
 {{/if}}
 
 <script>
-  const followForm = document.querySelector("#follow-form");
-  const unfollowForm = document.querySelector("#unfollow-form");
-  const followButton = document.querySelector("#follow-button");
-  const unfollowButton = document.querySelector("#unfollow-button");
+  document.addEventListener("DOMContentLoaded", function() {
+    const followForm = document.querySelector("#follow-form");
+    const unfollowForm = document.querySelector("#unfollow-form");
+    const followButton = document.querySelector("#follow-button");
+    const unfollowButton = document.querySelector("#unfollow-button");
 
-  const currentUserPlaylists = "{{currentUser.playlists}}".split(","); // Split the string into an array
-  const currentPlaylistId = "{{playlist._id}}";
+    const currentUserPlaylists = "{{currentUser.playlists}}".split(","); // Split the string into an array
+    const currentPlaylistId = "{{playlist._id}}";
 
-  console.log("hola")
-  if (currentUserPlaylists.includes(currentPlaylistId)) {
-    followButton.style.display = "none";
-    unfollowForm.style.display = "block";
-  } else {
-    followButton.style.display = "block";
-    unfollowForm.style.display = "none";
-  }
+    if (currentUserPlaylists.includes(currentPlaylistId)) {
+      followButton.style.display = "none";
+      unfollowForm.style.display = "block";
+    } else {
+      followButton.style.display = "block";
+      unfollowForm.style.display = "none";
+    }
+  });
 </script>
+
