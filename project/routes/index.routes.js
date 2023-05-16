@@ -141,8 +141,7 @@ router.get("/profile/:id", async (req, res, next) => {
   }
 });
 
-
-router.get("/edit/:id",  async (req, res, next) => {
+router.get("/edit/:id", async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     res.render("auth/edit-profile", { user, session: req.session });
@@ -196,7 +195,6 @@ router.get("/notifications", async (req, res, next) => {
     res.render("error", { error });
   }
 });
-
 
 router.get("/new-message", async (req, res, next) => {
   const users = await User.find().populate("username");
@@ -284,8 +282,8 @@ router.get("/search", async (req, res, next) => {
 
     //events
     const tmApiKey = process.env.TICKET_CONSUMER_KEY;
-    // let concertsInfoShort = undefined;
-    // let concertsInfoLong = undefined;
+    let concertsInfoShort = undefined;
+    let concertsInfoLong = undefined;
 
     axios
       .get(
@@ -302,7 +300,6 @@ router.get("/search", async (req, res, next) => {
             date: concert.dates.start.localDate,
             id: concert.id,
           }));
-
 
           concertsInfoLong = concerts.map((concert) => ({
             name: concert.name,
@@ -329,21 +326,83 @@ router.get("/search", async (req, res, next) => {
   }
 });
 
-
 router.get("/artist/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const urlSearch = `https://api.spotify.com/v1/tracks/${id}`;
+    const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
     axios.get(urlSearch).then((response) => {
       console.log(response);
     });
+    res.render("main/artist-details");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/concert/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const { currentUser } = req.session;
+    const friendIds = currentUser.friends;
+    const tmApiKey = process.env.TICKET_CONSUMER_KEY;
+    let concertInfo = undefined;
+    const myEvents = await Event.find({
+      author: currentUser._id,
+      concertApiId: id,
+    });
+    const followedEvents = await Event.find({
+      members: currentUser._id,
+      concertApiId: id,
+    });
+    const friendEvents = await Event.find({
+      $and: [
+        { concertApiId: id },
+        {
+          $or: [
+            { author: { $in: friendIds } },
+            { members: { $in: friendIds } },
+          ],
+        },
+      ],
+    });
+    const otherEvents = await Event.find({ concertApiId: id });
+
+    axios
+      .get(
+        `https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=${tmApiKey}`
+      )
+      .then((response) => {
+        concertInfo = response.data;
+        res.render("main/concert-details", {
+          concertInfo,
+          myEvents,
+          followedEvents,
+          friendEvents,
+          otherEvents,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/song/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const urlSearch = `https://api.spotify.com/vi/tracks/${id}`;
+    axios.get(urlSearch).then((response) => {
+      console.log(response);
+    });
+    res.render("main/song-details");
   } catch (error) {
     console.log(error);
   }
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
-
   const { body } = req;
   const { id } = req.params;
   try {

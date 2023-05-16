@@ -85,6 +85,10 @@ router.get("/playlist-details/:id", async (req, res, next) => {
   try {
     const { currentUser } = req.session;
     const playlist = await Playlist.findById(req.params.id).populate("author");
+    const user = await User.findById(currentUser._id).populate({
+      path: "playlists",
+      select: "title",
+    });
 
     const trackPromises = playlist.songs.map((song) =>
       spotifyApi.getTrack(song)
@@ -93,7 +97,7 @@ router.get("/playlist-details/:id", async (req, res, next) => {
     const songs = trackResponses.map((response) => response.body);
 
     console.log(playlist.songs);
-    res.render("main/playlist-details", { playlist, songs, currentUser });
+    res.render("main/playlist-details", { playlist, songs, currentUser, user });
   } catch (error) {
     console.log(error);
     next(error);
