@@ -30,7 +30,7 @@ router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-router.get("/home", isLoggedIn, async (req, res, next) => {
+router.get("/home", async (req, res, next) => {
   try {
     const id = req.session.currentUser._id;
     const user = await User.findById(id);
@@ -148,7 +148,7 @@ router.get("/new-playlist", async (req, res, next) => {
   res.render("main/new-playlist", { user });
 });
 
-router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
+router.get("/edit/:id",  async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     res.render("auth/edit-profile", { user, session: req.session });
@@ -157,7 +157,7 @@ router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/notifications", isLoggedIn, async (req, res, next) => {
+router.get("/notifications", async (req, res, next) => {
   try {
     const currentUser = req.session.currentUser;
     const user = await User.findById(currentUser._id)
@@ -203,7 +203,7 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
+router.get("/:id/playlists", async (req, res, next) => {
   const user = req.session.currentUser;
   const playlists = await Playlist.find({ followers: { $in: [user._id] } });
   res.render("main/playlists", { playlists });
@@ -388,7 +388,7 @@ router.post("/follow-playlist/:id", async (req, res, next) => {
   await User.findByIdAndUpdate(currentUser._id, { $push: { playlists: id } });
 });
 
-router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
+router.post("/edit/:id", async (req, res, next) => {
   const { body } = req;
   const { id } = req.params;
   try {

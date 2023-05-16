@@ -60,19 +60,19 @@ router.get("/my-playlists", async (req, res, next) => {
   try {
     const { currentUser } = req.session;
     const user = await User.findById(currentUser._id);
-    const id = user._id;
-    const ownedPlaylists = await Playlist.find({ author: currentUser._id });
-    const followedPlaylists = await Playlist.find({
-      followers: { $in: currentUser._id },
-    });
-    console.log("------------------------------", myPlaylists);
-    res.render("main/playlists", {
-      ownedPlaylists,
-      followedPlaylists,
-      currentUser,
-      user,
-      id,
-    });
+    // const id = user._id;
+    // const ownedPlaylists = await Playlist.find({ author: user._id });
+    // const followedPlaylists = await Playlist.find({
+    //   followers: { $in: user._id },
+    // });
+    console.log("-----------------------------------------------------------------")
+    // res.render("main/playlists", {
+      // ownedPlaylists,
+      // followedPlaylists,
+      // currentUser,
+      // user,
+      // id,
+    // });
   } catch (error) {
     console.log(error);
     next(error);
