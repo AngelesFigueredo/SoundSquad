@@ -52,7 +52,7 @@ router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, 
     // console.log("esto tendría que ser sole el join request", joinRequests
   }
   res.render("events/event-details",
-    { session: req.session, event, isAdmin, notifications, joinRequests });
+    { session: req.session, event, isAdmin, notifications, joinRequests, currentUser: req.session.currentUser });
 });
 
 // send a message
@@ -84,7 +84,7 @@ router.get("/edit-event/:eventId", isEventMember, async(req, res, next) => {
             member.isYou = member._id == userId
     })
     
-    res.render("events/edit", {session: req.session, event})
+    res.render("events/edit", {session: req.session, event, currentUser: req.session.currentUser})
 });
 
 router.post("/edit-event/:eventId", async(req, res, next) => {

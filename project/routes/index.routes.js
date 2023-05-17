@@ -75,6 +75,7 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
         user,
         session: req.session,
         myProfile,
+        currentUser: req.session.currentUser
       });
     } catch {
       res.redirect("/login");
@@ -117,6 +118,7 @@ router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
         user,
         myProfile,
         friendship: "true",
+        currentUser: req.session.currentUser
       });
     } else if (myUser.sentFriendRequests.includes(user._id)) {
 
@@ -124,6 +126,7 @@ router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
         user,
         myProfile,
         friendship: "pendingOut",
+        currentUser: req.session.currentUser
       });
     } else if (myUser.friendRequests.includes(user._id)) {
 
@@ -131,6 +134,7 @@ router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
         user,
         myProfile,
         friendship: "pendingIn",
+        currentUser: req.session.currentUser
       });
       // } else if (myUser.pendingFriendRequests.includes(user._id)) {
       //   res.render("main/profile", {
@@ -144,6 +148,7 @@ router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
         user,
         myProfile,
         friendship: "false",
+        currentUser: req.session.currentUser
       });
     }
   } catch (error) {
@@ -156,7 +161,7 @@ router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     console.log(user)
-    res.render("auth/edit-profile", { user, session: req.session });
+    res.render("auth/edit-profile", { user, session: req.session, currentUser: req.session.currentUser});
   } catch (error) {
     res.render("error", { error });
   }
@@ -202,6 +207,7 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
       comments,
       friendRequests,
       session: req.session,
+      currentUser: req.session.currentUser
     });
   } catch (error) {
     res.render("error", { error });
@@ -210,7 +216,7 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
 
 router.get("/new-message", isLoggedIn, async (req, res, next) => {
   const users = await User.find().populate("username");
-  res.render("main/new-message", { users });
+  res.render("main/new-message", { users, currentUser: req.session.currentUser });
 });
 
 // router.get("/new-message/:id", async (req, res, next) => {
@@ -227,12 +233,12 @@ router.get("/:id/friends", isLoggedIn, async (req, res, next) => {
     "friends",
     "username"
   );
-  res.render("main/friends", { friends: user.friends });
+  res.render("main/friends", { friends: user.friends, currentUser: req.session.currentUser });
 });
 
 // router.get("/search", async)
 
-router.get("/search", async (req, res, next) => {
+router.get("/search", isLoggedIn, async (req, res, next) => {
   try {
     const { query } = req.query;
 
@@ -330,6 +336,7 @@ router.get("/search", async (req, res, next) => {
           songsInfoLong,
           concertsInfoShort,
           concertsInfoLong,
+          currentUser: req.session.currentUser
         });
       });
   } catch (error) {
@@ -349,7 +356,7 @@ router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
       })
       .then((response) => {
         artist = response.data
-        res.render("main/artist-details", { artist });
+        res.render("main/artist-details", { artist, currentUser: req.session.currentUser });
       });
   } catch (error) {
     console.log(error);
@@ -396,6 +403,7 @@ router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
           followedEvents,
           friendEvents,
           otherEvents,
+          currentUser: req.session.currentUser
         });
       })
       .catch((error) => {
@@ -422,7 +430,7 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
     });
     const song = response.data
     console.log(id)
-    res.render("main/track-details", { song, user, id });
+    res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser });
   } catch (error) {
     console.log(error);
   }

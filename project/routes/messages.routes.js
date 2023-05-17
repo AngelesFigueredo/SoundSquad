@@ -18,7 +18,7 @@ router.get("/messages", isLoggedIn, async (req, res, next) => {
       .populate("users")
       .sort({ createdAt: 1 });
 
-    res.render("main/messages", { conversationsForView });
+    res.render("main/messages", { conversationsForView, currentUser: req.session.currentUser });
   } catch (error) {
     console.log(error);
     res.render("error", { error });
@@ -52,7 +52,7 @@ router.get("/messages/:id", isLoggedIn, async (req, res, next) => {
   } else {
     otherUser = conversation.users[0];
   }
-  res.render("main/conversation", { conversation, currentUser, otherUser });
+  res.render("main/conversation", { conversation, currentUser, otherUser, currentUser: req.session.currentUser });
 });
 
 router.post("/new-message", async (req, res, next) => {

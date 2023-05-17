@@ -25,12 +25,12 @@ const User = require("../models/User.model");
       }else{
           data.events = createdEvents
       }
-    res.render("events/events", { session: req.session, data});
+    res.render("events/events", { session: req.session, data, currentUser: req.session.currentUser});
   });
   
   router.get("/create-event/:concertId", (req, res, next) => {
       const concertId = req.params
-      res.render("events/create", { session: req.session, concertId});
+      res.render("events/create", { session: req.session, concertId, currentUser: req.session.currentUser}, );
   });
   
   router.post("/create-event/:concertId", async(req, res, next) => {
@@ -61,7 +61,8 @@ const User = require("../models/User.model");
         othersOwnedEvents,
         othersFollowedEvents,
         myEvents: currentUser._id === routeId,
-        othersEvents: currentUser._id !== routeId
+        othersEvents: currentUser._id !== routeId,
+        currentUser: req.session.currentUser
     })
     } catch (error) 
     {console.log(error)}
@@ -75,7 +76,8 @@ const User = require("../models/User.model");
           session: req.session, 
           eventId : req.params.eventId, 
           concertId : event.concertApiId,
-          sentRequest :  event.joinRequests.includes(userId)
+          sentRequest :  event.joinRequests.includes(userId),
+          currentUser: req.session.currentUser
       })
   })
   
@@ -97,7 +99,7 @@ const User = require("../models/User.model");
               member.isYou = member._id == userId
       })
       
-      res.render("events/show-event", {session: req.session, event})
+      res.render("events/show-event", {session: req.session, event, currentUser: req.session.currentUser})
   });
   
   // leave a event 
