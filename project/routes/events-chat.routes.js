@@ -27,12 +27,13 @@ router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, 
   const eventId = req.params.eventId
   const event = await Event.findById(eventId)
     .populate("joinRequests")
+    .populate("members")
     .populate({
       path: "messages",
       select: ["content", "author", "createdAt"],
       populate: {
         path: "author",
-        select: ["username", "_id"],
+        select: ["username", "_id","profileImg"],
       },
       options: {
         sort: { createdAt: 1 },
@@ -49,8 +50,8 @@ router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, 
   }
   if (notifications) {
     joinRequests = event.joinRequests
-    // console.log("esto tendría que ser sole el join request", joinRequests
   }
+  event.key = process.env.TICKET_CONSUMER_KEY
   res.render("events/event-details",
     { session: req.session, event, isAdmin, notifications, joinRequests });
 });

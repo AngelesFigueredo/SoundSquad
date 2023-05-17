@@ -16,7 +16,7 @@ router.post("/song-details", async (req, res, next) => {
   });
   const base64Audio = req.body.audioData;
   const data = {
-    api_token: "c3464647d5ef836d027326a61a5ce3b0",
+    api_token: process.env.AUDD_TOKEN,
     audio: base64Audio,
     return: "apple_music,spotify",
   };

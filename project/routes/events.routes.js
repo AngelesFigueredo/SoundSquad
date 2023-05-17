@@ -90,4 +90,11 @@ router.post("/leave-event/:eventId",isEventMember, async(req, res, next) => {
     }
 });
 
+// in order see the location of the concert in a map
+router.post("/get-directions", async(req, res, next)=>{
+    const {longitude, latitude} = req.body
+    const apiToken = process.env.MAPBOX_TOKEN
+    res.render("events/maps", {longitude, latitude, apiToken})
+})
+
 module.exports = router;
