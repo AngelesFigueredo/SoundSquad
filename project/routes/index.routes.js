@@ -155,6 +155,7 @@ router.get("/profile/:id", async (req, res, next) => {
 router.get("/edit/:id", async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
+    console.log(user)
     res.render("auth/edit-profile", { user, session: req.session });
   } catch (error) {
     res.render("error", { error });
@@ -427,16 +428,31 @@ router.get("/song/:id", async (req, res, next) => {
   }
 });
 
-router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
+router.post("/edit/:id", async (req, res, next) => {
   const { body } = req;
   const { id } = req.params;
+
   try {
-    await User.findByIdAndUpdate(id, body);
+    const interests = body.interests; 
+    const updatedData = {
+      name: body.name,
+      lastName: body.lastName,
+      age: body.age,
+      description: body.description,
+      interests: interests, // Assign the parsed interests array
+    };
+
+    // Update the user with the updated data
+    await User.findByIdAndUpdate(id, updatedData);
+
+    // Redirect to the profile edit page
     res.redirect("/my-profile");
   } catch (error) {
-    res.render("error", { error });
+    console.log(error);
+    // Handle the error
   }
 });
+
 
 router.post("/friend-requests/:id", async (req, res, next) => {
   const { id } = req.params;

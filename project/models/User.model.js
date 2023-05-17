@@ -52,8 +52,9 @@ const userSchema = new Schema(
       type: String,
     },
 
-    favouriteArtists: {
+    interests: {
       type: ["String"],
+      default: []
     },
 
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
