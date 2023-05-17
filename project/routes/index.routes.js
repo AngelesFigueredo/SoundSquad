@@ -171,6 +171,14 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   try {
     const currentUser = req.session.currentUser;
     const user = await User.findById(currentUser._id)
+    .populate({
+        path: "eventsRequests.event",
+        model: "Event",
+      })
+      .populate({
+        path: "eventsRequests.user",
+        model: "User",
+      })
       .populate({
         path: "postMentions",
         populate: {

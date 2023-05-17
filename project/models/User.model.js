@@ -63,7 +63,12 @@ const userSchema = new Schema(
 
     posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 
-    events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
+    eventsRequests: [
+      {
+        event: { type: Schema.Types.ObjectId, ref: 'Event' },
+        user: { type: Schema.Types.ObjectId, ref: 'User' }
+      }
+    ],
 
     postMentions: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 
