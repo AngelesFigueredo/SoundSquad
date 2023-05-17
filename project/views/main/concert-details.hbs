@@ -1,0 +1,54 @@
+{{#with concertInfo}}
+  <img src="{{this.images.0.url}}" />
+  <p>{{this.name}}</p>
+  <p>Fecha:
+    {{this.dates.start.localDate}}
+    a las
+    {{this.dates.start.localTime}}</p>
+  <p>Entradas a la venta a partir del {{this.sales.public.startDateTime}}</p>
+  <p>Precio:
+    {{this.priceRanges.0.min}}-{{this.priceRanges.0.max}}{{this.priceRanges.0.currency}}</p>
+  <a href="{{this.url}}" target="_blank">Compra tus entradas</a>
+{{/with}}
+
+
+{{#unless myEvents}}
+        {{!-- FALTA POR PONER ESTE ENLACE Y ASEGURARSE DE QUE MANDA EL ID DEL CONCIERTO QUE ESTÁ EN LA RUTA --}}
+        <a href="/">Crea tú un evento!</a>     
+  {{#unless followedEvents}}
+    {{#unless friendsEvents}}
+      {{#unless otherEvents}}
+        <p>No hay eventos disponibles para este concierto</p>
+      {{/unless}}
+    {{/unless}}
+  {{/unless}}
+{{/unless}}
+
+
+{{#if myEvents}}
+<h2>Tus eventos:</h2>
+{{#each myEvents}}
+    <a href="/event/{{this._id}}"> {{this.name}}</a>
+{{/each}}
+{{/if}}
+
+{{#if followedEvents}}
+<h2>Eventos que sigues:</h2>
+{{#each followedEvents}}
+    <a href="/event/{{this._id}}"> {{this.name}}, de {{this.admin}} </a>
+{{/each}}
+{{/if}}
+
+{{#if friendsEvents}}
+<h2>Eventos de tus amigos:</h2>
+{{#each friendsEvents}}
+   <a href="/event/{{this._id}}"> {{this.name}}, de {{this.admin}} </a>
+{{/each}}
+{{/if}}
+
+{{#if otherEvents}}
+<h2>Eventos que te pueden interesar:</h2>
+{{#each otherEvents}}
+    <a href="/event/{{this._id}}"> {{this.name}}, de {{this.admin}} </a>
+{{/each}}
+{{/if}}

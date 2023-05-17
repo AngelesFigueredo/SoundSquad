@@ -1,5 +1,23 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
+const SpotifyWebApi = require("spotify-web-api-node");
+let spotifyAccessToken;
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
+
+spotifyApi
+  .clientCredentialsGrant()
+  .then((data) => {
+    spotifyApi.setAccessToken(data.body["access_token"]);
+    spotifyAccessToken = data.body["access_token"];
+  })
+  .catch((error) =>
+    console.log("Something went wrong when retrieving an access token", error)
+  );
 
 const {
   isLoggedIn,
@@ -8,98 +26,14 @@ const {
 } = require("../middlewares/route-guard");
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
-const Playlist = require("../models/Playlist.model");
-const Message = require("../models/Message.model");
-const Conversation = require("../models/Conversation.model");
+const Event = require("../models/Events.model");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-router.get("/my-profile", isLoggedIn, async (req, res, next) => {
-  try {
-    try {
-      const user = await User.findById(req.session.currentUser._id);
-      const posts = await Post.find({ author: user._id })
-        .populate("author comments")
-        .populate({
-          path: "comments",
-          populate: { path: "author", model: "User" },
-        })
-        .sort({ createdAt: -1 });
-      res.render("main/profile", {
-        posts,
-        user,
-        session: req.session,
-        myProfile: true,
-      });
-    } catch {
-      res.redirect("/login");
-    }
-  } catch (error) {
-    res.render("error", { error });
-  }
-});
-
-router.get("/profile/:id", async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(req.params.id);
-    const currentUser = req.session.currentUser;
-    const myUser = await User.findById(req.session.currentUser._id);
-
-    if (currentUser._id === id) {
-      res.redirect("/my-profile");
-    }
-
-    if (myUser.friends.includes(user._id)) {
-      res.render("main/profile", {
-        user,
-        myProfile: false,
-        friendship: "true",
-      });
-    } else if (myUser.sentFriendRequests.includes(user._id)) {
-      res.render("main/profile", {
-        user,
-        myProfile: false,
-        friendship: "pendingOut",
-      });
-    } else if (myUser.friendRequests.includes(user._id)) {
-      res.render("main/profile", {
-        user,
-        myProfile: false,
-        friendship: "pendingIn",
-      });
-      // } else if (myUser.pendingFriendRequests.includes(user._id)) {
-      //   res.render("main/profile", {
-      //     user,
-      //     myProfile: false,
-      //     friendship: "pending",
-      //   });
-    } else {
-      res.render("main/profile", {
-        user,
-        myProfile: false,
-        friendship: "false",
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.render("error", { error });
-  }
-});
-
-router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.id);
-    res.render("auth/edit-profile", { user, session: req.session });
-  } catch (error) {
-    res.render("error", { error });
-  }
-});
-
-router.get("/home", isLoggedIn, async (req, res, next) => {
+router.get("/home", async (req, res, next) => {
   try {
     const id = req.session.currentUser._id;
     const user = await User.findById(id);
@@ -124,7 +58,110 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/notifications", isLoggedIn, async (req, res, next) => {
+router.get("/my-profile", async (req, res, next) => {
+  const myProfile = true;
+  try {
+    try {
+      const user = await User.findById(req.session.currentUser._id);
+      const posts = await Post.find({ author: user._id })
+        .populate("author comments")
+        .populate({
+          path: "comments",
+          populate: { path: "author", model: "User" },
+        })
+        .sort({ createdAt: -1 });
+      res.render("main/profile", {
+        posts,
+        user,
+        session: req.session,
+        myProfile,
+      });
+    } catch {
+      res.redirect("/login");
+    }
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.get('/users/:username', async (req, res) => {
+  const username = req.params.username;
+  // Perform the necessary logic to check if the username exists
+  const user = await User.find({username})
+  
+
+  if (usernameExists) {
+    // Redirect to the user profile page
+    res.redirect(`/users/${username}`);
+  } else {
+    // Return an error response or any other desired response
+    res.status(404).send('User not found');
+  }
+});
+
+router.get("/profile/:id", async (req, res, next) => {
+  const myProfile = false;
+  try {
+    const { id } = req.params;
+    const user = await User.findById(req.params.id);
+    const currentUser = req.session.currentUser;
+    const myUser = await User.findById(req.session.currentUser._id);
+
+    if (currentUser._id === id) {
+      return res.redirect("/my-profile");
+    }
+
+    if (myUser.friends.includes(user._id)) {
+
+      res.render("main/profile", {
+        user,
+        myProfile,
+        friendship: "true",
+      });
+    } else if (myUser.sentFriendRequests.includes(user._id)) {
+
+      res.render("main/profile", {
+        user,
+        myProfile,
+        friendship: "pendingOut",
+      });
+    } else if (myUser.friendRequests.includes(user._id)) {
+
+      res.render("main/profile", {
+        user,
+        myProfile,
+        friendship: "pendingIn",
+      });
+      // } else if (myUser.pendingFriendRequests.includes(user._id)) {
+      //   res.render("main/profile", {
+      //     user,
+      //     myProfile: false,
+      //     friendship: "pending",
+      //   });
+    } else {
+
+      res.render("main/profile", {
+        user,
+        myProfile,
+        friendship: "false",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.render("error", { error });
+  }
+});
+
+router.get("/edit/:id", async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.render("auth/edit-profile", { user, session: req.session });
+  } catch (error) {
+    res.render("error", { error });
+  }
+});
+
+router.get("/notifications", async (req, res, next) => {
   try {
     const currentUser = req.session.currentUser;
     const user = await User.findById(currentUser._id)
@@ -170,28 +207,6 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/messages", async (req, res, next) => {
-  try {
-    const { currentUser } = req.session;
-    const conversationsForView = await Conversation.find({
-      users: currentUser._id,
-    })
-      .populate("users")
-      .sort({ createdAt: 1 });
-
-    res.render("main/messages", { conversationsForView });
-  } catch (error) {
-    console.log(error);
-    res.render("error", { error });
-  }
-});
-
-router.get("/:id/playlists", isLoggedIn, async (req, res, next) => {
-  const user = req.session.currentUser;
-  const playlists = await Playlist.find({ followers: { $in: [user._id] } });
-  res.render("main/playlists", { playlists });
-});
-
 router.get("/new-message", async (req, res, next) => {
   const users = await User.find().populate("username");
   res.render("main/new-message", { users });
@@ -214,102 +229,202 @@ router.get("/:id/friends", async (req, res, next) => {
   res.render("main/friends", { friends: user.friends });
 });
 
-router.get("/messages/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const { currentUser } = req.session;
-  let otherUser;
+// router.get("/search", async)
 
-  const conversation = await Conversation.findById(id)
-    .populate({
-      path: "messages",
-      select: ["content", "author", "createdAt"],
-      populate: {
-        path: "author",
-        select: "username",
-      },
-      options: {
-        sort: { createdAt: 1 }, // sort messages by creation date in ascending order
-      },
-    })
-    .populate({
-      path: "users",
-      select: ["_id", "username"],
+router.get("/search", async (req, res, next) => {
+  try {
+    const { query } = req.query;
+
+    // Use a regular expression to match users whose usernames contain the search term or a similar term
+
+    //Similar items
+    const regex = new RegExp(query, "i");
+
+    //Users
+    const users = await User.find({ username: regex });
+
+    //Events
+    const events = await Event.find({ name: regex });
+
+    //Artists
+    const artists = await spotifyApi.searchArtists(query);
+    const sortedArtists = artists.body.artists.items.sort(
+      (a, b) => b.followers - a.followers
+    );
+    const artistsInfoShort = sortedArtists.slice(0, 5).map((artist) => ({
+      name: artist.name,
+      id: artist.id,
+      uri: artist.uri,
+    }));
+
+    const artistsInfoLong = sortedArtists.map((artist) => ({
+      name: artist.name,
+      id: artist.id,
+    }));
+
+    //Songs
+    const songs = await spotifyApi.searchTracks(query);
+    const sortedSongs = songs.body.tracks.items.sort(
+      (a, b) => b.popularity - a.popularity
+    );
+    const songsInfoShort = sortedSongs.slice(0, 5).map((song) => {
+      let artists = song.artists[0].name;
+      if (song.artists[1]) {
+        artists += ` y ${song.artists[1].name}`;
+      }
+      return {
+        name: song.name,
+        artists: artists,
+        id: song.id,
+      };
     });
 
-  if (conversation.users[0].username === currentUser.username) {
-    otherUser = conversation.users[1];
-  } else {
-    otherUser = conversation.users[0];
-  }
+    const songsInfoLong = sortedSongs.map((song) => {
+      let artists = song.artists[0].name;
+      if (song.artists[1]) {
+        artists += ` y ${song.artists[1].name}`;
+      }
+      return {
+        name: song.name,
+        artists: artists,
+        id: song.id,
+      };
+    });
 
-  res.render("main/conversation", { conversation, currentUser, otherUser });
+    //events
+    const tmApiKey = process.env.TICKET_CONSUMER_KEY;
+    let concertsInfoShort = undefined;
+    let concertsInfoLong = undefined;
+
+    axios
+      .get(
+        `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${tmApiKey}&keyword=${query}`
+      )
+      .then((response) => {
+        if (response.data && response.data._embedded) {
+          let concerts = response.data._embedded.events;
+
+          concertsInfoShort = concerts.slice(0, 5).map((concert) => ({
+            name: concert.name,
+            city: concert._embedded.venues[0].city.name,
+            date: concert.dates.start.localDate,
+            id: concert.id,
+          }));
+
+          concertsInfoLong = concerts.map((concert) => ({
+            name: concert.name,
+            city: concert._embedded.venues[0].city.name,
+            date: concert.dates.start.localDate,
+            id: concert.id,
+          }));
+        }
+
+        res.render("main/search-results", {
+          users,
+          events,
+          query,
+          artistsInfoShort,
+          artistsInfoLong,
+          songsInfoShort,
+          songsInfoLong,
+          concertsInfoShort,
+          concertsInfoLong,
+        });
+      });
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.post("/new-message", async (req, res, next) => {
+router.get("/artist/:id", async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const { currentUser } = req.session;
-    const { content, to } = req.body;
-    const { ObjectId } = require("mongodb");
-    const toId = new ObjectId(to);
-    const fromId = new ObjectId(currentUser._id);
-
-    const message = await Message.create({
-      author: fromId,
-      for: toId,
-      content,
-    });
-
-    let conversations = await Conversation.findOneAndUpdate(
-      {
-        $and: [{ users: fromId }, { users: toId }],
-      },
-      {
-        $push: { messages: message._id },
-      },
-      { new: true }
-    );
-
-    if (!conversations) {
-      conversations = await Conversation.create({
-        users: [fromId, toId],
-        messages: message._id,
+    const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
+    axios
+      .get(urlSearch, {
+        headers: {
+          Authorization: `Bearer ${spotifyAccessToken}`,
+        },
+      })
+      .then((response) => {
+        artist = response.data
+        res.render("main/artist-details", { artist });
       });
-    }
-    const conversationsForView = await Conversation.find({
-      users: { $in: currentUser._id },
-    }).populate({
-      path: "users",
-      select: ["_id", "username"],
-    });
-
-    res.render("main/messages", {
-      conversationsForView,
-      currentUser,
-    });
   } catch (error) {
     console.log(error);
-    res.render("error", { error });
   }
 });
 
-router.post("/new-message/:id", async (req, res, next) => {
-  const { currentUser } = req.session;
-  const { body } = req;
-  const { conversation } = body;
+router.get("/concert/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const { currentUser } = req.session;
+    const friendIds = currentUser.friends;
+    const tmApiKey = process.env.TICKET_CONSUMER_KEY;
+    let concertInfo = undefined;
+    const myEvents = await Event.find({
+      author: currentUser._id,
+      concertApiId: id,
+    });
+    const followedEvents = await Event.find({
+      members: currentUser._id,
+      concertApiId: id,
+    });
+    const friendEvents = await Event.find({
+      $and: [
+        { concertApiId: id },
+        {
+          $or: [
+            { author: { $in: friendIds } },
+            { members: { $in: friendIds } },
+          ],
+        },
+      ],
+    });
+    const otherEvents = await Event.find({ concertApiId: id });
 
-  const message = await Message.create({
-    body,
-  });
-  console.log(body);
+    axios
+      .get(
+        `https://app.ticketmaster.com/discovery/v2/events/${id}.json?apikey=${tmApiKey}`
+      )
+      .then((response) => {
+        concertInfo = response.data;
+        res.render("main/concert-details", {
+          concertInfo,
+          myEvents,
+          followedEvents,
+          friendEvents,
+          otherEvents,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-  await Conversation.findByIdAndUpdate(conversation, {
-    $push: { messages: message._id },
-  });
+router.get("/song/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const { currentUser } = req.session
+    const user = await User.findById(currentUser._id).populate({
+      path: "playlists",
+      select: "title"})
 
-  const fullConversation = await Conversation.findById(conversation);
-
-  res.redirect(`/messages/${conversation}`);
-  // res.render("main/conversation", { fullConversation, currentUser });
+    const urlSearch = `https://api.spotify.com/v1/tracks/${id}`;
+    const response = await axios.get(urlSearch, {
+      headers: {
+        Authorization: `Bearer ${spotifyAccessToken}`,
+      },
+    });
+    const song = response.data
+    console.log(id)
+    res.render("main/track-details", { song, user, id });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.post("/edit/:id", isLoggedIn, async (req, res, next) => {

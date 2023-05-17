@@ -5,32 +5,15 @@
 <h3>Name: {{this.name}} {{this.lastName}}</h3>
 <h3>Age: {{this.age}}</h3>
 <h4>Bio: {{this.description}}</h4>
-<a href="/{{this._id}}/my-playlists">Mis playlists</a></li>
 
   {{#if ../myProfile}}
   <a href="/{{this._id}}/friends">Mis amistades</a>
-  <a href="/{{this._id}}/my-playlists">Mis playlists</a></li>
+  <a href="/my-playlists">Mis playlists</a>
   <a href="/edit/{{this._id}}">Edita tu perfil</a>
 
-  <div class="blue-background">
-    <h2>Mis publicaciones:</h2>
-
-    {{#each posts}}
-      <div class="card">
-        {{> postPartial this}}
-        <form action="/posts/{{this._id}}/my-profile/delete" method="POST">
-          <button type="submit">🗑</button>
-        </form>
-      </div>
-      <br>
-    {{/each}}
-  </div>
 
 {{else}}
-  <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
-  <a href="/{{this._id}}/my-playlists">Ver playlists de {{this.username}}</a></li>
-  <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
-  <br>
+  
   {{#if (ifEquals ../friendship "false")}}
     <form id="friend-request-form" action="/friend-requests/{{this._id}}" method="POST">
       <button type="submit">Enviar petición de amistad</button>
@@ -44,6 +27,11 @@
         <form id="unfollow-form" action="/unfollow/{{this._id}}" method="POST">
           <button type="submit">Cancelar amistad</button>
         </form>
+        <br>
+        <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
+        <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
+        <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
+        <br>
       {{else}}
         {{#if (ifEquals ../friendship "pendingIn")}}
           <p>{{this.username}} te ha enviado una solicitud de amistad, ve a <a href="/notifications">notificaciones</a> para contestarla</p>
@@ -52,8 +40,23 @@
     {{/if}}
   {{/if}}
 {{/if}}
-
-
 {{/with}}
+
+{{#if posts}}
+  <div class="blue-background">
+    <h2>Mis publicaciones:</h2>
+    {{#each posts}}
+      <div class="card">
+        {{>postPartial post=this user=currentUser}}
+        <form action="/posts/{{this._id}}/my-profile/delete" method="POST">
+          <button type="submit">🗑</button>
+        </form>
+      </div>
+      <br>
+    {{/each}}
+  </div>
+  {{/if}}
+
+
 
 <a href="/audd">Shazam!</a>

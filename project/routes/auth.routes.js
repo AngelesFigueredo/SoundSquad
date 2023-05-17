@@ -15,7 +15,7 @@ const {
 } = require("../middlewares/route-guard");
 
 // Signup
-router.get("/sign-up", isLoggedOut, (req, res, next) =>
+router.get("/sign-up", (req, res, next) =>
   res.render("auth/signup-form")
 );
 
@@ -64,15 +64,14 @@ router.get("/take-photo", (req, res, next) => {
 router.get("/login", (req, res, next) => {
   res.render("auth/login-form", { session: req.session });
 });
+
 router.post("/login", async (req, res, next) => {
   const { usernameOrEmail, password } = req.body;
-  const posts = await Post.find().sort({ createdAt: -1 }).limit(2);
 
   User.findOne({
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
   })
     .then((user) => {
-      console.log(user);
       if (!user) {
         res.render("auth/login-form", {
           errorMessage: "No se ha encontrado al usuario",
@@ -95,7 +94,7 @@ router.post("/login", async (req, res, next) => {
 });
 
 // Logout
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", (req, res) => {
   req.app.locals.isLogged = false;
   req.session.destroy(() => res.redirect("/"));
 });

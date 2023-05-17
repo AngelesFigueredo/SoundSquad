@@ -1,0 +1,22 @@
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{notifications}} personas se quieren unir a este evento</h5>
+
+        {{#each joinRequests}}
+        <div class="card d-flex flex-row">
+            {{this.username}}
+            <form action="/accept-request" method="POST">
+                <input type="text" name="askerId" hidden value="{{this._id}}">
+                <input type="text" name="eventId" value="{{../event._id}}" hidden>
+                <button id="accept" type="submit">✅aceptar</button>
+            </form>
+            <form action="/decline-request" method="POST">
+                <input type="text" name="askerId" hidden value="{{this._id}}">
+                <input type="text" name="eventId" value="{{../event._id}}" hidden>
+                <button id="decline" type="submit">❌rechazar</button>
+            </form>
+
+        </div>
+        {{/each}}
+    </div>
+</div>

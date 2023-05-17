@@ -1,0 +1,28 @@
+{{#if event}}
+<div id="event-messages">
+    {{#each event.messages}}
+    <div class="card" style="width: 100%;">
+        <div class="card-body">
+            {{!-- <h5 class="card-title">
+                {{#if isYou}}
+                You
+                {{else}}
+                {{author.username}}
+                {{/if}}
+            </h5> --}}
+            <h6 class="card-subtitle mb-2 text-muted">{{createdAt}}</h6>
+            <p class="card-text">{{content}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>
+<form id="message-form" method="post">
+    <input type="text" id="message-content" name="content">
+    <input type="text" id="message-author" name="author" value="{{session.currentUser._id}}" hidden>
+    <input type="text" id="message-event" name="to" value="{{event._id}}" hidden>
+    <button type="submit">Enviar</button>
+</form>
+
+{{/if}}
+<script src="http://localhost:4000/socket.io/socket.io.js"></script>
+<script src="/scripts/events/chat.js"></script>

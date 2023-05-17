@@ -16,20 +16,26 @@
       <header>
          <nav>
             <ul>
-            <li><a href="/">página desarrollo</a></l>
-            <li><a href="/home">Home</a></l>
-	   	   <li><a href="/my-profile">Mi perfil</a></li>
-	   	   <li><a href="/shop">Hazte premium!</a></li>
-            <li><a href="/audd">Shazam!</a></li>
+               <li><a href="/">página desarrollo</a></l>
+               <li><a href="/home">Home</a></l>
+               <li><a href="/my-profile">Mi perfil</a></li>
+               <li><a href="/audd">Shazam!</a></li>
                {{#if isLogged}}
-                                 <li>Sesión iniciada</li>
+                  <li>Sesión iniciada</li>
                   <li><a href="/logout">Cerrar sesión</a></li>
                   <li><a href="/notifications">Notificaciones</a></li>
                   <li><a href="/messages">Mensajes</a></li>
                {{else}}
                   <li><a href="/login">Inicia sesión</a></li>
                {{/if}}
-	         </ul>
+
+               <li>
+                  <form action="/search" method="GET">
+                     <input type="text" placeholder="Buscar" name="query" />
+                     <button type="submit">Buscar</button>
+                  </form>
+               </li>
+            </ul>
          </nav>
       </header>
 

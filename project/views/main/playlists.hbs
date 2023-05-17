@@ -1,3 +1,44 @@
-{{#each playlists}}
-{{>playlistPartial this}}
+{{#ifIsTheSame currentUser._id id}}
+<a href="/new-playlist">Crear nueva playlist</a>
+
+{{#unless ownedPlaylists}}
+<p>No tienes ninguna playlist todavía, crea la primera!</p>
+{{/unless}}
+
+
+{{#if ownedPlaylists}}
+<h2>Tus playlists:</h2>
+{{#each ownedPlaylists}}
+<a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
 {{/each}}
+{{/if}}
+
+{{#if followedPlaylists}}
+<h2>Playlists de otros usuarios:</h2>
+{{#each followedPlaylists}}
+<a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
+{{/each}}
+{{/if}}
+
+{{else}}
+{{#unless ownedPlaylists}}
+<p>{{user.username}} no tiene ninguna playlist todavía.</p>
+{{/unless}}
+
+{{#if ownedPlaylists}}
+<h2>Playlists de {{user.username}}:</h2>
+{{#each ownedPlaylists}}
+<a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
+{{/each}}
+{{/if}}
+
+{{#if followedPlaylists}}
+<h2>Playlists seguidas por {{user.username}}:</h2>
+{{#each followedPlaylists}}
+<a href="/playlist-details/{{this._id}}">{{>playlistPartial this}}</a>
+{{/each}}
+{{/if}}
+
+{{/ifIsTheSame}}
+
+

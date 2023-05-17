@@ -2,9 +2,10 @@
 <a href="/post-create">Publica un nuevo post!</a>
 <a href="/audd">Shazam!</a>
 
+
 {{#each posts}}
 <div class="card">
-{{>postPartial post=this user=currentUser}}
+{{>postPartial post=this user=../currentUser._id}}
 
 
 {{#if (ifEquals author._id ../currentUser._id)}}
@@ -26,3 +27,5 @@
 <br>
 
 {{/each}}
+
+
