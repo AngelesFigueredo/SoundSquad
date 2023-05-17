@@ -21,6 +21,10 @@
 {{/if}}
 
 {{else}}
+{{#unless ownedPlaylists}}
+<p>{{user.username}} no tiene ninguna playlist todavía.</p>
+{{/unless}}
+
 {{#if ownedPlaylists}}
 <h2>Playlists de {{user.username}}:</h2>
 {{#each ownedPlaylists}}

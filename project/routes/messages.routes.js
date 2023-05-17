@@ -52,14 +52,6 @@ router.get("/messages/:id", async (req, res, next) => {
   } else {
     otherUser = conversation.users[0];
   }
-
-//   const messagesFormated = conversation.messages.map(
-//     ({ content, author, createdAt }) => {
-//       const formattedCreatedAt = createdAt.toLocalString();
-//       return { content, author, createdAt: formattedCreatedAt };
-//     }
-//   );
-//   console.log(messagesFormated);
   res.render("main/conversation", { conversation, currentUser, otherUser });
 });
 
@@ -119,7 +111,6 @@ router.post("/new-message/:id", async (req, res, next) => {
     body,
     content: body.content,
   });
-  console.log(body);
 
   await Conversation.findByIdAndUpdate(conversation, {
     $push: { messages: message._id },

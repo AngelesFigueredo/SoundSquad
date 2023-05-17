@@ -41,7 +41,6 @@ router.get("/edit/:id", checkRole("ADMIN"), async (req, res, next) => {
 router.post("/edit/:id", checkRole("ADMIN"), async (req, res, next) => {
   const { body } = req;
   const { id } = req.params;
-  console.log("body", body, "id", id);
   try {
     await User.findByIdAndUpdate(id, body);
     res.redirect("/admin");
