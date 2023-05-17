@@ -15,7 +15,7 @@ const {
 } = require("../middlewares/route-guard");
 
 // Signup
-router.get("/sign-up", (req, res, next) =>
+router.get("/sign-up", isLoggedOut, (req, res, next) =>
   res.render("auth/signup-form")
 );
 
@@ -56,12 +56,12 @@ router.post(
   }
 );
 
-router.get("/take-photo", (req, res, next) => {
+router.get("/take-photo", isLoggedIn, (req, res, next) => {
   res.render("auth/photo-form.hbs", { session: req.session });
 });
 
 // Login
-router.get("/login", (req, res, next) => {
+router.get("/login", isLoggedOut, (req, res, next) => {
   res.render("auth/login-form", { session: req.session });
 });
 
@@ -94,7 +94,7 @@ router.post("/login", async (req, res, next) => {
 });
 
 // Logout
-router.get("/logout", (req, res) => {
+router.get("/logout", isLoggedIn, (req, res) => {
   req.app.locals.isLogged = false;
   req.session.destroy(() => res.redirect("/"));
 });

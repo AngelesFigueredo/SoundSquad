@@ -3,7 +3,11 @@ const router = require("express").Router();
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 
-router.get("/post-create", async (req, res) => {
+const {
+  isLoggedIn
+} = require("../middlewares/route-guard");
+
+router.get("/post-create", isLoggedIn, async (req, res) => {
   try {
     res.render("posts/create");
   } catch (error) {
@@ -11,7 +15,7 @@ router.get("/post-create", async (req, res) => {
   }
 });
 
-router.get("/post/:id/details", async (req, res, next) => {
+router.get("/post/:id/details", isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.params;
     const post = await Post.findById(id)
@@ -59,7 +63,6 @@ router.post("/post-create", async (req, res) => {
       });
     });
 
-    const posts = await Post.find().sort({ createdAt: -1 }).limit(2);
     res.redirect("/home");
   } catch (error) {
     console.log(error);

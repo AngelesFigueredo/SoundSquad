@@ -9,7 +9,7 @@ const {
 const Message = require("../models/Message.model");
 const Conversation = require("../models/Conversation.model");
 
-router.get("/messages", async (req, res, next) => {
+router.get("/messages", isLoggedIn, async (req, res, next) => {
   try {
     const { currentUser } = req.session;
     const conversationsForView = await Conversation.find({
@@ -25,7 +25,7 @@ router.get("/messages", async (req, res, next) => {
   }
 });
 
-router.get("/messages/:id", async (req, res, next) => {
+router.get("/messages/:id", isLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   const { currentUser } = req.session;
   let otherUser;

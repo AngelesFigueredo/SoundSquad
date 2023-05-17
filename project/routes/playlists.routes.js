@@ -22,6 +22,7 @@ const {
   isLoggedOut,
   checkRole,
 } = require("../middlewares/route-guard");
+
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const Playlist = require("../models/Playlist.model");
@@ -29,13 +30,13 @@ const Event = require("../models/Events.model");
 
 /* GET home page */
 
-router.get("/new-playlist", async (req, res, next) => {
+router.get("/new-playlist", isLoggedIn, async (req, res, next) => {
   const { currentUser } = req.session;
   const user = await User.findById(currentUser._id);
   res.render("main/new-playlist", { user });
 });
 
-router.get("/playlists-list/:id", async (req, res, next) => {
+router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { currentUser } = req.session;
@@ -57,7 +58,7 @@ router.get("/playlists-list/:id", async (req, res, next) => {
   }
 });
 
-router.get("/my-playlists", async (req, res, next) => {
+router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
   try {
     const { currentUser } = req.session;
     const user = await User.findById(currentUser._id);
@@ -79,7 +80,7 @@ router.get("/my-playlists", async (req, res, next) => {
   }
 });
 
-router.get("/playlist-details/:id", async (req, res, next) => {
+router.get("/playlist-details/:id", isLoggedIn, async (req, res, next) => {
   try {
     const { currentUser } = req.session;
     const { id } = req.params
@@ -111,7 +112,7 @@ router.get("/playlist-details/:id", async (req, res, next) => {
   }
 });
 
-router.get("/new-playlist/:id", async (req, res, next) => {
+router.get("/new-playlist/:id", isLoggedIn, async (req, res, next) => {
   const { currentUser } = req.session;
   const { id } = req.params
   const user = await User.findById(currentUser._id);

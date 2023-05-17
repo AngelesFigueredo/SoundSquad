@@ -33,7 +33,7 @@ router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-router.get("/home", async (req, res, next) => {
+router.get("/home", isLoggedIn, async (req, res, next) => {
   try {
     const id = req.session.currentUser._id;
     const user = await User.findById(id);
@@ -58,7 +58,7 @@ router.get("/home", async (req, res, next) => {
   }
 });
 
-router.get("/my-profile", async (req, res, next) => {
+router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   const myProfile = true;
   try {
     try {
@@ -84,7 +84,7 @@ router.get("/my-profile", async (req, res, next) => {
   }
 });
 
-router.get('/users/:username', async (req, res) => {
+router.get('/users/:username', isLoggedIn, async (req, res) => {
   const username = req.params.username;
   // Perform the necessary logic to check if the username exists
   const user = await User.find({username})
@@ -99,7 +99,7 @@ router.get('/users/:username', async (req, res) => {
   }
 });
 
-router.get("/profile/:id", async (req, res, next) => {
+router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
   const myProfile = false;
   try {
     const { id } = req.params;
@@ -152,7 +152,7 @@ router.get("/profile/:id", async (req, res, next) => {
   }
 });
 
-router.get("/edit/:id", async (req, res, next) => {
+router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     console.log(user)
@@ -162,7 +162,7 @@ router.get("/edit/:id", async (req, res, next) => {
   }
 });
 
-router.get("/notifications", async (req, res, next) => {
+router.get("/notifications", isLoggedIn, async (req, res, next) => {
   try {
     const currentUser = req.session.currentUser;
     const user = await User.findById(currentUser._id)
@@ -208,7 +208,7 @@ router.get("/notifications", async (req, res, next) => {
   }
 });
 
-router.get("/new-message", async (req, res, next) => {
+router.get("/new-message", isLoggedIn, async (req, res, next) => {
   const users = await User.find().populate("username");
   res.render("main/new-message", { users });
 });
@@ -222,7 +222,7 @@ router.get("/new-message", async (req, res, next) => {
 //   }
 // });
 
-router.get("/:id/friends", async (req, res, next) => {
+router.get("/:id/friends", isLoggedIn, async (req, res, next) => {
   const user = await User.findById(req.params.id).populate(
     "friends",
     "username"
@@ -337,7 +337,7 @@ router.get("/search", async (req, res, next) => {
   }
 });
 
-router.get("/artist/:id", async (req, res, next) => {
+router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   try {
     const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
@@ -356,7 +356,7 @@ router.get("/artist/:id", async (req, res, next) => {
   }
 });
 
-router.get("/concert/:id", async (req, res, next) => {
+router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   try {
     const { currentUser } = req.session;
@@ -406,7 +406,7 @@ router.get("/concert/:id", async (req, res, next) => {
   }
 });
 
-router.get("/song/:id", async (req, res, next) => {
+router.get("/song/:id", isLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   try {
     const { currentUser } = req.session
