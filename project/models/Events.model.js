@@ -12,6 +12,9 @@ const eventSchema = new Schema(
     concertApiId: {
         type: String,
         }, 
+    artist: String, 
+    date: String, 
+    venue: String,
     description: String,
     members: [{type: Schema.Types.ObjectId, ref: "User" }], 
     joinRequests: [{type: Schema.Types.ObjectId, ref: "User" }], 

@@ -1,0 +1,52 @@
+{{#unless ownedEvents}}
+    {{#unless followedEvents}}
+
+        {{#if myEvents}}
+        <p>No tienes eventos</p>
+        <a href="/">Crea un nuevo evento!</a>
+        {{/if}}
+
+        {{#if othersEvents}}
+        {{#with otherUser}}
+        <p>{{this.username}} no tiene eventos</p>
+        {{/with}}
+        {{/if}}
+
+    {{/unless}}
+{{/unless}}
+
+{{#if myEvents}}
+    {{#if ownedEvents}}
+    <h2>Tus eventos:</h2>
+    {{#each ownedEvents}}
+    <a href="/">{{this.name}}</a>
+    {{/each}}
+    {{/if}}
+
+    {{#if followedEvents}}
+    <h2 >Eventos en los que participas:</h2>
+    {{#each followedEvents}}
+    <a href="/">{{this.name}}, de {{this.author}}</a>
+    {{/each}}
+    {{/if}}
+{{/if}}
+
+{{#if othersEvents}}
+    {{#if othersOwnedEvents}}
+        {{#with otherUser}}
+        <h2>Eventos de {{this.username}}:</h2>
+            {{#each othersOwnedEvents}}
+            <a href="/">{{this.name}}</a>
+            {{/each}}
+        {{/with}}
+    {{/if}}
+
+    {{#if ohtersFollowedEvents}}
+        {{#with otherUser}}
+        <h2>Eventos en los que participa {{this.username}}:</h2>
+            {{#each othersFollowedEvents}}
+            <a href="/">{{this.name}}, de {{this.author}}</a>
+            {{/each}}
+        {{/with}}
+    {{/if}}
+{{/if}}

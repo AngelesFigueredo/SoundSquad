@@ -10,6 +10,7 @@
   <a href="/{{this._id}}/friends">Mis amistades</a>
   <a href="/my-playlists">Mis playlists</a>
   <a href="/edit/{{this._id}}">Edita tu perfil</a>
+  <a href="/events/{{this._id}}">Mis eventos</a>
 
 
 {{else}}
@@ -30,7 +31,7 @@
         <br>
         <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
         <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
-        <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
+        <a href="/events/{{this._id}}">Ver eventos de {{this.username}}</a></li>
         <br>
       {{else}}
         {{#if (ifEquals ../friendship "pendingIn")}}
