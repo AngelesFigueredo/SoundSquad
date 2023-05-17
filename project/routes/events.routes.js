@@ -9,7 +9,7 @@ const {
   const app = require('express')();
   const http = require('http').Server(app);
   const cors = require('cors');
-const User = require("../models/User.model");
+  const User = require("../models/User.model");
   
   
   router.use(cors());
@@ -28,9 +28,6 @@ const User = require("../models/User.model");
     res.render("events/events", { session: req.session, data, currentUser: req.session.currentUser});
   });
   
-  router.get("/create-event/new", (req, res, next)=> {
-    res.render("events/create-new")
-  })
 
   router.get("/create-event/:concertId", (req, res, next) => {
       const concertId = req.params
@@ -50,7 +47,6 @@ const User = require("../models/User.model");
   
   router.get("/user/events/:id", async(req,res,next)=>{
     try{
-    console.log("----------estamosaqui--------------")
     const { currentUser } = req.session
     const routeId = req.params.id
     const otherUser = await User.findById(req.params.id)
@@ -73,7 +69,7 @@ const User = require("../models/User.model");
     {console.log(error)}
   })
 
-  router.get("/join/:eventId", async(req, res, next)=>{
+ /* router.get("/join/:eventId", async(req, res, next)=>{
       const event = await Event.findById(req.params.eventId)
       const userId = req.session.currentUser._id
       
@@ -95,7 +91,7 @@ const User = require("../models/User.model");
       await Event.findByIdAndUpdate(eventId, { $push: { joinRequests: userId}})
       await User.findByIdAndUpdate(eventAuthor, { $push: { event: eventId, user: currentUser._id}})
       res.redirect(`/join/${req.params.eventId}`)
-  })
+  }) */
   
   // event's data
   router.get("/show-event/:eventId",isEventMember, async(req, res, next) => {
@@ -111,7 +107,7 @@ const User = require("../models/User.model");
       res.render("events/show-event", {session: req.session, event, currentUser: req.session.currentUser})
   });
   
-  // leave a event 
+  // leave an event 
   router.post("/leave-event/:eventId",isEventMember, async(req, res, next) => {
       const eventId = req.params.eventId
       const userId = req.session.currentUser._id
@@ -165,4 +161,5 @@ const User = require("../models/User.model");
       {console.log(error)}
   })
   
-  module.exports = router;
+
+module.exports = router;

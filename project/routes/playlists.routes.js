@@ -30,6 +30,7 @@ const Event = require("../models/Events.model");
 
 /* GET home page */
 
+
 router.get("/new-playlist", isLoggedIn, async (req, res, next) => {
   const { currentUser } = req.session;
   const user = await User.findById(currentUser._id);
@@ -37,6 +38,7 @@ router.get("/new-playlist", isLoggedIn, async (req, res, next) => {
 });
 
 router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
+
   try {
     const { id } = req.params;
     const { currentUser } = req.session;
@@ -51,7 +53,9 @@ router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
       currentUser,
       user,
       id,
+
       currentUser: req.session.currentUser
+
     });
   } catch (error) {
     console.log(error);
@@ -59,7 +63,9 @@ router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
+
   try {
     const { currentUser } = req.session;
     const user = await User.findById(currentUser._id);
@@ -71,7 +77,9 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
     res.render("main/playlists", {
       ownedPlaylists,
       followedPlaylists,
+
       currentUser: req.session.currentUser,
+
       user,
       id,
     });
@@ -81,7 +89,9 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/playlist-details/:id", isLoggedIn, async (req, res, next) => {
+
   try {
     const { currentUser } = req.session;
     const { id } = req.params
@@ -105,8 +115,10 @@ router.get("/playlist-details/:id", isLoggedIn, async (req, res, next) => {
       id,
       canFollow: !playlist.followers.includes(currentUser._id) && playlistAuthorId !== currentUser._id,
       canUnfollow: playlist.followers.includes(currentUser._id),
+
       isOwner: playlistAuthorId === currentUser._id,
       currentUser: req.session.currentUser
+
     });
   } catch (error) {
     console.log(error);
@@ -114,11 +126,13 @@ router.get("/playlist-details/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/new-playlist/:id", isLoggedIn, async (req, res, next) => {
   const { currentUser } = req.session;
   const { id } = req.params
   const user = await User.findById(currentUser._id);
   res.render("main/new-playlist", { user, id, currentUser: req.session.currentUser });
+
 });
 
 router.post("/new-playlist", async (req, res, next) => {

@@ -15,8 +15,10 @@ const {
 } = require("../middlewares/route-guard");
 
 // Signup
+
 router.get("/sign-up", isLoggedOut, (req, res, next) =>
   res.render("auth/signup-form", { currentUser: req.session.currentUser })
+
 );
 
 router.post(
@@ -94,7 +96,7 @@ router.post("/login", async (req, res, next) => {
 });
 
 // Logout
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", (req, res) => {
   req.app.locals.isLogged = false;
   req.session.destroy(() => res.redirect("/"));
 });

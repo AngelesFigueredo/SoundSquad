@@ -2,14 +2,26 @@
   {{>eventAcceptDecline 
      notifications=notifications
      joinRequests=joinRequests}}
-    el problema no está aquí
+
 {{/if}}
 <div class="card">
     <div class="card-body">
-        <img src="{{event.profilePic}}" alt="Profile image" style="width:7rem">
-        <a href="/show-event/{{event._id}}"><h5 class="card-title">{{event.name}}</h5></a>
-        <h6 class="card-subtitle mb-2 text-muted">participantes {{event.members.length}}</h6>
-        <a href="/concert-details/{{event.concertApiId}}" class="card-link">Detalles del concierto</a>
+        <form action="/get-directions" method="post">
+            <input type="text" id="key" value="{{event.key}}" hidden>
+            <img src="{{event.profilePic}}" alt="Profile image" style="width:7rem">
+            <a href="/show-event/{{event._id}}"><h5 class="card-title">{{event.name}}</h5></a>
+            <h6 id="name" class="card-subtitle mb-2 text-muted" ></h6>
+            <h6 id="date" class="card-subtitle mb-2 text-muted"></h6>
+
+
+            <input type="text" name="longitude" id="longitude" hidden>
+            <input type="text" name="latitude" id="latitude" hidden>
+            <button type="submit" class="remove-button-styling">
+                <h6 id="place" class="card-subtitle mb-2 text-muted">hehe</h6>
+            </button>
+        </form>
+        <h6 class="card-subtitle mb-2 text-muted">{{event.members.length}} Participantes</h6>
+        <input type="text" id="apiId" value="{{event.concertApiId}}" hidden>
     
     </div>
 </div>
@@ -19,3 +31,9 @@
             {{>eventChat event=event authorId=session}}
         </div>
     </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/scripts/events/dateFormatter.js"></script>
+<script src="/scripts/events/concert-details.js"></script>
+

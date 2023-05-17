@@ -31,7 +31,9 @@
         <br>
         <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
         <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
+
         <a href="/user/events/{{this._id}}">Ver eventos de {{this.username}}</a></li>
+
         <br>
       {{else}}
         {{#if (ifEquals ../friendship "pendingIn")}}

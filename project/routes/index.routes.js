@@ -33,7 +33,9 @@ router.get("/", (req, res, next) => {
   res.render("index");
 });
 
+
 router.get("/home", isLoggedIn, async (req, res, next) => {
+
   try {
     const id = req.session.currentUser._id;
     const user = await User.findById(id);
@@ -58,7 +60,9 @@ router.get("/home", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/my-profile", isLoggedIn, async (req, res, next) => {
+
   const myProfile = true;
   try {
     try {
@@ -76,6 +80,7 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
         session: req.session,
         myProfile,
         currentUser: req.session.currentUser
+
       });
     } catch {
       res.redirect("/login");
@@ -85,7 +90,9 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get('/users/:username', isLoggedIn, async (req, res) => {
+
   const username = req.params.username;
   // Perform the necessary logic to check if the username exists
   const user = await User.find({username})
@@ -100,7 +107,9 @@ router.get('/users/:username', isLoggedIn, async (req, res) => {
   }
 });
 
+
 router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
+
   const myProfile = false;
   try {
     const { id } = req.params;
@@ -157,17 +166,21 @@ router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
+router.get("/edit/:id", async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
+
     console.log(user)
     res.render("auth/edit-profile", { user, session: req.session, currentUser: req.session.currentUser});
+
   } catch (error) {
     res.render("error", { error });
   }
 });
 
+
 router.get("/notifications", isLoggedIn, async (req, res, next) => {
+
   try {
     
     const currentUser = req.session.currentUser;
@@ -224,7 +237,9 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/new-message", isLoggedIn, async (req, res, next) => {
+
   const users = await User.find().populate("username");
   res.render("main/new-message", { users, currentUser: req.session.currentUser });
 });
@@ -248,7 +263,9 @@ router.get("/:id/friends", isLoggedIn, async (req, res, next) => {
 
 // router.get("/search", async)
 
+
 router.get("/search", isLoggedIn, async (req, res, next) => {
+
   try {
     const { query } = req.query;
 
@@ -346,7 +363,9 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
           songsInfoLong,
           concertsInfoShort,
           concertsInfoLong,
+
           currentUser: req.session.currentUser
+
         });
       });
   } catch (error) {
@@ -354,7 +373,9 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
+
   const { id } = req.params;
   try {
     const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
@@ -366,14 +387,18 @@ router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
       })
       .then((response) => {
         artist = response.data
+
         res.render("main/artist-details", { artist, currentUser: req.session.currentUser });
+
       });
   } catch (error) {
     console.log(error);
   }
 });
 
+
 router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
+
   const { id } = req.params;
   try {
     const { currentUser } = req.session;
@@ -413,7 +438,9 @@ router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
           followedEvents,
           friendEvents,
           otherEvents,
+
           currentUser: req.session.currentUser
+
         });
       })
       .catch((error) => {
@@ -424,7 +451,9 @@ router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
 router.get("/song/:id", isLoggedIn, async (req, res, next) => {
+
   const { id } = req.params;
   try {
     const { currentUser } = req.session
@@ -440,7 +469,9 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
     });
     const song = response.data
     console.log(id)
+
     res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser });
+
   } catch (error) {
     console.log(error);
   }
