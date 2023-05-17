@@ -3,4 +3,21 @@
 <h2>{{this.name}}</h2>
 <h3>{{this.artists.name}}</h3>
 <audio src="{{this.preview_url}}" controls></audio>
+
+{{#if ../user.playlists.length}}
+<p>Añadir canción a una de tus playlists</p>
+      <form action="/{{this.id}}/addtoplaylist" method="POST">
+        <select name="playlists" id="playlists">
+          {{#each ../user.playlists}}
+          {{#if (ne ../../id this._id)}}
+          <option value="{{this._id}}">{{this.title}}</option>
+          {{/if}}
+          {{/each}}
+        </select>
+                  <input type="hidden" name="songs" value="{{this.id}}" />
+          <button type="submit">Añadir canción</button>
+        </form>
+{{/if}}
+
+<a href="/new-playlist/{{this.id}}">Crea una nueva playlist con esta canción!</a>
 {{/with}}

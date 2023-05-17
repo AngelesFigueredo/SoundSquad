@@ -6,7 +6,11 @@ const playlistSchema = new Schema(
     description: String,
     author: { type: Schema.Types.ObjectId, ref: "User" },
     songs: [String],
-    followers: { type: Schema.Types.ObjectId, ref: "User" },
+    followers: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
   },
   {
     timestamps: true,

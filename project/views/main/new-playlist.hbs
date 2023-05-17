@@ -15,6 +15,10 @@
 
   <input hidden type="text" name="author" value="{{user._id}}" />
 
+  {{#if id}}
+  <input hidden type="text" name="songs" value="{{id}}"/>
+  {{/if}}
+
   <br />
 
   <div><button type="submit">Crear playlist</button></div>

@@ -14,7 +14,6 @@ spotifyApi
   .then((data) => {
     spotifyApi.setAccessToken(data.body["access_token"]);
     spotifyAccessToken = data.body["access_token"];
-    console.log("SPOTIFY ACCESS TOKEN", spotifyAccessToken);
   })
   .catch((error) =>
     console.log("Something went wrong when retrieving an access token", error)
@@ -71,7 +70,6 @@ router.get("/my-profile", async (req, res, next) => {
           populate: { path: "author", model: "User" },
         })
         .sort({ createdAt: -1 });
-      console.log(posts);
       res.render("main/profile", {
         posts,
         user,
@@ -86,6 +84,21 @@ router.get("/my-profile", async (req, res, next) => {
   }
 });
 
+router.get('/users/:username', async (req, res) => {
+  const username = req.params.username;
+  // Perform the necessary logic to check if the username exists
+  const user = await User.find({username})
+  
+
+  if (usernameExists) {
+    // Redirect to the user profile page
+    res.redirect(`/users/${username}`);
+  } else {
+    // Return an error response or any other desired response
+    res.status(404).send('User not found');
+  }
+});
+
 router.get("/profile/:id", async (req, res, next) => {
   const myProfile = false;
   try {
@@ -95,12 +108,10 @@ router.get("/profile/:id", async (req, res, next) => {
     const myUser = await User.findById(req.session.currentUser._id);
 
     if (currentUser._id === id) {
-      console.log("tevasa tu perfil", myProfile);
       return res.redirect("/my-profile");
     }
 
     if (myUser.friends.includes(user._id)) {
-      console.log("others perfil", myProfile);
 
       res.render("main/profile", {
         user,
@@ -108,7 +119,6 @@ router.get("/profile/:id", async (req, res, next) => {
         friendship: "true",
       });
     } else if (myUser.sentFriendRequests.includes(user._id)) {
-      console.log("others perfil", myProfile);
 
       res.render("main/profile", {
         user,
@@ -116,7 +126,6 @@ router.get("/profile/:id", async (req, res, next) => {
         friendship: "pendingOut",
       });
     } else if (myUser.friendRequests.includes(user._id)) {
-      console.log("others perfil", myProfile);
 
       res.render("main/profile", {
         user,
@@ -130,7 +139,6 @@ router.get("/profile/:id", async (req, res, next) => {
       //     friendship: "pending",
       //   });
     } else {
-      console.log("others perfil", myProfile);
 
       res.render("main/profile", {
         user,
@@ -295,7 +303,6 @@ router.get("/search", async (req, res, next) => {
       .then((response) => {
         if (response.data && response.data._embedded) {
           let concerts = response.data._embedded.events;
-          // console.log("HOLIIIIIIIIss", concerts[0]);
 
           concertsInfoShort = concerts.slice(0, 5).map((concert) => ({
             name: concert.name,
@@ -401,6 +408,11 @@ router.get("/concert/:id", async (req, res, next) => {
 router.get("/song/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
+    const { currentUser } = req.session
+    const user = await User.findById(currentUser._id).populate({
+      path: "playlists",
+      select: "title"})
+
     const urlSearch = `https://api.spotify.com/v1/tracks/${id}`;
     const response = await axios.get(urlSearch, {
       headers: {
@@ -408,7 +420,8 @@ router.get("/song/:id", async (req, res, next) => {
       },
     });
     const song = response.data
-    res.render("main/track-details", { song });
+    console.log(id)
+    res.render("main/track-details", { song, user, id });
   } catch (error) {
     console.log(error);
   }

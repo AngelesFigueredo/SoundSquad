@@ -13,10 +13,7 @@
 
 
 {{else}}
-  <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
-  <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
-  <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
-  <br>
+  
   {{#if (ifEquals ../friendship "false")}}
     <form id="friend-request-form" action="/friend-requests/{{this._id}}" method="POST">
       <button type="submit">Enviar petición de amistad</button>
@@ -30,6 +27,11 @@
         <form id="unfollow-form" action="/unfollow/{{this._id}}" method="POST">
           <button type="submit">Cancelar amistad</button>
         </form>
+        <br>
+        <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
+        <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
+        <a href="/{{this._id}}/events">Ver eventos de {{this.username}}</a></li>
+        <br>
       {{else}}
         {{#if (ifEquals ../friendship "pendingIn")}}
           <p>{{this.username}} te ha enviado una solicitud de amistad, ve a <a href="/notifications">notificaciones</a> para contestarla</p>
