@@ -22,6 +22,7 @@ const {
   isLoggedOut,
   checkRole,
 } = require("../middlewares/route-guard");
+
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const Playlist = require("../models/Playlist.model");
@@ -29,13 +30,15 @@ const Event = require("../models/Events.model");
 
 /* GET home page */
 
-router.get("/new-playlist", async (req, res, next) => {
+
+router.get("/new-playlist", isLoggedIn, async (req, res, next) => {
   const { currentUser } = req.session;
   const user = await User.findById(currentUser._id);
-  res.render("main/new-playlist", { user });
+  res.render("main/new-playlist", { user, currentUser: req.session.currentUser });
 });
 
-router.get("/playlists-list/:id", async (req, res, next) => {
+router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
+
   try {
     const { id } = req.params;
     const { currentUser } = req.session;
@@ -50,6 +53,9 @@ router.get("/playlists-list/:id", async (req, res, next) => {
       currentUser,
       user,
       id,
+
+      currentUser: req.session.currentUser
+
     });
   } catch (error) {
     console.log(error);
@@ -57,7 +63,9 @@ router.get("/playlists-list/:id", async (req, res, next) => {
   }
 });
 
-router.get("/my-playlists", async (req, res, next) => {
+
+router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
+
   try {
     const { currentUser } = req.session;
     const user = await User.findById(currentUser._id);
@@ -69,7 +77,9 @@ router.get("/my-playlists", async (req, res, next) => {
     res.render("main/playlists", {
       ownedPlaylists,
       followedPlaylists,
-      currentUser,
+
+      currentUser: req.session.currentUser,
+
       user,
       id,
     });
@@ -79,7 +89,9 @@ router.get("/my-playlists", async (req, res, next) => {
   }
 });
 
-router.get("/playlist-details/:id", async (req, res, next) => {
+
+router.get("/playlist-details/:id", isLoggedIn, async (req, res, next) => {
+
   try {
     const { currentUser } = req.session;
     const { id } = req.params
@@ -103,7 +115,10 @@ router.get("/playlist-details/:id", async (req, res, next) => {
       id,
       canFollow: !playlist.followers.includes(currentUser._id) && playlistAuthorId !== currentUser._id,
       canUnfollow: playlist.followers.includes(currentUser._id),
-      isOwner: playlistAuthorId === currentUser._id
+
+      isOwner: playlistAuthorId === currentUser._id,
+      currentUser: req.session.currentUser
+
     });
   } catch (error) {
     console.log(error);
@@ -111,11 +126,13 @@ router.get("/playlist-details/:id", async (req, res, next) => {
   }
 });
 
-router.get("/new-playlist/:id", async (req, res, next) => {
+
+router.get("/new-playlist/:id", isLoggedIn, async (req, res, next) => {
   const { currentUser } = req.session;
   const { id } = req.params
   const user = await User.findById(currentUser._id);
-  res.render("main/new-playlist", { user, id });
+  res.render("main/new-playlist", { user, id, currentUser: req.session.currentUser });
+
 });
 
 router.post("/new-playlist", async (req, res, next) => {

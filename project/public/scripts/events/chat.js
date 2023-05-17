@@ -10,8 +10,10 @@ const socket = io('http://localhost:4000', { transports: ['websocket', 'polling'
         });
 
         // listen for new message events
+
         socket.on("new message", () => {
             location.reload()
+
         });
 
         // send message to server

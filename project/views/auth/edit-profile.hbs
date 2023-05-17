@@ -16,15 +16,47 @@
     </label>
 
     <label>BIO:
-        <input type="text" name="description" value="{{this.desciption}}"/>
+        <input type="text" name="description" value="{{this.description}}"/>
     </label>
 
-    {{!-- <label>Foto de perfil: 
-        <input type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
-        <a href="/take-photo">Hazte una foto de perfil</a>
-    </label> --}}
+    <label>Intereses:
+        <input type="text" name="interests" id="interestsInput" />
+    </label>
+    <p>Añade varios intereses separados por espacios.</p>
+
+    <div>
+        <label for="profileImg">Imagen</label>
+        <input hidden id="pic-url" name="picUrl" />
+        <p hidden id="taken-pic"> Ya tienes una imagen que has tomado</p>
+        <button hidden id="upload-button">Subir otra imagen</button>
+        <input type="file" id="image-input" name="profileImg" accept="image/jpeg, image/png" />
+        <a href="/take-photo">Hazte una nueva</a>
+    </div>
+
+    <button type="submit"> Editar perfil </button>
+</form>
 
 {{/with}}
 
-<button type="submit"> Editar perfil </button>
-</form>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const interestsInput = document.getElementById('interestsInput');
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const interests = interestsInput.value.trim().split(' ');
+            console.log("---------------", interests);
+
+            let hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'interests');
+            hiddenInput.setAttribute('value', interests.join(', ')); // Join the interests array with a comma
+            form.appendChild(hiddenInput);
+
+            // Manually submit the form
+            form.submit();
+        });
+    });
+</script>

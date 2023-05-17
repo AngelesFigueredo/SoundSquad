@@ -9,7 +9,10 @@ const {
 const Message = require("../models/Message.model");
 const Conversation = require("../models/Conversation.model");
 
-router.get("/messages", async (req, res, next) => {
+const User = require("../models/User.model");
+
+router.get("/messages", isLoggedIn, async (req, res, next) => {
+
   try {
     const { currentUser } = req.session;
     const conversationsForView = await Conversation.find({
@@ -18,17 +21,24 @@ router.get("/messages", async (req, res, next) => {
       .populate("users")
       .sort({ createdAt: 1 });
 
-    res.render("main/messages", { conversationsForView });
+
+    res.render("main/messages", { conversationsForView, currentUser: req.session.currentUser });
+
   } catch (error) {
     console.log(error);
     res.render("error", { error });
   }
 });
 
-router.get("/messages/:id", async (req, res, next) => {
+
+router.get("/messages/:id", isLoggedIn, async (req, res, next) => {
+
   const { id } = req.params;
   const { currentUser } = req.session;
   let otherUser;
+
+
+  const myUser = await User.findById(currentUser._id).populate("username")
 
   const conversation = await Conversation.findById(id)
     .populate({
@@ -37,6 +47,8 @@ router.get("/messages/:id", async (req, res, next) => {
       populate: {
         path: "author",
         select: "username",
+        model: 'User'
+
       },
       options: {
         sort: { createdAt: 1 }, // sort messages by creation date in ascending order
@@ -52,7 +64,10 @@ router.get("/messages/:id", async (req, res, next) => {
   } else {
     otherUser = conversation.users[0];
   }
-  res.render("main/conversation", { conversation, currentUser, otherUser });
+
+  console.log(currentUser.username)
+  res.render("main/conversation", { conversation, currentUser, otherUser, myUser });
+
 });
 
 router.post("/new-message", async (req, res, next) => {

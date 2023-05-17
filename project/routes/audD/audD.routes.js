@@ -5,7 +5,7 @@ const User = require("../../models/User.model");
 
 /* GET home page */
 router.get("/audd", (req, res, next) => {
-  res.render("audD/audd", { session: req.session });
+  res.render("audD/audd", { session: req.session, currentUser: req.session.currentUser });
 });
 
 router.post("/song-details", async (req, res, next) => {

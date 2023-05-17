@@ -33,7 +33,9 @@ router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-router.get("/home", async (req, res, next) => {
+
+router.get("/home", isLoggedIn, async (req, res, next) => {
+
   try {
     const id = req.session.currentUser._id;
     const user = await User.findById(id);
@@ -58,7 +60,9 @@ router.get("/home", async (req, res, next) => {
   }
 });
 
-router.get("/my-profile", async (req, res, next) => {
+
+router.get("/my-profile", isLoggedIn, async (req, res, next) => {
+
   const myProfile = true;
   try {
     try {
@@ -75,6 +79,8 @@ router.get("/my-profile", async (req, res, next) => {
         user,
         session: req.session,
         myProfile,
+        currentUser: req.session.currentUser
+
       });
     } catch {
       res.redirect("/login");
@@ -84,7 +90,9 @@ router.get("/my-profile", async (req, res, next) => {
   }
 });
 
-router.get('/users/:username', async (req, res) => {
+
+router.get('/users/:username', isLoggedIn, async (req, res) => {
+
   const username = req.params.username;
   // Perform the necessary logic to check if the username exists
   const user = await User.find({username})
@@ -99,7 +107,9 @@ router.get('/users/:username', async (req, res) => {
   }
 });
 
-router.get("/profile/:id", async (req, res, next) => {
+
+router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
+
   const myProfile = false;
   try {
     const { id } = req.params;
@@ -117,6 +127,7 @@ router.get("/profile/:id", async (req, res, next) => {
         user,
         myProfile,
         friendship: "true",
+        currentUser: req.session.currentUser
       });
     } else if (myUser.sentFriendRequests.includes(user._id)) {
 
@@ -124,6 +135,7 @@ router.get("/profile/:id", async (req, res, next) => {
         user,
         myProfile,
         friendship: "pendingOut",
+        currentUser: req.session.currentUser
       });
     } else if (myUser.friendRequests.includes(user._id)) {
 
@@ -131,6 +143,7 @@ router.get("/profile/:id", async (req, res, next) => {
         user,
         myProfile,
         friendship: "pendingIn",
+        currentUser: req.session.currentUser
       });
       // } else if (myUser.pendingFriendRequests.includes(user._id)) {
       //   res.render("main/profile", {
@@ -144,6 +157,7 @@ router.get("/profile/:id", async (req, res, next) => {
         user,
         myProfile,
         friendship: "false",
+        currentUser: req.session.currentUser
       });
     }
   } catch (error) {
@@ -155,16 +169,31 @@ router.get("/profile/:id", async (req, res, next) => {
 router.get("/edit/:id", async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
-    res.render("auth/edit-profile", { user, session: req.session });
+
+    console.log(user)
+    res.render("auth/edit-profile", { user, session: req.session, currentUser: req.session.currentUser});
+
   } catch (error) {
     res.render("error", { error });
   }
 });
 
-router.get("/notifications", async (req, res, next) => {
+
+router.get("/notifications", isLoggedIn, async (req, res, next) => {
+
   try {
+    
     const currentUser = req.session.currentUser;
+    console.log(currentUser)
     const user = await User.findById(currentUser._id)
+    .populate({
+        path: "eventsRequests.event",
+        model: "Event",
+      })
+      .populate({
+        path: "eventsRequests.user",
+        model: "User",
+      })
       .populate({
         path: "postMentions",
         populate: {
@@ -201,15 +230,18 @@ router.get("/notifications", async (req, res, next) => {
       comments,
       friendRequests,
       session: req.session,
+      currentUser: req.session.currentUser
     });
   } catch (error) {
     res.render("error", { error });
   }
 });
 
-router.get("/new-message", async (req, res, next) => {
+
+router.get("/new-message", isLoggedIn, async (req, res, next) => {
+
   const users = await User.find().populate("username");
-  res.render("main/new-message", { users });
+  res.render("main/new-message", { users, currentUser: req.session.currentUser });
 });
 
 // router.get("/new-message/:id", async (req, res, next) => {
@@ -221,17 +253,19 @@ router.get("/new-message", async (req, res, next) => {
 //   }
 // });
 
-router.get("/:id/friends", async (req, res, next) => {
+router.get("/:id/friends", isLoggedIn, async (req, res, next) => {
   const user = await User.findById(req.params.id).populate(
     "friends",
     "username"
   );
-  res.render("main/friends", { friends: user.friends });
+  res.render("main/friends", { friends: user.friends, currentUser: req.session.currentUser });
 });
 
 // router.get("/search", async)
 
-router.get("/search", async (req, res, next) => {
+
+router.get("/search", isLoggedIn, async (req, res, next) => {
+
   try {
     const { query } = req.query;
 
@@ -329,6 +363,9 @@ router.get("/search", async (req, res, next) => {
           songsInfoLong,
           concertsInfoShort,
           concertsInfoLong,
+
+          currentUser: req.session.currentUser
+
         });
       });
   } catch (error) {
@@ -336,7 +373,9 @@ router.get("/search", async (req, res, next) => {
   }
 });
 
-router.get("/artist/:id", async (req, res, next) => {
+
+router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
+
   const { id } = req.params;
   try {
     const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
@@ -348,14 +387,18 @@ router.get("/artist/:id", async (req, res, next) => {
       })
       .then((response) => {
         artist = response.data
-        res.render("main/artist-details", { artist });
+
+        res.render("main/artist-details", { artist, currentUser: req.session.currentUser });
+
       });
   } catch (error) {
     console.log(error);
   }
 });
 
-router.get("/concert/:id", async (req, res, next) => {
+
+router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
+
   const { id } = req.params;
   try {
     const { currentUser } = req.session;
@@ -395,6 +438,9 @@ router.get("/concert/:id", async (req, res, next) => {
           followedEvents,
           friendEvents,
           otherEvents,
+
+          currentUser: req.session.currentUser
+
         });
       })
       .catch((error) => {
@@ -405,7 +451,9 @@ router.get("/concert/:id", async (req, res, next) => {
   }
 });
 
-router.get("/song/:id", async (req, res, next) => {
+
+router.get("/song/:id", isLoggedIn, async (req, res, next) => {
+
   const { id } = req.params;
   try {
     const { currentUser } = req.session
@@ -421,22 +469,39 @@ router.get("/song/:id", async (req, res, next) => {
     });
     const song = response.data
     console.log(id)
-    res.render("main/track-details", { song, user, id });
+
+    res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser });
+
   } catch (error) {
     console.log(error);
   }
 });
 
-router.post("/edit/:id", isLoggedIn, async (req, res, next) => {
+router.post("/edit/:id", async (req, res, next) => {
   const { body } = req;
   const { id } = req.params;
+
   try {
-    await User.findByIdAndUpdate(id, body);
+    const interests = body.interests; 
+    const updatedData = {
+      name: body.name,
+      lastName: body.lastName,
+      age: body.age,
+      description: body.description,
+      interests: interests, // Assign the parsed interests array
+    };
+
+    // Update the user with the updated data
+    await User.findByIdAndUpdate(id, updatedData);
+
+    // Redirect to the profile edit page
     res.redirect("/my-profile");
   } catch (error) {
-    res.render("error", { error });
+    console.log(error);
+    // Handle the error
   }
 });
+
 
 router.post("/friend-requests/:id", async (req, res, next) => {
   const { id } = req.params;
