@@ -6,4 +6,29 @@
 }
 .event-title-container{
     padding-top: 14px;
+    padding-left: 16px;
+    padding-bottom : 16px;
+}
+.api-info-concert{
+    padding-left: 0;
+    margin-bottom: 0;
+}
+h6{
+    color: #BEBEBE;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 120%;
+    margin-top: 6px;
+}
+.separation{
+    margin-top: 15px;
+}
+.profile-pic{
+    width: 100%;
+   
+}
+.scroller{
+    overflow-y: auto;
+    height: 75vh;
 }

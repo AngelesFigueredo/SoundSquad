@@ -1,5 +1,5 @@
 {{#if event}}
-<div id="event-messages">
+<div id="event-messages" class="scroller">
     {{#each event.messages}}
 
             <h5 class="card-title">
@@ -10,13 +10,12 @@
                 {{author.username}}
                 {{/if}}
             </h5>
-
-            <h6 class="card-subtitle mb-2 text-muted">{{createdAt}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted time">{{createdAt}}</h6>
             <p class="card-text">{{content}}</p>
     
     {{/each}}
 </div>
-<form id="message-form" method="post">
+<form id="message-form" class="" method="post">
 
     <input type="text" name="content">
     <input type="text" name="author" value="{{session.currentUser._id}}" hidden>
@@ -25,6 +24,25 @@
     <button type="submit">Enviar</button>
 </form>
 
+
+
 {{/if}}
 <script src="http://localhost:4000/socket.io/socket.io.js"></script>
 <script src="/scripts/events/chat.js"></script>
+<script>
+
+    const date = document.querySelector(".time")
+    
+    const formatDate = (date) => {
+            const options = { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric' };
+            const formattedDate = date.toLocaleDateString('es-ES', options);
+            const [weekday, day, month, time] = formattedDate.split(' ');
+            console.log({ date: `${weekday}, ${day} ${month}`, time })
+            return { date: `${weekday}, ${day} ${month}`, time };
+        };
+    const newDate = new Date(date.innerHTML)
+    const finalData = formatDate(newDate)
+    const {weekday, day, month, time} = finalData
+    date.innerHTML= `<p class="date">${weekday}, ${day} ${month}</p>`
+        
+</script>
