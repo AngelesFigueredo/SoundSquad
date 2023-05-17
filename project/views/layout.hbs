@@ -15,19 +15,38 @@
 
       <header>
          <nav>
-            <ul>
-               <li><a href="/">página desarrollo</a></l>
-               <li><a href="/home">Home</a></l>
-               <li><a href="/my-profile">Mi perfil</a></li>
-               <li><a href="/audd">Shazam!</a></li>
-               {{#if isLogged}}
+            <div class="row">
+            <div class="call-md-3">
+            <li class="nav-item">
+               <img src="images/playlists-logo.png" alt="Playlists" width="21" height="21" class="d-inline-block align-text-top">Playlists
+            </li>
+            </div>
+            <div class="call-md-3">
+            <li class="nav-item">
+               <img src="images/events-logo.png" alt="Events" width="21" height="21" class="d-inline-block align-text-top">Eventos
+            </li>
+            </div>
+
+            <div class="call-md-3">
+            <li class="nav-item">
+               <img src="images/home-logo.png" alt="Home" width="21" height="21" class="d-inline-block align-text-top">Home
+            </li>
+            </div>
+
+            <div class="call-md-3">
+            <li class="nav-item">
+               <a href="/audd">Shazam!</a>
+            </li>
+            </div>
+            </div>
+               {{!-- {{#if isLogged}}
                   <li>Sesión iniciada</li>
                   <li><a href="/logout">Cerrar sesión</a></li>
                   <li><a href="/notifications">Notificaciones</a></li>
                   <li><a href="/messages">Mensajes</a></li>
                {{else}}
                   <li><a href="/login">Inicia sesión</a></li>
-               {{/if}}
+               {{/if}} --}}
 
                <li>
                   <form action="/search" method="GET">
