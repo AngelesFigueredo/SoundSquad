@@ -2,16 +2,18 @@ const isLoggedIn = (req, res, next) => {
   if (req.session.currentUser) {
     next();
   } else {
-    res.render("auth/login-form", { errorMessage: "You must log-in." });
+    res.render("auth/login-form", { errorMessage: "Debes iniciar sesión" });
     return;
   }
 };
 
 const isLoggedOut = (req, res, next) => {
-  if (req.session.currentUser) {
+
+  if (!req.session.currentUser) {
     next();
   } else {
-    // res.redirect("/");
+    res.redirect("/");
+
   }
 };
 
@@ -22,7 +24,7 @@ const checkRole =
       next();
     } else {
       //chequear a dónde redirecciona esto, y poner el errorMessage en todas las páginas que sean susceptibles a devolver un not permission
-      res.render("auth/login", { errorMessage: "You don't have permissions." });
+      res.render("auth/login", { errorMessage: "No tienes permiso." });
     }
   };
 

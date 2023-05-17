@@ -76,6 +76,15 @@ nav .active a {
   font-weight: bold;
 }
 
+
+.my-message {
+  background-color: yellow;
+}
+
+.others-message {
+  background-color: blueviolet;
+}
+
 .remove-button-styling {
     background: none;
     color: inherit;
@@ -85,3 +94,4 @@ nav .active a {
     cursor: pointer;
     outline: inherit;
   }
+

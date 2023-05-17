@@ -1,0 +1,20 @@
+<h1>Create new event </h1>
+
+<form action="/create-event/{{concertId.concertId}}" method="POST">
+    <label> Escoge un nombre para tu Evento
+        <input type="text" name="name" required placeholder="Nombre de tu evento"></input>
+    </label>
+    <label> 
+        <input type="text" name="author" value="{{session.currentUser._id}}" hidden></input>
+        <input type="text" name="admin" value="{{session.currentUser._id}}" hidden></input>
+    </label>
+    <label> Descripción
+        <textarea type="text" name="description" placeholder="Descripción"> </textarea>
+    </label>
+    <input type="text" name="members" value="{{session.currentUser._id}}" hidden></input>
+    <input type="text" name="concertApiId" 
+    value="{{concertId.concertId}}" hidden></input>
+
+    <button type="submit">Crea tu evento</button>
+
+</form>

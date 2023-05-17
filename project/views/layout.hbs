@@ -29,11 +29,17 @@
                <li><a href="/home">Home</a></l>
                <li><a href="/my-profile">Mi perfil</a></li>
                <li><a href="/audd">Shazam!</a></li>
-               {{#if isLogged}}
-                  <li>Sesión iniciada</li>
+
+               {{#if currentUser}}
+                  {{#with currentUser}}
+                  <div>
+                  <li><img src="{{this.profileImg}}" width="30"><p>{{this.username}}</p></li>
+                  </div>
+
                   <li><a href="/logout">Cerrar sesión</a></li>
                   <li><a href="/notifications">Notificaciones</a></li>
                   <li><a href="/messages">Mensajes</a></li>
+                  {{/with}}
                {{else}}
                   <li><a href="/login">Inicia sesión</a></li>
                {{/if}}

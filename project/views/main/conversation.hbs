@@ -6,7 +6,13 @@
       <p><strong>{{getDate this.createdAt}}</strong></p>
     {{/if}}
     <p>{{this.author.username}} {{getTime this.createdAt}}:</p>
-    <p>{{this.content}}</p>
+
+    {{#if (ifEquals this.author.username ../../myUser.username) }}
+    <div class="my-message"><p>{{this.content}}</p></div>
+    {{else}}
+    <div class="others-message"><p>{{this.content}}</p></div>
+    {{/if}}
+
     <br>
   {{/each}}
 

@@ -1,5 +1,5 @@
 {{#unless friendRequests}}
-  {{#unless dms}}
+  {{#unless eventsRequests}}
     {{#unless posts}}
       {{#unless comments}}
         <p>No tienes notificaciones</p>
@@ -24,8 +24,19 @@
   {{/each}}
 {{/if}}
 
-{{#if dms}}
-  <h2>Mensajes directos:</h2>
+{{#if eventsRequests}}
+<h2>Solicitudes de eventos</h2>
+  {{#each eventsRequests}}
+    <p>{{this.user.username}} solicita unirse a {{this.event.name}}</p>
+    <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/accept" method="POST">
+      <button type="submit">Aceptar</button>
+    </form>
+
+    <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/cancel" method="POST">
+      <button type="submit">Cancelar</button>
+    </form>
+
+  {{/each}}
 {{/if}}
 
 {{#if posts}}
