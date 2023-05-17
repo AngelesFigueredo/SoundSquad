@@ -47,7 +47,7 @@
     <br />
   </div>
 
-  <div>
+  {{!-- <div>
     <label for="profileImg">Imagen</label>
 
     <input hidden id="pic-url" name="picUrl" />
@@ -62,7 +62,7 @@
     />
     <a href="/take-photo">Hazte una nueva</a>
   </div>
-  <br />
+  <br /> --}}
 
   <div><button type="submit">Completar registro</button></div>
 
@@ -70,7 +70,8 @@
     <p>{{errorMessage}}</p>
   {{/if}}
 </form>
+<p>Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
 
 <script src="scripts/show-pwd.js"></script>
 <script src="scripts/check-pwd.js"></script>
-<script src="scripts/check-profilePic.js"></script>
+{{!-- <script src="scripts/check-profilePic.js"></script> --}}

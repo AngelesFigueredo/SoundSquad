@@ -5,7 +5,7 @@ const User = require("../../models/User.model");
 
 /* GET home page */
 router.get("/audd", (req, res, next) => {
-  res.render("audD/audd", { session: req.session });
+  res.render("audD/audd", { session: req.session, currentUser: req.session.currentUser });
 });
 
 router.post("/song-details", async (req, res, next) => {
@@ -16,7 +16,7 @@ router.post("/song-details", async (req, res, next) => {
   });
   const base64Audio = req.body.audioData;
   const data = {
-    api_token: "c3464647d5ef836d027326a61a5ce3b0",
+    api_token: process.env.AUDD_TOKEN,
     audio: base64Audio,
     return: "apple_music,spotify",
   };
