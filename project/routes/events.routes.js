@@ -44,8 +44,9 @@ const User = require("../models/User.model");
       }
   });
   
-  router.get("/events/:id", async(req,res,next)=>{
+  router.get("/user/events/:id", async(req,res,next)=>{
     try{
+    console.log("----------estamosaqui--------------")
     const { currentUser } = req.session
     const routeId = req.params.id
     const otherUser = await User.findById(req.params.id)
