@@ -1,6 +1,11 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+}
+.body-wrap{
+  padding-bottom: 70px;
+}
+nav{
+  background-color: #FCFAFA;
 }
 
 a {

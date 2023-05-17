@@ -1,0 +1,21 @@
+.purple-button{
+    background-color: #6324BB;
+    border: none;
+    width: 100%;
+    color: white;
+    font-weight: 400;
+    border-radius: 100px;
+    padding-top: 8px ;
+    padding-bottom: 8px;
+}
+
+.white-button {
+    background-color: white;
+    border: 1px solid #6324BB ;
+    width: 100%;
+    color: #6324BB;
+    font-weight: 400;
+    border-radius: 100px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
