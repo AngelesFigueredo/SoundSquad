@@ -28,6 +28,10 @@ const User = require("../models/User.model");
     res.render("events/events", { session: req.session, data, currentUser: req.session.currentUser});
   });
   
+  router.get("/create-event/new", (req, res, next)=> {
+    res.render("events/create-new")
+  })
+
   router.get("/create-event/:concertId", (req, res, next) => {
       const concertId = req.params
       res.render("events/create", { session: req.session, concertId, currentUser: req.session.currentUser}, );

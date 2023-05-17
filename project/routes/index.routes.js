@@ -169,7 +169,9 @@ router.get("/edit/:id", isLoggedIn, async (req, res, next) => {
 
 router.get("/notifications", isLoggedIn, async (req, res, next) => {
   try {
+    
     const currentUser = req.session.currentUser;
+    console.log(currentUser)
     const user = await User.findById(currentUser._id)
     .populate({
         path: "eventsRequests.event",

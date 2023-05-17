@@ -70,3 +70,11 @@ nav .active a {
 .new-notification {
   font-weight: bold;
 }
+
+.my-message {
+  background-color: yellow;
+}
+
+.others-message {
+  background-color: blueviolet;
+}
