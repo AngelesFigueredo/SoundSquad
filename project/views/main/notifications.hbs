@@ -49,12 +49,12 @@
             <p class="body-text">{{this.user.username}} solicita unirse a {{this.event.name}}</p>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col-2">
               <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/accept" method="POST">
                 <button class="link" type="submit">Aceptar</button>
               </form>
             </div>
-            <div class="col">
+            <div class="col-2">
               <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/cancel" method="POST">
                 <button class="link" type="submit">Cancelar</button>
               </form>
