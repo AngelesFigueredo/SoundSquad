@@ -42,14 +42,9 @@
                             </button>
                         </div>
                     </div>
-
-                    
                     <input type="text" name="longitude" id="longitude" hidden>
                     <input type="text" name="latitude" id="latitude" hidden>
-
-                    
                     </form>
-
                     <div class="row">
                         <div class="col-1">
                             <img src="/images/icons/participants.svg">
@@ -58,7 +53,6 @@
                             <h6 class="data">{{event.members.length}} Participantes</h6>
                         </div>
                     </div>
-
                     <input type="text" id="apiId" value="{{event.concertApiId}}" hidden>
                     <div class="row separation">
                         <div class="col-6">
@@ -72,13 +66,10 @@
                     </div>
                 </div>
         </div>
-        <div class="col-md-5 ">
+        <div class="col-md-7 ">
             <hr>
             {{>eventChat event=event authorId=session}}
         </div>
-       
-    
-    
 </div>
 
     

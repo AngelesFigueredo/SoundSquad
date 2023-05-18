@@ -1,48 +1,56 @@
 {{#if event}}
 <div id="event-messages" class="scroller">
     {{#each event.messages}}
-
-            <h5 class="card-title">
-                {{#if isYou}}
-                You
-                {{else}}
-                <img src="{{author.profileImg}}" style="width: 80px;">
-                {{author.username}}
-                {{/if}}
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted time">{{createdAt}}</h6>
-            <p class="card-text">{{content}}</p>
+    <div class="d-flex justify-content-center time">
+        <h6 class="card-subtitle mb-2 text-muted time">
+            {{time}}
+        </h6>
+    </div>
+            
+        {{#if isYou}}
+        <div class="row justify-content-end">
+            <div class="you-message col-6">
+                <p>{{content}}</p>
+            </div>
+        </div>
+        {{else}}
+        <div class="row">
+            <div class="col-2 picture">
+                <img src="{{author.profileImg}}">
+            </div>
+            <div class="col-8 wrapper">
+                <div class="other-message">
+                    <b>
+                        {{author.username}}
+                    </b>
+                    <p>{{content}}</p>
+                </div>
+            </div>
+        </div>
+        {{/if}}
     
     {{/each}}
 </div>
-<form id="message-form" class="" method="post">
+<form id="message-form" method="post">
+    <div class="sender container">
+        <div class="outline row justify-content-around">
+            <div class="col-9 col-md-10">
+                <input type="text" name="content" class="message-send">
+            </div>
+            <div class="col-2">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="remove-button-styling pr-0">SEND</button>
+                </div>
+            </div>
 
-    <input type="text" name="content">
-    <input type="text" name="author" value="{{session.currentUser._id}}" hidden>
-    <input type="text" name="to" value="{{event._id}}" hidden>
+            <input type="text" name="author" value="{{session.currentUser._id}}" hidden>
+            <input type="text" name="to" value="{{event._id}}" hidden>
+            
+        </div>
+    </div>
 
-    <button type="submit">Enviar</button>
 </form>
-
-
 
 {{/if}}
 <script src="http://localhost:4000/socket.io/socket.io.js"></script>
 <script src="/scripts/events/chat.js"></script>
-<script>
-
-    const date = document.querySelector(".time")
-    
-    const formatDate = (date) => {
-            const options = { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric' };
-            const formattedDate = date.toLocaleDateString('es-ES', options);
-            const [weekday, day, month, time] = formattedDate.split(' ');
-            console.log({ date: `${weekday}, ${day} ${month}`, time })
-            return { date: `${weekday}, ${day} ${month}`, time };
-        };
-    const newDate = new Date(date.innerHTML)
-    const finalData = formatDate(newDate)
-    const {weekday, day, month, time} = finalData
-    date.innerHTML= `<p class="date">${weekday}, ${day} ${month}</p>`
-        
-</script>

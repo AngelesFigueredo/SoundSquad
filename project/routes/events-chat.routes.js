@@ -45,6 +45,12 @@ router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, 
     })
   event.messages.forEach((message) => {
     message.isYou = message.author._id == req.session.currentUser._id
+    const dateString = message.createdAt
+    const date = new Date(dateString);
+
+    const options = { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric' };
+    const formattedDate = date.toLocaleDateString('es-ES', options);
+    message.time = formattedDate
   })
   const isAdmin = event.admin.includes(req.session.currentUser._id)
   let notifications

@@ -21,3 +21,6 @@ const socket = io('http://localhost:4000', { transports: ['websocket', 'polling'
             const content = document.getElementById("input-message").value;
             socket.emit("create message", { content });
         };
+window.onload = function() {
+  window.scrollTo(0, document.body.scrollHeight);
+}

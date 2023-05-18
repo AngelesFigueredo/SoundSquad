@@ -30,5 +30,61 @@ h6{
 }
 .scroller{
     overflow-y: auto;
-    height: 75vh;
+    overflow-x: hidden;
+    height: 70vh;
 }
+.you-message{
+    background-color: #6324BB;
+    display: block;
+    padding: 10px;
+    border-radius: 8px 8px 2px 8px;
+    color: #FCFAFA;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    margin-right: 20px;
+    line-height: 17px;
+}
+p{
+    margin-bottom: 0;
+}
+.picture img{
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+}
+.picture{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.other-message{
+    padding: 8px;
+    padding-left: 15px;
+    background: #E5E1EE;
+    border-radius: 8px 8px 8px 2px;
+}
+.wrapper{
+    padding-left: 0;
+}
+.time{
+    padding-top: 5px;
+}
+.message-send{
+    border: none;
+    width: 100%;
+}
+.sender .outline{
+    border: 1px solid #BEBEBE;
+    border-radius: 100px;
+    padding: 8px;
+    margin: 5px;
+    margin-top: 10px;
+}
+.sender button{
+    color: #BEBEBE;
+}
+.sender{
+    padding: 10px, 50px;
+}
+
