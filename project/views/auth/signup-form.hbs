@@ -1,33 +1,47 @@
-<h1>Registro</h1>
-<hr />
+<link rel="stylesheet" href="/stylesheets/form.css" />
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <p class="head-text">Registro</p>
+    </div>
+  </div>
 
 <form action="/sign-up" method="POST" enctype="multipart/form-data">
+  <div class="form-group row">
+    <label class="label" for="usernameInput">Nombre de usuario</label>
+      <div class="col-10">
+        <input required class="form-control" type="text" id="usernameInput" name="username" />
+        <p class="message">Requerido</p>
+        <br />
+      </div>
 
   <div>
-    <label for="usernameInput">Nombre de usuario</label>
-    <input required type="text" id="usernameInput" name="username" />
-    <div>Requerido</div>
-    <br />
+    <label class="label" for="emailInput">Dirección de email</label>
+      <div class="col-10">
+        <input required class="form-control" type="email" id="emailInput" name="email" />
+        <p class="message">Requerido</p>
+        <br />
+      </div>
   </div>
 
   <div>
-    <label for="emailInput">Dirección de email</label>
-    <input required type="email" id="emailInput" name="email" />
-    <div>Requerido</div>
-    <br />
+    <label class="label" for="pwdInput">Contraseña</label>
+    <div class="col-8">
+      <input
+        required
+        class="form-control"
+        type="password"
+        id="pwdInput"
+        name="password"
+        pattern="^(?=.*[A-Z]).{8,}$"
+      />
+
+      <button class="see" type="button" id="toggle-password"><img id="toggle-image1" class="see" src="/images/icons/see.png" alt="show"></button>
+      <p class="message">Requerido</p>
+    </div>
   </div>
 
-  <div>
-    <label for="pwdInput">Contraseña</label>
-    <input
-      required
-      type="password"
-      id="pwdInput"
-      name="password"
-      pattern="^(?=.*[A-Z]).{8,}$"
-    />
-    <button type="button" id="toggle-password">Show</button>
-    <div>Requerido</div>
     <div class="password-requirements">
       <p>La contraseña debe contener:</p>
       <ul>
@@ -39,38 +53,24 @@
   </div>
 
   <div>
-    <label for="pwdInput2">Repita su contraseña</label>
-    <input required type="password" id="pwdInput2" name="password2" />
-    <button type="button" id="toggle-password2">Show</button>
-    <p id="pwd-check-message"></p>
-    <div>Requerido</div>
+    <label class="label" for="pwdInput2">Repita su contraseña</label>
+    <div class="password-wrapper">
+      <input required type="password" id="pwdInput2" name="password2" />
+            <button class="see" type="button" id="toggle-password2"><img id="toggle-image2" class="see" src="/images/icons/see.png" alt="show"></button>
+    <p class="message" id="pwd-check-message"></p>
+    <p class="message">Requerido</p>
     <br />
   </div>
 
-  {{!-- <div>
-    <label for="profileImg">Imagen</label>
-
-    <input hidden id="pic-url" name="picUrl" />
-    <p hidden id="taken-pic"> Ya tienes una imagen que has tomado</p>
-    <button hidden id="upload-button">Subir otra imagen</button>
-
-    <input
-      type="file"
-      id="image-input"
-      name="profileImg"
-      accept="image/jpeg, image/png"
-    />
-    <a href="/take-photo">Hazte una nueva</a>
-  </div>
-  <br /> --}}
-
-  <div><button type="submit">Completar registro</button></div>
+  <div><button class="link" type="submit">Completar registro</button></div>
 
   {{#if errorMessage}}
-    <p>{{errorMessage}}</p>
+    <p class="error-message">{{errorMessage}}</p>
   {{/if}}
 </form>
-<p>Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+<p class="message">Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+
+</div>
 
 <script src="scripts/show-pwd.js"></script>
 <script src="scripts/check-pwd.js"></script>

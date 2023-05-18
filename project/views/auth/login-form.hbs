@@ -1,36 +1,46 @@
-<h1>Inicio de sesión</h1>
-<hr />
+<link rel="stylesheet" href="/stylesheets/form.css" />
 
-<form action="/login" method="POST">
-  <div>
-    <label for="usernameOrEmail">Username or Email:</label>
-    <input required type="text" name="usernameOrEmail" />
-    <br />
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <p class="head-text">Inicio de sesión</p>
+    </div>
   </div>
 
+  <form action="/login" method="POST">
+    <div class="form-group row">
+      <label class="label" for="usernameOrEmail">Username or Email:</label>
+        <div class="col-10">
+          <input required class="form-control" type="text" name="usernameOrEmail" />
+          <br />
+        </div>
+
   <div>
-    <label for="password">Password:</label>
+    <label class="label" for="password">Password:</label>
     <div class="password-wrapper">
       <input required type="password" name="password" id="password" />
-      <button type="button" id="toggle-password">Show</button>
+      <button class="see" type="button" id="toggle-password"><img id="toggle-image" class="see" src="/images/icons/see.png" alt="show"></button>
     </div>
   </div>
   <br />
 
-  <div><button type="submit">Login</button></div>
+  <div><button class="link" type="submit">Login</button></div>
 
   {{#if errorMessage}}
     <p>{{errorMessage}}</p>
   {{/if}}
 </form>
 
-<p>No tienes una cuenta? <a href="/sign-up">Regístrate</a></p>
+<p class="message">No tienes una cuenta? <a href="/sign-up">Regístrate</a></p>
+</div>
 
 <script>
   const togglePassword = document.getElementById('toggle-password'); 
   const passwordInput = document.getElementById('password');
+  const toggleImage = document.getElementById('toggle-image'); 
+
   togglePassword.addEventListener('click', () => { if (passwordInput.type ===
-  'password') { passwordInput.type = 'text'; togglePassword.textContent =
-  'Hide'; } else { passwordInput.type = 'password'; togglePassword.textContent =
-  'Show'; } });
+  'password') { passwordInput.type = 'text'; toggleImage.src =
+  '/images/icons/notsee.png'; } else { passwordInput.type = 'password'; toggleImage.src =
+  '/images/icons/see.png'; } });
 </script>
