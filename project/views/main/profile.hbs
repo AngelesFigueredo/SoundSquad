@@ -1,38 +1,55 @@
+<link rel="stylesheet" href="/stylesheets/profile.css" />
+
 {{#with user}}
 
-<h2>{{this.username}}'s profile</h2>
-{{!-- <img src="{{profileImg}}" alt="user's profile pic"> --}}
-<h3>Name: {{this.name}} {{this.lastName}}</h3>
-<h3>Age: {{this.age}}</h3>
-<h4>Bio: {{this.description}}</h4>
+<div class="profile-header"></div>
+<img class="profile-image" src="{{this.profileImg}}" alt="user's profile pic">
+
+<div class="profile-body">
+  <div class="row">
+    <div class="col">
+      <h2 class="profile-name">{{this.name}} {{this.lastName}}</h2>
+      <h3 class="profile-username">@{{this.username}}</h3>
+      <h4 class="profile-bio">{{this.description}}</h4>
+    </div>
+
+    {{#if ../myProfile}}
+      <div class="col">
+        <a class="profile-link edit-profile-link" href="/edit/{{this._id}}">Edita tu perfil</a>
+      </div>
+    {{/if}} 
+  </div> 
 
   {{#if ../myProfile}}
-  <a href="/{{this._id}}/friends">Mis amistades</a>
-  <a href="/my-playlists">Mis playlists</a>
-  <a href="/edit/{{this._id}}">Edita tu perfil</a>
-  <a href="/user/events/{{this._id}}">Mis eventos</a>
-
+  <div class="row justify-content-around">
+  <a class="col-auto mr-auto profile-link" href="/{{this._id}}/friends">Mis amistades</a>
+  <a class="col-auto mr-auto profile-link" href="/my-playlists">Mis playlists</a>
+  <a class="col-auto mr-auto profile-link" href="/user/events/{{this._id}}">Mis eventos</a>
+  </div>
+  <br>
 
 {{else}}
   
   {{#if (ifEquals ../friendship "false")}}
     <form id="friend-request-form" action="/friend-requests/{{this._id}}" method="POST">
-      <button type="submit">Enviar petición de amistad</button>
+      <button class="profile-link" type="submit">Enviar petición de amistad</button>
     </form>
   {{else}}
     {{#if (ifEquals ../friendship "pendingOut")}}
       <p>Has enviado una solicitud de amistad a {{this.username}}</p>
     {{else}}
       {{#if (ifEquals ../friendship "true")}}
-        <p>{{this.username}} es tu amigx</p>
+        <p class="profile-message">{{this.username}} es tu amigx</p>
         <form id="unfollow-form" action="/unfollow/{{this._id}}" method="POST">
-          <button type="submit">Cancelar amistad</button>
+          <button class="profile-link" type="submit">Cancelar amistad</button>
         </form>
         <br>
-        <a href="/{{this._id}}/friends">Amistades de {{this.username}}</a>
-        <a href="/playlists-list/{{this._id}}">Ver playlists de {{this.username}}</a></li>
-
-        <a href="/user/events/{{this._id}}">Ver eventos de {{this.username}}</a></li>
+        <h3>Explorar</h3>
+        <div class="row justify-content-around">
+        <a class="col-auto mr-auto profile-link" href="/{{this._id}}/friends">Amistades de {{this.name}}</a>
+        <a class="col-auto mr-auto profile-link" href="/playlists-list/{{this._id}}">Playlists de {{this.name}}</a></li>
+        <a class="col-auto mr-auto profile-link" href="/user/events/{{this._id}}">Eventos de {{this.name}}</a></li>
+        </div>
 
         <br>
       {{else}}
@@ -46,20 +63,39 @@
 {{/with}}
 
 {{#if posts}}
-  <div class="blue-background">
     <h2>Mis publicaciones:</h2>
     {{#each posts}}
-      <div class="card">
+    <div class="row">
         {{>postPartial post=this user=currentUser}}
-        <form action="/posts/{{this._id}}/my-profile/delete" method="POST">
-          <button type="submit">🗑</button>
-        </form>
-      </div>
+        <div class="col-2 dropleft">
+              <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img class="options-post-button" src="images/icons/More_options.svg">
+              </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
+                    <button class="dropdown-item" type="submit">Borrar post</button>
+                  </form>
+                </div>
+        </div>
+    </div>
+
+<div class="comment-box">
+          <div>
+            <form action="/{{_id}}/comment" method="POST">
+              <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" />
+            </div>
+            <div>
+              <button class="comment-submit" type="submit">
+                <img src="images/icons/Tick.svg" alt="enviar" />
+              </button>
+            </div>
+            </form>
+          </div>
+
+      <hr>
       <br>
     {{/each}}
-  </div>
   {{/if}}
 
 
-
-<a href="/audd">Shazam!</a>
+</div>

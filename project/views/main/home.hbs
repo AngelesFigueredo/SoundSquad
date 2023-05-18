@@ -1,38 +1,65 @@
-<h1>home</h1>
+<link rel="stylesheet" href="/stylesheets/home.css" />
+      
+<div class="container" >
 
-<h2>Barra de búsqueda</h2>
-  <form action="/search" method="GET">
-    <input type="text" placeholder="Buscar" name="query" />
-    <button type="submit">Buscar</button>
-  </form>
-<br>
-<a href="/post-create">Publica un nuevo post!</a>
-<a href="/audd">Shazam!</a>
+  <div class="row">
+
+    <div class="col">
+
+      <div class="d-flex justify-content-center">
+        <img id="logo" src="images/Logo.svg" alt="SoundSquad">
+      </div>
+
+      <div class="d-flex justify-content-center search-box">
+        <form action="/search" method="GET">
+          <input class="search-input" type="text" placeholder="Buscar" name="query" />
+          <button class="search-submit" type="submit"> <img src="images/icons/search.svg"> </button>
+        </form>
+      </div>
+
+      <div>
+        <a id="create-post" href="/post-create">Publica un nuevo post!</a>
+        <br>
+      </div>
+
+        {{#each posts}}
+          <div class="row">
+
+              {{> postPartial post=this user=../currentUser._id}}
+
+            {{#if (ifEquals author._id ../currentUser._id)}}
+            <div class="col-2 dropleft">
+              <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img class="options-post-button" src="images/icons/More_options.svg">
+              </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
+                    <button class="dropdown-item" type="submit">Borrar post</button>
+                  </form>
+                </div>
+            </div>
+                {{/if}}
+          </div>
+
+        <div class="comment-box">
+          <div>
+            <form action="/{{_id}}/comment" method="POST">
+              <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" />
+            </div>
+            <div>
+              <button class="comment-submit" type="submit">
+                <img src="images/icons/Tick.svg" alt="enviar" />
+              </button>
+            </div>
+            </form>
+          </div>
 
 
-{{#each posts}}
-<div class="card">
-{{>postPartial post=this user=../currentUser._id}}
 
+          <hr>
+        {{/each}}
+          
 
-{{#if (ifEquals author._id ../currentUser._id)}}
-    <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
-      <button type="submit">🗑</button>
-    </form>
-  {{/if}}
-
-
-  <form action="/{{_id}}/comment" method="POST">
-    <label> Deja un comentario:
-      <textarea type="text" name="content"> </textarea>
-    </label>
-    <button type="submit"> Publica tu comentario! 📝</button>
-  </form>
-
-
+    </div>
+  </div>
 </div>
-<br>
-
-{{/each}}
-
-

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const SpotifyWebApi = require("spotify-web-api-node");
+const uploader = require("../config/cloudinary.config");
+const trimUrl = require("../utils/trimUrl")
 let spotifyAccessToken;
 
 const spotifyApi = new SpotifyWebApi({
@@ -29,7 +31,7 @@ const Post = require("../models/Post.model");
 const Event = require("../models/Events.model");
 
 /* GET home page */
-router.get("/", (req, res, next) => {
+router.get("/", isLoggedOut, (req, res, next) => {
   res.render("index");
 });
 
@@ -477,9 +479,18 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post("/edit/:id", async (req, res, next) => {
+router.post("/edit/:id", uploader.single("profileImg"), async (req, res, next) => {
   const { body } = req;
   const { id } = req.params;
+  let { profileImg } = req.body;
+    // si nos viene la url desde una cosa que se ha subido
+    if (req.file && req.file.path) {
+      profileImg = req.file.path;
+    }
+    // si nos viene de una foto que hemos tomado 
+    if(req.body.picUrl){
+      profileImg= trimUrl(req.body.picUrl)
+    }
 
   try {
     const interests = body.interests; 
@@ -488,7 +499,7 @@ router.post("/edit/:id", async (req, res, next) => {
       lastName: body.lastName,
       age: body.age,
       description: body.description,
-      interests: interests, // Assign the parsed interests array
+      profileImg
     };
 
     // Update the user with the updated data

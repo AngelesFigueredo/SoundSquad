@@ -1,0 +1,168 @@
+body {
+    padding-left: 10px;
+    padding-right: 10px
+}
+
+a {
+    text-decoration: none;
+}
+
+#logo {
+    padding: 15px;
+}
+
+.white-button {
+    background-color: white;
+    border: none;
+    color: #6324BB
+}
+
+.comment-icon {
+    width: 20px;
+    height: 20px;
+    margin-top: 5px;
+}
+
+.comment-counter {
+    margin-left: 10px;
+    margin-top: 3px;
+    color: black
+}
+
+.comment-icon-yes{
+    width: 20px;
+    height: 20px;
+    margin-top: 5px;
+}
+
+.comment-counter-yes {
+    margin-top: 3px;
+    color:#6324BB
+}
+
+.white-button:hover{
+    background-color: white;
+    border: none;
+}
+
+.post-name{
+    font-weight: bold;
+    color:#6324BB
+}
+
+.posts-home {
+    padding-left: 20px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #E5E1EE ;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  #create-post {
+    margin-bottom: 10px
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+    background-color: transparent;
+  }
+
+  .search-input::placeholder {
+    color: #6324BB;
+  }
+  
+  .search-submit {
+    margin-left: 10px;
+    border: none;
+    background-color: transparent;
+    color: white;
+  }
+
+  .dropdown-toggle::after {
+    display: none;
+  }
+
+
+  .dropdown-item{
+    font-size: 10px;
+  }
+
+  .options-post-button {
+    right: 30px;
+  }
+
+
+  .comments-button {
+    background-color: transparent;
+    border: none;
+  }
+
+  .comments-button:hover {
+    background-color: transparent;
+    border: none
+  }
+
+  .dropdown-menu.show{
+    text-align: right;
+    border: none;
+  }
+
+
+  .delete-comment {
+    border: none;
+    background-color: transparent;
+    font-size: 10px;
+    color:#6324BB;
+    width: 200px;
+    text-align: left;
+  }
+
+  .comment-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+    background-color: #E5E1EE;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .comment-input {
+    flex: 1;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+    background-color: transparent;
+    font-size: 10px;
+    width: 280px;
+  }
+  
+  .comment-input::placeholder {
+    color: #6324BB;
+  }
+  
+  .comment-submit {
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 10px;
+    margin-left: 10px;
+  }
+
+  .post-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+  .post-body {
+    padding-left: 20px
+  }

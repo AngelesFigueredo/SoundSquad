@@ -2,7 +2,7 @@
 
 {{#with user}}
 
-<form action="/edit/{{this._id}}" method="POST">
+<form action="/edit/{{this._id}}" method="POST" enctype="multipart/form-data">
     <label>Nombre:
         <input type="text" name="name" value="{{this.name}}"/>
     </label>
@@ -19,11 +19,6 @@
         <input type="text" name="description" value="{{this.description}}"/>
     </label>
 
-    <label>Intereses:
-        <input type="text" name="interests" id="interestsInput" />
-    </label>
-    <p>Añade varios intereses separados por espacios.</p>
-
     <div>
         <label for="profileImg">Imagen</label>
         <input hidden id="pic-url" name="picUrl" />
@@ -37,26 +32,3 @@
 </form>
 
 {{/with}}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const interestsInput = document.getElementById('interestsInput');
-        const form = document.querySelector('form');
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            const interests = interestsInput.value.trim().split(' ');
-            console.log("---------------", interests);
-
-            let hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'interests');
-            hiddenInput.setAttribute('value', interests.join(', ')); // Join the interests array with a comma
-            form.appendChild(hiddenInput);
-
-            // Manually submit the form
-            form.submit();
-        });
-    });
-</script>
