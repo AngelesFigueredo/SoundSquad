@@ -36,3 +36,7 @@ a {
     color:#6324BB
 }
 
+.play-button {
+    background-color: transparent;
+    border: none;
+}

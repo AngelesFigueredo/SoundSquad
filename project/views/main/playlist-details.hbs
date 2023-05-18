@@ -1,56 +1,108 @@
-{{#with playlist}}
-  <h2>{{this.title}}</h2>
-  <h3>{{this.author.username}}</h3>
-  <input type="text" value="{{../user._id}}" id="currentUserId" hidden>
-  <input type="text" value="{{this._id}}" id="playlistId" hidden>
+<link rel="stylesheet" href="/stylesheets/playlists.css" />
 
-  {{#if ../canFollow}}
-    <form id="follow-form" action="/follow-playlist/{{this._id}}" method="POST">
-      <button id="follow-button" type="submit">Seguir playlist</button>
-    </form>
-  {{/if}}
+<div class="container">
 
-  {{#if ../canUnfollow}}
-    <form id="unfollow-form" action="/unfollow-playlist/{{this._id}}" method="POST">
-      <button id="unfollow-button" type="submit">Dejar de seguir playlist</button>
-    </form>
-  {{/if}}
+  <div class="row">
 
-  {{#if ../isOwner}}
-  <form id="delete-form" action="/delete-playlist/{{this._id}}" method="POST">
-      <button id="delete-button" type="submit">Eliminar playlist</button>
-    </form>
-  {{/if}}
+    <div class="col">
 
-{{/with}}
+      {{#with playlist}}
+        <h2 class="playlist-head">{{this.title}}</h2>
+          {{#if (ne this.author.username ../currentUser.username)}}
+            <h3>{{this.author.username}}</h3>
+          {{/if}}
 
-{{#if songs}}
-  {{#each songs}}
-    <div>
-      <h4>{{this.name}}</h4>
-      <p>{{this.album.name}}</p>
-      <audio src="{{this.preview_url}}" controls></audio>
-        {{#if (ifEquals ../isOwner false)}}
-        {{#if ../user.playlists.length}}
-          <p>Añadir canción a una de tus playlists</p>
-          <form action="/{{this.id}}/addtoplaylist" method="POST">
-            <select name="playlists" id="playlists">
-              {{#each ../user.playlists}}
-                {{#if (ne ../../id this._id)}}
-                <option value="{{this._id}}">{{this.title}}</option>
-                {{/if}}
-              {{/each}}
-            </select>
-            <input type="hidden" name="songs" value="{{this.id}}" />
-            <button type="submit">Añadir canción</button>
-          </form>
+            <input type="text" value="{{../user._id}}" id="currentUserId" hidden>
+            <input type="text" value="{{this._id}}" id="playlistId" hidden>
 
-        {{/if}}
-        <a href="/new-playlist/{{this.id}}">Crea una nueva playlist con esta canción!</a>
-        {{/if}}
+          {{#if ../canFollow}}
+            <form id="follow-form" action="/follow-playlist/{{this._id}}" method="POST">
+              <button class="link" id="follow-button" type="submit">Seguir playlist</button>
+            </form>
+          {{/if}}
+
+          {{#if ../canUnfollow}}
+            <form id="unfollow-form" action="/unfollow-playlist/{{this._id}}" method="POST">
+              <button class="link" id="unfollow-button" type="submit">Dejar de seguir playlist</button>
+            </form>
+          {{/if}}
+
+          {{#if ../isOwner}}
+          <form id="delete-form" action="/delete-playlist/{{this._id}}" method="POST">
+              <button class="link" id="delete-button" type="submit">Eliminar playlist</button>
+            </form>
+          {{/if}}
+
+      {{/with}}
+
+      {{#if songs}}
+        {{#each songs}}
+          <div class="row">
+            <div class="col-3">
+              <img class="preview-picture" src="{{this.album.images.[0].url}}" alt="">
+            </div>
+            <div class="col">
+              <p class="playlist-title">{{this.name}}</p>
+              <p class="playlist-description">{{this.artists.[0].name}} - {{this.album.name}}</p>
+            </div>
+            <div class="col-2 float-right">
+            {{!-- <audio src="{{this.preview_url}}" controls></audio> --}}
+              <button class="play-button" data-src="{{this.preview_url}}">
+                <img class="play-icon" src="/images/icons/Play.svg" alt="Play">
+              </button>
+            </div>
+
+              {{#if (ifEquals ../isOwner false)}}
+              {{#if ../user.playlists.length}}
+                <p>Añadir canción a una de tus playlists</p>
+                  <form action="/{{this.id}}/addtoplaylist" method="POST">
+                  <select name="playlists" id="playlists">
+                    {{#each ../user.playlists}}
+                      {{#if (ne ../../id this._id)}}
+                        <option value="{{this._id}}">{{this.title}}</option>
+                      {{/if}}
+                    {{/each}}
+                  </select>
+                    <input type="hidden" name="songs" value="{{this.id}}" />
+                    <button type="submit">Añadir canción</button>
+                  </form>
+
+              {{/if}}
+                <a href="/new-playlist/{{this.id}}">Crea una nueva playlist con esta canción!</a>
+              {{/if}}
         
-  {{/each}}
+        {{/each}}
 
-{{else}}
-  <p>Esta lista no tiene canciones</p>
-{{/if}}
+      {{else}}
+        <p>Esta lista no tiene canciones</p>
+      {{/if}}
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const playButtons = document.querySelectorAll(".play-button");
+
+  playButtons.forEach(function (button) {
+    const audioSrc = button.dataset.src;
+    const audio = new Audio(audioSrc);
+    let isPlaying = false;
+
+    button.addEventListener("click", function () {
+      if (isPlaying) {
+        audio.pause();
+        button.querySelector(".play-icon").src = "/images/icons/Play.svg";
+        isPlaying = false;
+      } else {
+        audio.play();
+        button.querySelector(".play-icon").src = "/images/icons/Pause.svg";
+        isPlaying = true;
+      }
+    });
+  });
+});
+
+
+</script>
