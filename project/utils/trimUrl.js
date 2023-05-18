@@ -5,4 +5,5 @@ function trimUrl (string) {
   return string
 }
 
+
 module.exports = trimUrl;
