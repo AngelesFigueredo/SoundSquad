@@ -1,0 +1,14 @@
+.head-text {
+    color: #6324BB  ;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.link {
+    font-size: 10px;
+    color:#6324BB;
+    border: 1px solid #6324BB;
+    border-radius: 30px;
+    background-color: white;
+    padding: 2px;
+}

@@ -1,19 +1,23 @@
-<h2>Nuevo post</h2>
+<link rel="stylesheet" href="/stylesheets/new-element.css" />
 
-<form action="/post-create" method="POST">
-  <label>
-    Title:
-    <input type="text" name="title" />
-  </label>
-  <br />
 
-  <label>
-    Content:
-    <textarea type="text" name="content"> </textarea>
-  </label>
-  <br />
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <p class="head-text">Nuevo post</p>
+    </div>
+  </div>
 
-  <button type="submit"> Publica tu post! 📝</button>
+  <form action="/post-create" method="POST">
+    <div class="form-group row">
+      <label>Mensaje:</label>    
+      <div class="col-10">
+        <textarea class="form-control" type="text" name="content"> </textarea>
+      </div>
+    </div>
+    <br>
+
+  <button class="link" type="submit"> Publica tu post!</button>
 </form>
 
-<script src="scripts/dropdown-users.js"></script>
+</div>

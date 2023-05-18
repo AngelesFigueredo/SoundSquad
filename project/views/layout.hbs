@@ -27,26 +27,49 @@
       </div>
 
       <header>
+         <link rel="stylesheet" href="/stylesheets/layout.css" />
          <nav class="navbar fixed-bottom">
-            <ul>
-               <li><a href="/home">Home</a></l>
-               <li><a href="/my-profile">Mi perfil</a></li>
-               <li><a href="/audd">Shazam!</a></li>
+            <div class="container">
+                  <div class="row justify-content-around">
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/my-playlists"><img class="color" src="/images/icons/Music.svg"></a> 
+                        <a href="/my-playlists"><p class="link-text text-center">Playlists</p></a>
+                     </div>
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/my-events"><img class="color" src="/images/icons/Calendar.svg"></a> 
+                        <a href="/my-events"><p class="link-text text-center">Eventos</p></a>
+                     </div>
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/home"><img class="color" src="/images/icons/Home.svg"></a> 
+                        <a href="/home"><p class="link-text text-center">Home</p></a>
+                     </div>
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/audd"><img class="color" src="/images/icons/Music_note.svg"></a> 
+                        <a href="/audd"><p class="link-text text-center">Listen</p></a>
+                     </div>
 
-               {{#if currentUser}}
-                  {{#with currentUser}}
-                  <div>
-                  <li><img src="{{this.profileImg}}" width="30"><p>{{this.username}}</p></li>
-                  </div>
+                        {{#if currentUser}}
+                           {{#with currentUser}}
+                     <div class="col-2">
+                        <div class="btn-group dropup">
+                           <button type="button" class="btn btn-secondary dropdown-toggle white-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <img src="{{this.profileImg}}" width="30">
+                           </button>
+                           <div class="dropdown-menu">
+                              <a href="/my-profile">Perfil</a>
+                              <a href="/notifications">Notificaciones</a>
+                              <a href="/messages">Mensajes</a>
+                              <a href="/logout">Cerrar sesión</a>
+                           </div>
+                        </div>
+                     </div>
 
-                  <li><a href="/logout">Cerrar sesión</a></li>
-                  <li><a href="/notifications">Notificaciones</a></li>
-                  <li><a href="/messages">Mensajes</a></li>
+                     
                   {{/with}}
                {{else}}
-                  <li><a href="/login">Inicia sesión</a></li>
                {{/if}}
-            </ul>
+                  </div>
+            </div>
          </nav>
       </header>
 

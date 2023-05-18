@@ -256,12 +256,15 @@ router.get("/new-message", isLoggedIn, async (req, res, next) => {
 // });
 
 router.get("/:id/friends", isLoggedIn, async (req, res, next) => {
-  const user = await User.findById(req.params.id).populate(
-    "friends",
-    "username"
-  );
-  res.render("main/friends", { friends: user.friends, currentUser: req.session.currentUser });
+  try {
+    const user = await User.findById(req.params.id).populate("friends", "name lastName username profileImg");
+    res.render("main/friends", { friends: user.friends, currentUser: req.session.currentUser });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 });
+
 
 // router.get("/search", async)
 

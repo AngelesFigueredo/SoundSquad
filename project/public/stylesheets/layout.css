@@ -1,0 +1,23 @@
+nav a {
+    margin: 0px;
+    padding: 0px;
+}
+
+.link-text {
+    color: #6324BB;
+    font-weight: lighter;
+    padding-top:10px
+}
+
+.white-button {
+    background-color: transparent;
+    border: none;
+}
+
+.dropup .dropdown-toggle::after{
+    display:none
+}
+
+.color {
+    filter: invert(22%) sepia(27%) saturate(6436%) hue-rotate(255deg) brightness(88%) contrast(107%);
+}
