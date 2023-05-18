@@ -1,0 +1,29 @@
+.head-text {
+    color:#6324BB;
+    margin-top:10px;
+    font-weight: bold;
+
+}
+
+.title {
+    color: #6324BB;
+}
+
+.body-text{
+    font-size: 10px;
+}
+
+.link{
+    font-size: 10px;
+    color:#6324BB;
+    border: 1px solid #6324BB;
+    border-radius: 30px;
+    background-color: white;
+    padding: 2px;
+}
+
+.notification-link{
+    text-decoration: none;
+    color: #8259bb;
+    font-weight: normal;
+}

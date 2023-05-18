@@ -50,19 +50,17 @@
 
                         {{#if currentUser}}
                            {{#with currentUser}}
-                     <div class="col-2">
-                        <div class="btn-group dropup">
-                           <button type="button" class="btn btn-secondary dropdown-toggle white-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <img src="{{this.profileImg}}" width="30">
-                           </button>
-                           <div class="dropdown-menu">
-                              <a href="/my-profile">Perfil</a>
-                              <a href="/notifications">Notificaciones</a>
-                              <a href="/messages">Mensajes</a>
-                              <a href="/logout">Cerrar sesión</a>
+
+                     <div class="col-2 dropdown">
+                        <button class="dropbtn"><img class="layout-profile-image" src={{this.profileImg}} width="30"></button>
+                           <div class="dropdown-content">
+                              <a class="menu-link" href="/my-profile">Mi perfil</a>
+                              <a class="menu-link" href="/notifications">Notificaciones</a>
+                              <a class="menu-link" href="/messages">Mensajes</a>
+                              <a class="menu-link" href="/logout">Cerrar sesión</a>
                            </div>
-                        </div>
                      </div>
+
 
                      
                   {{/with}}
@@ -75,6 +73,19 @@
 
       
       <script src="/js/script.js"></script>
+      <script>
+         // Get the dropdown button element
+            const dropdownBtn = document.querySelector('.dropbtn');
+
+         // Get the dropdown content element
+            const dropdownContent = document.querySelector('.dropdown-content');
+
+         // Toggle the display of the dropdown content on button click
+            dropdownBtn.addEventListener('click', function() {
+            dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+            });
+      </script>
+
       
    </body>
 

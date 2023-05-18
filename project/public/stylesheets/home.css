@@ -166,3 +166,9 @@ a {
   .post-body {
     padding-left: 20px
   }
+
+  .plane-icon {
+    width: 20px;
+    filter: invert(22%) sepia(27%) saturate(6436%) hue-rotate(255deg) brightness(88%) contrast(107%);
+
+  }
