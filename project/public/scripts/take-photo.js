@@ -62,6 +62,6 @@ submitPhotoBtn.addEventListener("click", async (event) => {
 cancelBtn.addEventListener("click", (event) => {
   event.preventDefault();
   localStorage.clear()
-  window.location.replace("/sign-up")
+  window.location.replace("/my-profile")
   context.clearRect(0, 0, canvas.width, canvas.height);
 });

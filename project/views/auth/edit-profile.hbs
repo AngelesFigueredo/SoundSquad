@@ -1,34 +1,50 @@
-<h2>Editar perfil</h2>
+<link rel="stylesheet" href="/stylesheets/form.css" />
 
-{{#with user}}
-
-<form action="/edit/{{this._id}}" method="POST" enctype="multipart/form-data">
-    <label>Nombre:
-        <input type="text" name="name" value="{{this.name}}"/>
-    </label>
-
-    <label>Apellidos:
-        <input type="text" name="lastName" value="{{this.lastName}}"/>
-    </label>
-
-    <label>Edad:
-        <input type="number" name="age" value="{{this.age}}"/>
-    </label>
-
-    <label>BIO:
-        <input type="text" name="description" value="{{this.description}}"/>
-    </label>
-
-    <div>
-        <label for="profileImg">Imagen</label>
-        <input hidden id="pic-url" name="picUrl" />
-        <p hidden id="taken-pic"> Ya tienes una imagen que has tomado</p>
-        <button hidden id="upload-button">Subir otra imagen</button>
-        <input type="file" id="image-input" name="profileImg" accept="image/jpeg, image/png" />
-        <a href="/take-photo">Hazte una nueva</a>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <p class="head-text">Editar perfil</p>
+        </div>
     </div>
 
-    <button type="submit"> Editar perfil </button>
-</form>
+    {{#with user}}  
+    <form action="/edit/{{this._id}}" method="POST" enctype="multipart/form-data">
+        <div class="form-group row">
+            <label class="label">Nombre:</label>
+            <input class="form-control" type="text" name="name" value="{{this.name}}"/>
+            <br>
+        </div>
 
-{{/with}}
+        <div>
+            <label class="label">Apellidos:</label>
+            <input class="form-control" type="text" name="lastName" value="{{this.lastName}}"/>
+            <br>
+        </div>
+
+        <div>
+            <label class="label">Edad:</label>
+            <input class="form-control" type="number" name="age" value="{{this.age}}"/>
+            <br>
+        </div>
+
+        <div>
+            <label class="label">BIO:</label>
+            <textarea class="form-control" type="text" name="description" placeholder="{{this.description}}"></textarea>
+            <br>
+        </div>
+
+        <div>
+            <label class="label" for="profileImg">Imagen</label>
+            <input hidden id="pic-url" name="picUrl" />
+            <p hidden class="message" id="taken-pic"> Ya tienes una imagen que has tomado</p>
+            <button hidden class="link" id="upload-button">Subir otra imagen</button>
+            <input class="link" type="file" id="image-input" name="profileImg" accept="image/jpeg, image/png" />
+            <a class="link" href="/take-photo">Hazte una nueva</a>
+        </div>
+
+    <button class="link" type="submit"> Editar perfil </button>
+    </form>
+
+    {{/with}}
+
+</div>
