@@ -6,63 +6,16 @@
      joinRequests=joinRequests}}
 
 {{/if}}
-<div class="row">
-        <div class="col-md-6">
-            <form action="/get-directions" method="post">
-                <input type="text" id="key" value="{{event.key}}" hidden>
-                <img src="{{event.profilePic}}" alt="Profile image" style="width:7rem">
-
-                <div class="event-title-container container">
-                    <h5 class="event-title">{{event.name}}</h5>
-                    
-                    <h6 id="name" class="card-subtitle mb-2 text-muted"></h6>
-                    <h6 id="date" class="card-subtitle mb-2 text-muted"></h6>
-                    
-                    
-                    <input type="text" name="longitude" id="longitude" hidden>
-                    <input type="text" name="latitude" id="latitude" hidden>
-
-                    <button type="submit" class="remove-button-styling">
-                        <h6 id="place" class="card-subtitle mb-2 text-muted"></h6>
-                    </button>
-                    </form>
-                    <h6 class="card-subtitle mb-2 text-muted">{{event.members.length}} Participantes</h6>
-                    <input type="text" id="apiId" value="{{event.concertApiId}}" hidden>
-                    <div class="row">
-                        <div class="col-6">
-                            <a href="/show-event/{{event._id}}">
-                                <button type="button" class="purple-button">Detalles</button>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <button type="button" class="white-button">Compartir</button>
-                        </div>
-                    </div>
-                </div>
-                
-                
-            
-          
-                
-           
-
+<div class="row justify-content-center">
+        <div class="col-md-5">
+            {{>chatData}}
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    {{>eventChat event=event authorId=session}}
-                </div>
-            </div>
+        <div class="col-md-7 ">
+            <hr class="d-md-none">
+            {{>eventChat event=event authorId=session}}
         </div>
-       
-    
-    
 </div>
 
     
 
-
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/scripts/events/dateFormatter.js"></script>
-<script src="/scripts/events/concert-details.js"></script>
 

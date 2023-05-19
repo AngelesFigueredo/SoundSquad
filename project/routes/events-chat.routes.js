@@ -7,6 +7,9 @@ const router = express.Router();
 const Event = require("../models/Events.model")
 const Message = require("../models/Message.model")
 const app = require('express')();
+const multer = require("multer");
+const uploader = require("../config/cloudinary.config");
+const trimUrl = require("../utils/trimUrl")
 const http = require('http').Server(app);
 const cors = require('cors');
 const io = require("socket.io")(http, {
@@ -45,6 +48,12 @@ router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, 
     })
   event.messages.forEach((message) => {
     message.isYou = message.author._id == req.session.currentUser._id
+    const dateString = message.createdAt
+    const date = new Date(dateString);
+
+    const options = { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: 'numeric' };
+    const formattedDate = date.toLocaleDateString('es-ES', options);
+    message.time = formattedDate
   })
   const isAdmin = event.admin.includes(req.session.currentUser._id)
   let notifications
@@ -96,10 +105,19 @@ router.get("/edit-event/:eventId", isEventMember, async(req, res, next) => {
 
 });
 
-router.post("/edit-event/:eventId", async(req, res, next) => {
+router.post("/edit-event/:eventId",  uploader.single("profilePic"),async(req, res, next) => {
     const eventId = req.params.eventId
-    const {name, description} = req.body
-    await Event.findByIdAndUpdate(eventId, {name, description})
+    console.log("el req.file", req.file)
+    let {name, description, profilePic} = req.body
+    // si nos viene la url desde una cosa que se ha subido
+    if(req.file && req.file.path){
+      profilePic = req.file.path
+    }
+    // si nos viene de una foto que hemos tomado 
+    if(req.body.picUrl){
+      profilePic= trimUrl(req.body.picUrl)
+    }
+    await Event.findByIdAndUpdate(eventId, {name, description, profilePic})
     
     res.redirect(`/show-event/${eventId}`)
 });

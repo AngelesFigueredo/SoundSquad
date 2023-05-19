@@ -52,7 +52,7 @@ submitPhotoBtn.addEventListener("click", async (event) => {
     console.log("Image uploaded successfully: ", response.data.secure_url);
     imgUrl = response.data.secure_url;
     localStorage.setItem("img", JSON.stringify(imgUrl))
-    window.location.replace("/sign-up")
+    history.back()
   } else {
     console.log("No image has been upload");
   }

@@ -1,84 +1,257 @@
-<h1>Resultados de búsqueda</h1>
+<link rel="stylesheet" href="/stylesheets/search.css" />
+<link rel="stylesheet" href="/stylesheets/events.css" />
 
-<h2>Usuarios:</h2>
-{{#if users}}
-  <ul>
-    {{#each users}}
-      <li><a href="/profile/{{this._id}}">{{this.username}}</a></li>
-    {{/each}}
-  </ul>
-{{else}}
-  <p>No se han encontrado usuarios.</p>
-{{/if}}
-<br />
-
-<h2>Eventos:</h2>
-{{#if events}}
-  <ul>
-    {{#each events}}
-      <li><a href="/event-details/{{this._id}}"><p>{{this.name}}, by
-            {{this.author}}</p></a></li>
-    {{/each}}
-  </ul>
-{{else}}
-  <p>No se han encontrado eventos.</p>
-{{/if}}
-
-<h2>Artistas:</h2>
-<ul id="artists-list">
-  {{#each artistsInfoShort}}
-    <li><a href="/artist/{{this.id}}">{{this.name}}</a></li>
-  {{/each}}
-</ul>
-
-{{#if artistsInfoLong}}
-  <button id="show-all-artists">Mostrar todos los artistas</button>
-  <button id="show-less-artists" style="display: none">Mostrar menos artistas</button>
-{{/if}}
-
-<h2>Canciones:</h2>
-<ul id="songs-list">
-  {{#each songsInfoShort}}
-    <li><a href="/song/{{this.id}}"><p>{{this.name}}, by
-          {{this.artists}}</p></a></li>
-  {{/each}}
-</ul>
-
-{{#if songsInfoLong}}
-  <button id="show-all-songs">Mostrar todas las canciones</button>
-  <button id="show-less-songs" style="display: none">Mostrar menos canciones</button>
-{{/if}}
-
-<h2>Conciertos:</h2>
-<ul id="concerts-list">
-  {{#each concertsInfoShort}}
-    <li><a href="/concert/{{this.id}}"><p>{{this.name}}
-          en
-          {{this.city}}
-          -
-          {{this.date}}</p></a></li>
-  {{/each}}
-
-</ul>
-
-{{#if concertsInfoLong}}
-  <button id="show-all-concerts">Mostrar todos los conciertos</button>
-  <button id="show-less-concerts" style="display: none">Mostrar menos conciertos</button>
-
-{{/if}}
+<div class="container justify-content-center">
+  <div class=" row justify-content-center">
+    <div class="col col-md-11 col-lg-8 responsive-col">
+      <div>
+        <h1>Tus resultados</h1>
+        <div class="search-again">
+          <div class="outline">
+            <div class="row">
+              <div class="col-1 d-flex align-items-center">
+                <img src="/images/icons/search-bar.svg" alt="">
+              </div>
+              <div class="col-11 d-flex justify-content-center">
+                <form action="/search" method="GET">
+                  <div class="row">
+                    <div class="col-9 d-flex justify-content-center">
+                      <input type="text" placeholder="Busca algo más" name="query" />
+                    </div>
+                    <div class="col-3 d-flex justify-content-center">
+                      <button type="submit" class="remove-button-styling">
+                        <p>SEARCH</p>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Usuarios</h2>
+          {{#if users}}
+          <div class="container">
+            {{#each users}}
+            <a href="/profile/{{this._id}}">
+              <div class="user">
+                <div class="row">
+                  <div class="col-2 picture">
+                    <img class="search-img" src="{{profileImg}}">
+                  </div>
+                  <div class="col-8 wrapper">
+                    <div class="you-message">
+                      <p>
+                        {{username}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+            {{/each}}
+          </div>
+          {{else}}
+          <p>No se han encontrado usuarios.</p>
+          {{/if}}
+          <br />
+        </div>
+        <div class="col-md-8">
+          <h2>Eventos</h2>
+          {{#if events}}
+          {{#each events}}
+          <a href="/event-details/{{_id}}">
+            <div class="row event">
+              <div class="col-6 event-pic">
+                <img src="{{profilePic}}" alt="">
+              </div>
+              <div class="col-6">
+                <p>
+                  {{date}}
+                </p>
+                <p>
+                  {{place}}
+                </p>
+                <div class="title">
+                  <p>{{artist}}</p>
+                </div>
+                <p>
+                  {{name}}
+                </p>
+              </div>
+            </div>
+          </a>
+          {{/each}}
+          {{else}}
+          <p>No se han encontrado eventos.</p>
+          {{/if}}
+        </div>
+      
+        <div class="col-md-6">
+          <div class="row">
+            <h2>Artistas</h2>
+            <div id="artists-list">
+              {{#each artistsInfoShort}}
+      
+              <a href="/artist/{{this.id}}">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="{{img}}" class="search-img">
+                  </div>
+                  <div class="col-9 artist-name">
+                    <p>
+                      {{name}}
+                    </p>
+                  </div>
+                </div>
+              </a>
+              {{/each}}
+            </div>
+      
+            {{#if artistsInfoLong}}
+            <div class="padd">
+              <button class="white-button" id="show-all-artists">Mostrar todos los artistas</button>
+            </div>
+            <div class="padd">
+              <button class="purple-button" id="show-less-artists" style="display: none">Mostrar menos artistas</button>
+            </div>
+            {{/if}}
+      
+          </div>
+        </div>
+      
+      
+        <div class="col-md-6">
+          <div class="row">
+            <h2>Canciones</h2>
+            <div id="songs-list">
+              {{#each songsInfoShort}}
+      
+              <a href="/song/{{this.id}}">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="{{img}}" class="search-img">
+                  </div>
+                  <div class="col-9 artist-name">
+                    <p>
+                      {{name}}
+                    </p>
+                    <div class="sub-title">
+                      <p>{{artists}}</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              {{/each}}
+            </div>
+      
+            {{#if songsInfoLong}}
+            <div class="padd">
+              <button class="purple-button" id="show-all-songs">Mostrar todas las canciones</button>
+            </div>
+            <div class="padd">
+              <button class="white-button" id="show-less-songs" style="display: none">Mostrar menos canciones</button>
+            </div>
+            {{/if}}
+      
+          </div>
+        </div>
+      
+        <div class="col-md-8">
+          <h2>concierto</h2>
+          {{#if concertsInfoShort}}
+          <div id="concerts-list">
+            {{#each concertsInfoShort}}
+            <a href="/concert/{{id}}">
+              <div class="row event">
+                <div class="col-6 event-pic">
+                  <img src="{{img}}" alt="">
+                </div>
+                <div class="col-6">
+                  <p>
+                    {{date}}
+                  </p>
+                  <div class="title">
+                    <p>{{name}}</p>
+                  </div>
+                  <p>
+                    {{city}}
+                  </p>
+                </div>
+              </div>
+            </a>
+            {{/each}}
+          </div>
+      
+          {{#if concertsInfoLong}}
+          <div class="padd">
+            <button class="white-button" id="show-all-concerts">Mostrar todos los conciertos</button>
+          </div>
+          <div class="padd">
+            <button class="purple-button" id="show-less-concerts" style="display: none">Mostrar menos conciertos</button>
+          </div>
+          {{/if}}
+      
+          {{else}}
+          <p>No se han encontrado concierto.</p>
+          {{/if}}
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- <script src="/scripts/search/show-more-less.js"></script> --}}
 
 <script>
   //artists 
-  const shortArtistsList = '{{#each artistsInfoShort}}<li><a href="/artist/{{this.id}}">{{this.name}}</a></li>{{/each}}';
-  const longArtistsList = '{{#each artistsInfoLong}}<li><a href="/artist/{{this.id}}">{{this.name}}</a></li>{{/each}}';
+  
+  const shortArtistsList = `
+  {{#each artistsInfoShort}}      
+          <a href="/artist/{{this.id}}">
+            <div class="row">
+              <div class="col-3">
+                <img src="{{img}}">
+              </div>
+              <div class="col-9 artist-name">
+                <p>
+                {{name}}
+                </p>  
+              </div>
+            </div>
+          </a>
+          {{/each}}
+        </div>`
+        
+  const longArtistsList = `
+  {{#each artistsInfoLong}}        
+          <a href="/artist/{{this.id}}">
+            <div class="row">
+              <div class="col-3">
+                <img src="{{img}}">
+              </div>
+              <div class="col-9 artist-name">
+                <p>
+                {{name}}
+                </p>  
+              </div>
+            </div>
+          </a>
+          {{/each}}
+        </div>`
   const showAllArtistsButton = document.querySelector('#show-all-artists');
   const showLessArtistsButton = document.querySelector('#show-less-artists')
 
   showAllArtistsButton.addEventListener('click', () => {
-   document.querySelector('#artists-list').innerHTML = longArtistsList;
+    document.querySelector('#artists-list').innerHTML = longArtistsList;
 
-  showAllArtistsButton.style.display = 'none';
-  showLessArtistsButton.style.display = 'block' });
+    showAllArtistsButton.style.display = 'none';
+    showLessArtistsButton.style.display = 'block'
+  });
 
   showLessArtistsButton.addEventListener('click', () => {
     document.querySelector('#artists-list').innerHTML = shortArtistsList;
@@ -88,8 +261,46 @@
   })
 
   //songs 
-  const shortSongsList = '{{#each songsInfoShort}}<li><a href="/song/{{this.id}}"><p>{{this.name}}, by {{this.artists}}</p></a></li>{{/each}}';
-  const longSongsList = '{{#each songsInfoLong}}<li><a href="/song/{{this.id}}"><p>{{this.name}}, by {{this.artists}}</p></a></li>{{/each}}';
+  const shortSongsList = `{{#each songsInfoShort}}
+    
+          <a href="/song/{{this.id}}">
+            <div class="row">
+              <div class="col-3">
+                <img src="{{img}}">
+              </div>
+              <div class="col-9 artist-name">
+                <p>
+                  {{name}}
+                </p>
+                <div class="sub-title">
+                  <p>{{artists}}</p>
+                </div>
+              </div>
+            </div>
+          </a>
+          {{/each}}`
+          
+  
+  
+  const longSongsList = `{{#each songsInfoLong}}
+
+    <a href="/song/{{this.id}}">
+      <div class="row">
+        <div class="col-3">
+          <img src="{{img}}">
+        </div>
+        <div class="col-9 artist-name">
+          <p>
+            {{ name }}
+          </p>
+          <div class="sub-title">
+            <p>{{ artists }}</p>
+          </div>
+        </div>
+      </div>
+    </a>
+    {{/each}}`
+
   const showAllSongsButton = document.querySelector('#show-all-songs');
   const showLessSongsButton = document.querySelector('#show-less-songs');
 
@@ -106,8 +317,46 @@
   });
 
   // concerts
-  const shortConcertsList = '{{#each concertsInfoShort}}<li><a href="/concert/{{this.id}}"><p>{{this.name}} en {{this.city}} - {{this.date}}</p></a></li>{{/each}}';
-  const longConcertsList = '{{#each concertsInfoLong}}<li><a href="/concert/{{this.id}}"><p>{{this.name}} en {{this.city}} - {{this.date}}</p></a></li>{{/each}}';
+  const shortConcertsList = `{{#each concertsInfoShort}}
+          <a href="/concert/{{id}}">
+            <div class="row event">
+              <div class="col-6 event-pic">
+                <img src="{{img}}" alt="">
+              </div>
+              <div class="col-6">
+                <p>
+                  {{date}}
+                </p>
+                <div class="title">
+                  <p>{{name}}</p>
+                </div>
+                <p>
+                  {{city}}
+                </p>
+              </div>
+            </div>
+          </a>
+        {{/each}}`
+  const longConcertsList = ` {{#each concertsInfoLong}}
+          <a href="/concert/{{id}}">
+            <div class="row event">
+              <div class="col-6 event-pic">
+                <img src="{{img}}" alt="">
+              </div>
+              <div class="col-6">
+                <p>
+                  {{date}}
+                </p>
+                <div class="title">
+                  <p>{{name}}</p>
+                </div>
+                <p>
+                  {{city}}
+                </p>
+              </div>
+            </div>
+          </a>
+        {{/each}}`
   const showAllConcertsButton = document.querySelector('#show-all-concerts');
   const showLessConcertsButton = document.querySelector('#show-less-concerts');
 
