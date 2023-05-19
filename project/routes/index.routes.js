@@ -239,6 +239,11 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get("/my-events", isLoggedIn, (req, res, next) => {
+  try{
+  res.redirect(`/user/events/${req.session.currentUser._id}`)}
+  catch (error) {console.log(error)}
+})
 
 router.get("/new-message", isLoggedIn, async (req, res, next) => {
 

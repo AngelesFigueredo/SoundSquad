@@ -1,11 +1,19 @@
 <link rel="stylesheet" href="/stylesheets/audd.css" />
 
 <div class="audd-container">
-    <div class="row">
+    <div>
         <div class="col d-flex justify-content-center">
-            <button id="start-btn" class="align-self-center"><img class="listener" src="images/listen-static.png"></button>
-            <button id="stop-btn" style="display: none" class="align-self-center"><img class="listener" src="images/listen-gif.gif"></button>
-            <!-- Rest of your code -->
+            <div class="d-flex align-items-center upper-text">
+                <img class="mic-icon color" src="images/icons/mic.png">
+                <p class="mb-0 ml-2">Clic para comenzar a escuchar</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <button id="start-btn" class="align-self-center"><img class="listener" src="images/listen-static.png"></button>
+                <button id="stop-btn" style="display: none" class="align-self-center"><img class="listener" src="images/listen-gif.gif"></button>
+                <!-- Rest of your code -->
+            </div>
         </div>
         <div>
             <form id="audio-form" action="/song-details" method="POST">
