@@ -434,26 +434,76 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
 
 
 router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
-
   const { id } = req.params;
+
   try {
-    const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
-    axios
-      .get(urlSearch, {
+    const artistUrl = `https://api.spotify.com/v1/artists/${id}`;
+    const topTracksUrl = `https://api.spotify.com/v1/artists/${id}/top-tracks?country=US`;
+    const tmApiKey = process.env.TICKET_CONSUMER_KEY;
+
+    const [artistResponse, topTracksResponse] = await Promise.all([
+      axios.get(artistUrl, {
         headers: {
           Authorization: `Bearer ${spotifyAccessToken}`,
         },
-      })
-      .then((response) => {
-        artist = response.data
+      }),
+      axios.get(topTracksUrl, {
+        headers: {
+          Authorization: `Bearer ${spotifyAccessToken}`,
+        },
+      }),
+    ]);
 
-        res.render("main/artist-details", { artist, currentUser: req.session.currentUser });
+    const artist = artistResponse.data;
+    const artistTopTracks = topTracksResponse.data.tracks.slice(0,3);
 
+    const concertsResponse = await axios.get(
+      `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${tmApiKey}&keyword=${artist.name}`
+    );
+
+    let artistConcerts = [];
+    if (
+      concertsResponse.data &&
+      concertsResponse.data._embedded &&
+      concertsResponse.data._embedded.events
+    ) {
+      const concerts = concertsResponse.data._embedded.events;
+
+      artistConcerts = concerts.map((concert) => {
+        let imgSong = "/images/event-default.jpg";
+        if (concert.images && concert.images[0]) {
+          imgSong = concert.images[0].url;
+        }
+        let city = "";
+        if (
+          concert._embedded &&
+          concert._embedded.venues[0] &&
+          concert._embedded.venues[0].city
+        ) {
+          city = concert._embedded.venues[0].city.name;
+        }
+
+        return {
+          name: concert.name,
+          city: city,
+          id: concert.id,
+          img: imgSong,
+        };
       });
+    }
+
+    res.render("main/artist-details", {
+      artist,
+      artistTopTracks,
+      artistConcerts,
+      currentUser: req.session.currentUser,
+    });
   } catch (error) {
     console.log(error);
   }
 });
+
+
 
 
 router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
@@ -527,9 +577,15 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
       },
     });
     const song = response.data
+    const artistId = response.data.artists[0].id
+    let artistId2;
+    if (response.data.artists.length > 1){
+    artistId2 = response.data.artists[1].id}
+    console.log(artistId)
+
     console.log(id)
 
-    res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser });
+    res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser, artistId, artistId2 });
 
   } catch (error) {
     console.log(error);
