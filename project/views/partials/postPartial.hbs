@@ -8,7 +8,7 @@
     </div>
   
     <div>
-      <p>{{post.content}}</p> 
+      <p class="post-text">{{post.content}}</p> 
     </div>
   
   {{#unless post.comments}}
@@ -31,7 +31,7 @@
           <img class="comment-icon-yes" src="images/icons/Comments.svg">
         </div>
   
-        <div class="col">
+        <div class="col" style="padding-left: 4px">
           <p class="comment-counter-yes">{{post.comments.length}}</p>
         </div>
       </div>

@@ -55,39 +55,40 @@
           </button>
 
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Nueva playlist</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="/new-playlist" method="POST">
-        <div class="modal-body">
-          <div class="form-group row justify-content-center">
-            <label for="name" class="col-sm-4 col-form-label text-right">Nombre de la playlist:</label>
-            <div class="col-sm-8">
-              <input required type="text" class="form-control" id="name" name="title">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Nueva playlist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form action="/new-playlist" method="POST">
+                    <div class="modal-body">
+                      <div class="form-group row justify-content-center">
+                        <label for="name" class="col-sm-4 col-form-label text-right">Nombre de la playlist:</label>
+                          <div class="col-sm-8">
+                            <input required type="text" class="form-control" id="name" name="title">
+                          </div>
+                      </div>
+                      <div class="form-group row justify-content-center">
+                        <label for="description" class="col-sm-4 col-form-label text-right">Descripción:</label>
+                          <div class="col-sm-8">
+                            <input required type="text" class="form-control" id="description" name="description">
+                          </div>
+                      </div>
+
+                      <input hidden type="text" name="author" value="{{../currentUser._id}}">
+                      <input hidden type="text" name="songs" value="{{this.id}}">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
+                      <button type="submit" class="btn btn-primary create-btn">Crear playlist</button>
+                    </div>
+                  </form>
+              </div>
             </div>
           </div>
-          <div class="form-group row justify-content-center">
-            <label for="description" class="col-sm-4 col-form-label text-right">Descripción:</label>
-            <div class="col-sm-8">
-              <input required type="text" class="form-control" id="description" name="description">
-            </div>
-          </div>
-          <input hidden type="text" name="author" value="{{../currentUser._id}}">
-          <input hidden type="text" name="songs" value="{{this.id}}">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary create-btn">Crear playlist</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
       {{/with}}
 
