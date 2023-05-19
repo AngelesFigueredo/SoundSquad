@@ -22,5 +22,6 @@ const socket = io('http://localhost:4000', { transports: ['websocket', 'polling'
             socket.emit("create message", { content });
         };
 window.onload = function() {
-  window.scrollTo(0, document.body.scrollHeight);
+ window.scrollTo(0, document.body.scrollHeight);
+
 }

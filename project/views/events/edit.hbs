@@ -1,11 +1,30 @@
 {{#if event}}
+                    
+                      
+                      
+                      
+                      
+                      
+                      
+                        <p hidden id="taken-pic"> Ya tienes una imagen que has tomado</p>
+                        <button hidden id="upload-button">Subir otra imagen</button>
     
     {{#with event}}
-        <form action="/edit-event/{{_id}}" method="POST">
+
+
+        <form action="/edit-event/{{_id}}" method="POST" enctype="multipart/form-data">
         
             <div class="card">
                 <div class="card-body">
                     <img src="{{profilePic}}" style="width: 10rem;">
+                    <div>
+                        Imagen
+                        <input type="file" id="image-input" name="profilePic" accept="image/jpeg, image/png">
+                        <a href="/take-photo">Hazte una nueva</a>
+
+                        <input hidden type="text" value="{{profilePic}}" name="profilePic">
+                        <input hidden id="pic-url" name="picUrl">
+                    </div>
                     <h5 class="card-title"><input type="text" name="name" value="{{name}}"></h5>
                     <h6 class="card-subtitle mb-2 text-muted"><input type="text" name="description" value="{{description}}"></h6>
 
@@ -48,3 +67,5 @@
 {{else}}
     HA HABIDO UN PROBLEMITA.
 {{/if}}
+
+<script src="/scripts/check-profilePic.js"></script>

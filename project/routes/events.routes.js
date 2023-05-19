@@ -70,7 +70,9 @@ const {
     {console.log(error)}
   })
 
- /* router.get("/join/:eventId", async(req, res, next)=>{
+  //// comentar 
+
+  router.get("/join/:eventId", async(req, res, next)=>{
       const event = await Event.findById(req.params.eventId)
       const userId = req.session.currentUser._id
       
@@ -88,12 +90,14 @@ const {
       const eventId = req.params.eventId
       const userId = req.body.userId
       const event = Event.findById(eventId)
-      const eventAuthor = event.author._id
+      // const eventAuthor = event.author._id
       await Event.findByIdAndUpdate(eventId, { $push: { joinRequests: userId}})
-      await User.findByIdAndUpdate(eventAuthor, { $push: { event: eventId, user: currentUser._id}})
+      // await User.findByIdAndUpdate(eventAuthor, { $push: { event: eventId, user: currentUser._id}})
       res.redirect(`/join/${req.params.eventId}`)
-  }) */
+  }) 
   
+  ////////comentar 
+
   // event's data
   router.get("/show-event/:eventId",isEventMember, async(req, res, next) => {
       const eventId = req.params.eventId

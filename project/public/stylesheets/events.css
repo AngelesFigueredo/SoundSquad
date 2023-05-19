@@ -88,3 +88,19 @@ p{
     padding: 10px, 50px;
 }
 
+.one-liner input{
+    border: none;
+    border-bottom: #BEBEBE solid 2px;
+    width: 100%;
+    margin: 10px 0;
+}
+.oner-liner p{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+}
+.padd-create{
+    padding-top: 60px;
+
+}
+

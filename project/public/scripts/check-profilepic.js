@@ -8,16 +8,17 @@ const fileInput = document.querySelector("#image-input")
 // to also upload a picture from our local machine
 // if we didn't want to use the picture we have taken we should
 // press the "Subir otra imagen" button
-
+console.log(localStorage.getItem("img"))
 if(localStorage.getItem("img")){
-    picUrl.value = localStorage.getItem("img")
-    takenPic.removeAttribute("hidden")
-    uploadButton.removeAttribute("hidden")
-
-    fileInput.setAttribute("hidden", true)
-}
-
+        picUrl.value = localStorage.getItem("img")
+        takenPic.removeAttribute("hidden")
+        uploadButton.removeAttribute("hidden")
+        fileInput.setAttribute("hidden", true)
+    }
 uploadButton.addEventListener("click", ()=>{
     localStorage.clear()
-    window.location.reload()
+    takenPic.setAttribute("hidden", true)
+    uploadButton.setAttribute("hidden", true)
+    fileInput.removeAttribute("hidden")
+    
 })

@@ -1,6 +1,67 @@
 
 
 {{#if event}}
+
+<link rel="stylesheet" href="/stylesheets/events.css" />
+<link rel="stylesheet" href="/stylesheets/search.css" />
+<div class="row">
+    <div class="col-md-5">
+        <form action="/get-directions" method="post">
+            <input type="text" id="key" value="{{key}}" hidden>
+            <img class="profile-pic" src="{{concertInfo.images.0.url}}" alt="Profile image">
+
+            <div class="event-title-container container">
+                <h5 class="event-title">{{event.name}}</h5>
+                <div class="row">
+                    <div class="col-1">
+                        <img src="/images/icons/microphone.svg">
+                    </div>
+                    <div class="col-10 api-info-concert">
+                        <h6 id="name" class="data"></h6>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">
+                        <img src="/images/icons/calendar.svg">
+                    </div>
+                    <div class="col-10 api-info-concert">
+                        <h6 id="date" class="data"></h6>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">
+                        <img src="/images/icons/location.svg">
+                    </div>
+                    <div class="col-10 api-info-concert">
+                        <button type="submit" class="remove-button-styling">
+                            <h6 id="place" class="data"></h6>
+                        </button>
+                    </div>
+                </div>
+                <input type="text" name="longitude" id="longitude" hidden>
+                <input type="text" name="latitude" id="latitude" hidden>
+        </form>
+        <input type="text" id="apiId" value="{{concertInfo.id}}" hidden>
+        <div class="row separation">
+            <div class="col-6">
+                <a href="{{concertInfo.url}}">
+                    <button type="button" class="purple-button">Comprar entradas</button>
+                </a>
+            </div>
+            <div class="col-6">
+                <a href="/create-event/{{concertInfo.id}}">
+                    <button type="button" class="white-button">Crear nuevo evento</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
     {{#with event}}
         <div class="card">
             <div class="card-body">
@@ -56,3 +117,6 @@
 {{/if}}
 
 <script src="/scripts/events/leave-event.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/scripts/events/dateFormatter.js"></script>
+<script src="/scripts/events/concert-details.js"></script>
