@@ -1,0 +1,105 @@
+.search-again input{
+    border: none;
+    background: #E5E1EE;
+}
+.search-again .outline{
+    background: #E5E1EE;
+    border-radius: 50px;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+}
+.search-again input,
+.search-again form{
+    width: 100%;
+}
+.search-again img{
+    height: 20px;
+}
+.search-again p{
+    margin-bottom: 0;
+    color: #6324BB;
+    font-size: 0.8em;
+}
+.search-again ::placeholder {
+    color: #6324BB;
+    opacity: 1;
+}
+h1{
+    padding-top: 20px;
+    color: #6324BB;
+}
+h2{
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color:#262626;
+}
+.you-message{
+    margin-left: 10px;
+}
+
+.user{
+    margin: 5px 1px;
+}
+.responsive-col img{
+    padding: 5px;
+    width: 100%;
+    border-radius: 12px;
+}
+
+.event p{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+    color: #BEBEBE;;
+    padding: 3px 0;
+}
+.title p{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
+    color: #6324BB;
+}
+
+a {
+    text-decoration: none;
+}
+.artist-name p{
+    font-size: 1.1rem;
+    margin-top: 7px;
+    color: #6324BB;
+}
+.artist-name{
+    padding-left: 0;
+}
+.sub-title p{
+    font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 120%;
+        color: #BEBEBE;
+        margin-top: 0;
+}
+.padd{
+    padding: 8px 16px;
+}
+.many-results{
+    height: 80vh;
+    overflow-y: auto;
+    padding:5px;
+    padding-top:12px;
+}
+.message-no-events{
+    width: 100%;
+    height: 80vh;
+}
+.message-no-events p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    color: #6324BB;
+    text-shadow: #262626;
+}

@@ -285,16 +285,32 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
     const sortedArtists = artists.body.artists.items.sort(
       (a, b) => b.followers - a.followers
     );
-    const artistsInfoShort = sortedArtists.slice(0, 5).map((artist) => ({
-      name: artist.name,
-      id: artist.id,
-      uri: artist.uri,
-    }));
+    const artistsInfoShort = sortedArtists.slice(0, 5).map((artist) => {
+      let imgSong = "/images/event-default.jpg"
+      if(artist.images[0]){
 
-    const artistsInfoLong = sortedArtists.map((artist) => ({
+         imgSong = artist.images[0].url
+      }
+      return({
       name: artist.name,
       id: artist.id,
-    }));
+      img: imgSong,
+      uri: artist.uri,
+    })});
+
+    const artistsInfoLong = sortedArtists.map((artist) => {
+      let imgSong = "/images/event-default.jpg"
+      if(artist.images[0]){
+
+         imgSong = artist.images[0].url
+      }
+      return({
+      name: artist.name,
+      id: artist.id,
+      img: imgSong,
+    })})
+
+
 
     //Songs
     const songs = await spotifyApi.searchTracks(query);
@@ -306,10 +322,15 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
       if (song.artists[1]) {
         artists += ` y ${song.artists[1].name}`;
       }
+      let imgSong = "/images/event-default.jpg"
+      if(song.album.images[0]){
+         imgSong = song.album.images[0].url
+      }
       return {
         name: song.name,
         artists: artists,
         id: song.id,
+        img: imgSong
       };
     });
 
@@ -318,10 +339,15 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
       if (song.artists[1]) {
         artists += ` y ${song.artists[1].name}`;
       }
+      let imgSong = "/images/event-default.jpg"
+      if(song.album.images[0]){
+         imgSong = song.album.images[0].url
+      }
       return {
         name: song.name,
         artists: artists,
         id: song.id,
+        img: imgSong
       };
     });
 
@@ -335,22 +361,36 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
         `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${tmApiKey}&keyword=${query}`
       )
       .then((response) => {
-        if (response.data && response.data._embedded) {
+        if (response.data && response.data._embedded
+          && response.data._embedded.events) {
           let concerts = response.data._embedded.events;
-
-          concertsInfoShort = concerts.slice(0, 5).map((concert) => ({
+          
+          
+          concertsInfoShort = concerts.slice(0, 5).map((concert) => { 
+            let imgSong = "/images/event-default.jpg"
+            if(concert.images && concert.images[0]){
+                imgSong = concert.images[0].url
+            }
+            return({
             name: concert.name,
             city: concert._embedded.venues[0].city.name,
             date: concert.dates.start.localDate,
             id: concert.id,
-          }));
+            img: imgSong
+          })});
 
-          concertsInfoLong = concerts.map((concert) => ({
+          concertsInfoLong = concerts.map((concert) => { 
+            let imgSong = "/images/event-default.jpg"
+            if(concert.images && concert.images[0]){
+                imgSong = concert.images[0].url
+            }
+            return({
             name: concert.name,
             city: concert._embedded.venues[0].city.name,
             date: concert.dates.start.localDate,
             id: concert.id,
-          }));
+            img: imgSong
+          })});
         }
 
         res.render("main/search-results", {
@@ -412,7 +452,7 @@ router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
     const followedEvents = await Event.find({
       members: currentUser._id,
       concertApiId: id,
-    });
+    }).populate("author");
     const friendEvents = await Event.find({
       $and: [
         { concertApiId: id },
@@ -423,8 +463,8 @@ router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
           ],
         },
       ],
-    });
-    const otherEvents = await Event.find({ concertApiId: id });
+    }).populate("author");
+    const otherEvents = await Event.find({ concertApiId: id }).populate("author");
 
     axios
       .get(
@@ -438,7 +478,7 @@ router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
           followedEvents,
           friendEvents,
           otherEvents,
-
+          key: process.env.TICKET_CONSUMER_KEY,
           currentUser: req.session.currentUser
 
         });

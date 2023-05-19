@@ -1,54 +1,137 @@
-{{#with concertInfo}}
-  <img src="{{this.images.0.url}}" />
-  <p>{{this.name}}</p>
-  <p>Fecha:
-    {{this.dates.start.localDate}}
-    a las
-    {{this.dates.start.localTime}}</p>
-  <p>Entradas a la venta a partir del {{this.sales.public.startDateTime}}</p>
-  <p>Precio:
-    {{this.priceRanges.0.min}}-{{this.priceRanges.0.max}}{{this.priceRanges.0.currency}}</p>
-  <a href="{{this.url}}" target="_blank">Compra tus entradas</a>
-{{/with}}
+<link rel="stylesheet" href="/stylesheets/events.css" />
+<link rel="stylesheet" href="/stylesheets/search.css" />
+<div class="row">
+  <div class="col-md-5">
+    <form action="/get-directions" method="post">
+      <input type="text" id="key" value="{{key}}" hidden>
+      <img class="profile-pic" src="{{concertInfo.images.0.url}}" alt="Profile image">
 
+      <div class="event-title-container container">
+        <h5 class="event-title">{{event.name}}</h5>
+        <div class="row">
+          <div class="col-1">
+            <img src="/images/icons/microphone.svg">
+          </div>
+          <div class="col-10 api-info-concert">
+            <h6 id="name" class="data"></h6>
+          </div>
+        </div>
 
-{{#unless myEvents}}
-        {{!-- FALTA POR PONER ESTE ENLACE Y ASEGURARSE DE QUE MANDA EL ID DEL CONCIERTO QUE ESTÁ EN LA RUTA --}}
-        <a href="/">Crea tú un evento!</a>     
-  {{#unless followedEvents}}
-    {{#unless friendsEvents}}
-      {{#unless otherEvents}}
-        <p>No hay eventos disponibles para este concierto</p>
+        <div class="row">
+          <div class="col-1">
+            <img src="/images/icons/calendar.svg">
+          </div>
+          <div class="col-10 api-info-concert">
+            <h6 id="date" class="data"></h6>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-1">
+            <img src="/images/icons/location.svg">
+          </div>
+          <div class="col-10 api-info-concert">
+            <button type="submit" class="remove-button-styling">
+              <h6 id="place" class="data"></h6>
+            </button>
+          </div>
+        </div>
+        <input type="text" name="longitude" id="longitude" hidden>
+        <input type="text" name="latitude" id="latitude" hidden>
+    </form>
+    <input type="text" id="apiId" value="{{concertInfo.id}}" hidden>
+    <div class="row separation">
+      <div class="col-6">
+        <a href="{{concertInfo.url}}">
+          <button type="button" class="purple-button">Comprar entradas</button>
+        </a>
+      </div>
+      <div class="col-6">
+        <a href="/create-event/{{concertInfo.id}}">
+          <button type="button" class="white-button">Crear nuevo evento</button>
+        </a>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="col-md-7 responsive-col many-results ">
+    {{#unless myEvents}}
+      {{#unless followedEvents}}
+        {{#unless friendsEvents}}
+          {{#unless otherEvents}}
+            <div class="message-no-events d-flex 
+            align-items-center justify-content-center">
+              <p>No hay eventos disponibles para este concierto</p>
+            </div>
+          {{/unless}}
+        {{/unless}}
       {{/unless}}
     {{/unless}}
-  {{/unless}}
-{{/unless}}
 
 
-{{#if myEvents}}
-<h2>Tus eventos:</h2>
-{{#each myEvents}}
-    <a href="/event/{{this._id}}"> {{this.name}}</a>
-{{/each}}
-{{/if}}
+    {{#if myEvents}}
+    <div class="container">
+      <div class="row">
+        <hr class="d-md-none">
+        <h2>Mis eventos</h2>
+        {{#each myEvents}}
+        <a href="/event-details/{{this._id}}">
+          <div>
+            {{>eventsSearch}}
+          </div>
+        </a>
+        {{/each}}
+      </div>
+    </div>
+      {{/if}}
 
-{{#if followedEvents}}
-<h2>Eventos que sigues:</h2>
-{{#each followedEvents}}
-    <a href="/event/{{this._id}}"> {{this.name}}, de {{this.admin}} </a>
-{{/each}}
-{{/if}}
-
-{{#if friendsEvents}}
-<h2>Eventos de tus amigos:</h2>
-{{#each friendsEvents}}
-   <a href="/event/{{this._id}}"> {{this.name}}, de {{this.admin}} </a>
-{{/each}}
-{{/if}}
-
-{{#if otherEvents}}
-<h2>Eventos que te pueden interesar:</h2>
-{{#each otherEvents}}
-    <a href="/event/{{this._id}}"> {{this.name}}, de {{this.admin}} </a>
-{{/each}}
-{{/if}}
+    {{#if otherEvents}}
+      <div class="container">
+        <div class="row">
+            <hr class="d-md-none">
+            <h2>Eventos que te pueden interesar</h2>
+            {{#each otherEvents}}
+              <a href="/event-details/{{this._id}}">
+                <div>
+                  {{>eventsSearch}}
+                </div>
+              </a>
+            {{/each}}
+        </div>
+      </div>
+    {{/if}}
+    {{#if followedEvents}}
+      <div class="container">
+        <div class="row">
+          <hr class="d-md-none">
+          <h2>Eventos a los que sigues</h2>
+          {{#each followedEvents}}
+          <a href="/event-details/{{this._id}}">
+            <div>
+              {{>eventsSearch}}
+            </div>
+          </a>
+        {{/each}}
+        </div>
+      </div>
+    {{/if}}
+    {{#if friendsEvents}}
+    <div class="container">
+      <div class="row">
+        <hr class="d-md-none">
+        <h2>Eventos de tus amigos</h2>
+        {{#each friendsEvents}}
+        <a href="/event-details/{{this._id}}">
+          <div>
+            {{>eventsSearch}}
+          </div>
+        </a>
+        {{/each}}
+      </div>
+    </div>
+    {{/if}}
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/scripts/events/dateFormatter.js"></script>
+<script src="/scripts/events/concert-details.js"></script>

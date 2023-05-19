@@ -14,7 +14,7 @@ const eventSchema = new Schema(
         }, 
     artist: String, 
     date: String, 
-    venue: String,
+    place: String,
     description: String,
     members: [{type: Schema.Types.ObjectId, ref: "User" }], 
     joinRequests: [{type: Schema.Types.ObjectId, ref: "User" }], 
