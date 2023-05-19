@@ -31,7 +31,8 @@ const {
 
   router.get("/create-event/:concertId", (req, res, next) => {
       const concertId = req.params
-      res.render("events/create", { session: req.session, concertId, currentUser: req.session.currentUser}, );
+      const apiKey = process.env.TICKET_CONSUMER_KEY
+      res.render("events/create", { session: req.session, concertId, apiKey, currentUser: req.session.currentUser}, );
   });
   
   router.post("/create-event/:concertId", async(req, res, next) => {

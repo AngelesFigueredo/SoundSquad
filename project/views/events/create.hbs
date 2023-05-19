@@ -4,7 +4,7 @@
     <label> Escoge un nombre para tu Evento
         <input type="text" name="name" required placeholder="Nombre de tu evento"></input>
     </label>
-    <label> 
+    <label>
         <input type="text" name="author" value="{{session.currentUser._id}}" hidden></input>
         <input type="text" name="admin" value="{{session.currentUser._id}}" hidden></input>
     </label>
@@ -12,9 +12,19 @@
         <textarea type="text" name="description" placeholder="Descripción"> </textarea>
     </label>
     <input type="text" name="members" value="{{session.currentUser._id}}" hidden></input>
-    <input type="text" name="concertApiId" 
-    value="{{concertId.concertId}}" hidden></input>
+    <input type="text" name="concertApiId" value="{{concertId.concertId}}" hidden></input>
+    <input type="text" id="key" value="{{apiKey}}" hidden>
+    <input type="text" id="name" name="artist" hidden>
+    <input type="text" id="date" name="date"hidden>
+    <input type="text" id="place" name="place" hidden>
+    <input type="text" id="apiId" hidden value="{{concertId.concertId}}" hidden>
 
     <button type="submit">Crea tu evento</button>
 
 </form>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/scripts/events/dateFormatter.js"></script>
+<script src="/scripts/events/create-event.js"></script>
+
+
