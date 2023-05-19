@@ -1,0 +1,48 @@
+.artist-image {
+    width: 300px;
+    border-radius: 20px;
+    margin:16px
+}
+
+.artist-name {
+    color: #6324BB;
+    font-size: 30px;
+}
+
+.preview-picture {
+    width: 70px;
+    border-radius: 16px;
+    margin-left: 6px;
+    margin-bottom: 10px
+}
+
+.album {
+    color: #BEBEBE;
+    font-weight: lighter;
+    font-size: 10px;
+}
+
+.play-button {
+    background-color: transparent;
+    border: none;
+    padding: 0px
+}
+
+.play-icon {
+    width: 50px;
+}
+
+.song-name {
+    color: #6324BB;
+    margin-bottom: 0px;
+}
+
+.body-text {
+    margin-left: 10px;
+    margin-bottom: 10px
+}
+
+a {
+    text-decoration: none;
+}
+

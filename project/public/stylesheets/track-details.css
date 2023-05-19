@@ -1,0 +1,78 @@
+.artist-names {
+    display: inline-block;
+}
+
+.artist-names p {
+    display: inline;
+    margin-right: 10px;
+    color:#BEBEBE
+}
+
+a {
+    text-decoration: none;
+}
+
+.track-image {
+    width: 300px;
+    border-radius: 20px;
+    margin:16px
+}
+
+.song-title {
+    color: #6324BB;
+    margin-top:20px;
+    font-size: 20px;
+}
+
+.play-button {
+    background-color: transparent;
+    border: none;
+    padding:0px;
+}
+
+.play-icon {
+    width: 50px;
+}
+
+.purple-link {
+    font-size: 10px;
+    background-color: #6324BB;
+    border: 1px solid #6324BB;
+    border-radius: 30px;
+    color: white;
+    padding: 2px;
+    margin-top:20px;
+    padding:8px
+}
+
+.white-link {
+    font-size: 10px;
+    background-color: white;
+    border: 1px solid #6324BB;
+    border-radius: 30px;
+    color: #6324BB;
+    padding: 2px;
+    margin-top:20px;
+    padding:8px
+}
+
+.select{
+    background-color: #6324BB;
+    color: white;
+    border: none;
+    padding: 5px;
+}
+
+.create-btn {
+    background-color: #6324BB;
+}
+
+.cancel-btn {
+    background-color: #6c757d
+}
+
+.close {
+    background-color: transparent;
+    border: none;
+    color:#6324BB
+}

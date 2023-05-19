@@ -44,3 +44,7 @@ a {
     background-color: transparent;
     border: none;
 }
+
+.play-icon {
+    width: 50px;
+}
