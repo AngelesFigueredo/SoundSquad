@@ -64,7 +64,8 @@ const userSchema = new Schema(
     posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 
     eventsRequests: {
-      type: [{ user: {type: String}, event: { type: Schema.Types.ObjectId, ref: "Event" } }]
+      type: [{ user: {type: String}, event: { type: String } }],
+      default: []
     },
 
     postMentions: [{ type: Schema.Types.ObjectId, ref: "Post" }],

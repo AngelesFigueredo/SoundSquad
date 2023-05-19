@@ -2,6 +2,7 @@ const {
   isEventMember
 } = require("../middlewares/event-guard");
 
+const User = require("../models/User.model")
 const express = require("express");
 const router = express.Router();
 const Event = require("../models/Events.model")
@@ -27,6 +28,8 @@ router.use(cors()); // IMPORTANT as we are working with 2 servers
 
 // see group chat and notifications
 router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, next) => {
+  const { currentUser } = req.session
+  const users = await User.find({ friends: { $in: [currentUser._id] } }).populate("username")
   const eventId = req.params.eventId
   const event = await Event.findById(eventId)
     .populate("joinRequests")
@@ -67,7 +70,7 @@ router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, 
   }
   event.key = process.env.TICKET_CONSUMER_KEY
   res.render("events/event-details",
-    { session: req.session, event, isAdmin, notifications, joinRequests });
+    { session: req.session, event, isAdmin, notifications, joinRequests, users });
 
 });
 
@@ -155,6 +158,16 @@ router.post("/accept-request", async(req, res, next) => {
     await Event.findByIdAndUpdate(eventId, {$push: { members: askerId}})
     res.redirect(`/event-details/${eventId}`)
 })
+
+router.post("/share-event/:eventId/", async (req, res, next)=>{
+  const { currentUser } = req.session
+  const friendName = currentUser.username
+  const { user } = req.body
+  const { eventId } = req.params
+  await User.findByIdAndUpdate(user, { $push: { eventsRequests: { user: friendName, event: eventId.toString() } }})
+  console.log(friendName, eventId)
+  res.redirect(`/event-details/${eventId}`)
+  })
 
 // CONNECT TO THE SOCKET.IO SERVER
 
