@@ -5,27 +5,32 @@
 {{#if songDetails}}
     {{#with songDetails}}
 
-    <h5>Song title: {{title}}</h5>
-    <h5>Artista: {{artist}}</h5>
-    <h5>Album: {{album}}</h5>
-
-    <img src="{{spotify.album.images.[0].url}}" alt="">
+    <img class="returned-picture" src="{{spotify.album.images.[0].url}}" alt="">
+    <h5 class="title">{{title}}</h5>
+    <h5 class="artist">Artista: {{artist}}</h5>
+    <h5 class="album">Album: {{album}}</h5>
+    
     <form action="/concerts-audd" method="POST">
         <input hidden type="text" name="artist" value="{{artist}}">
-        <button type="submit">Ver futuros conciertos</button>
+        <button class="link" type="submit">Ver futuros conciertos</button>
     </form>
 
+    {{#if (ne ../user.playlists.length 0)}}
+
     <form action="/{{spotify.id}}/addtoplaylist" method="POST">
-    <select name="playlists" id="playlists">
-        
+    <label for="playlists">Añadir canción a playlist</label>
+    <select class="form-select" name="playlists" id="playlists">
         {{#each ../user.playlists}}
         <option value="{{this._id}}">{{this.title}}</option>
         {{/each}}
-
-        <option>Create new playlist</option>
     </select>
-    <button type="submit">Añadir canción</button>
+    <button class="link" type="submit">Añadir canción</button>
     </form>
+
+    {{/if}}
+
+    <a href="/new-playlist/{{this.id}}">Crea una nueva playlist con esta canción!</a>
+
 
     {{/with}}
 

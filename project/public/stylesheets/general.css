@@ -46,3 +46,8 @@
 .conversation-name {
     padding-left: 20px
 }
+
+.returned-picture {
+    width: 80vw;
+    border-radius: 10px;
+}
