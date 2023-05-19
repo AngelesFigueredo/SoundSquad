@@ -108,8 +108,9 @@ const {
               member.isAdmin = event.admin.includes(member._id)
               member.isYou = member._id == userId
       })
+      const key = process.env.TICKET_CONSUMER_KEY
       
-      res.render("events/show-event", {session: req.session, event, currentUser: req.session.currentUser})
+      res.render("events/show-event", {session: req.session, event, currentUser: req.session.currentUser, key})
   });
   
   // leave an event 

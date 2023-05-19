@@ -27,14 +27,8 @@ router.post("/song-details", async (req, res, next) => {
     headers: { "Content-Type": "multipart/form-data" },
   })
     .then((response) => {
-      const songDetails = response.data.result;
-      // console.log(songDetails, "this is working");
-      res.render("audD/song-details", {
-        songDetails,
-        session: req.session,
-        user,
-        currentUser:req.session.currentUser
-      });
+      const songId = response.data.result.spotify.id
+      res.redirect(`/song/${songId}`)
     })
     .catch((error) => {
       console.log(error);
