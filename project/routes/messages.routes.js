@@ -46,7 +46,7 @@ router.get("/messages/:id", isLoggedIn, async (req, res, next) => {
       select: ["content", "author", "createdAt"],
       populate: {
         path: "author",
-        select: "username",
+        select: "username profileImg",
         model: 'User'
 
       },

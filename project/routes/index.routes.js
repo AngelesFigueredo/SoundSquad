@@ -190,6 +190,7 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
     const user = await User.findById(currentUser._id)
     .populate({
         path: "eventsRequests.event",
+        select: "name",
         model: "Event",
       })
       .populate({

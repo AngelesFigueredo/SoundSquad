@@ -8,7 +8,7 @@ a {
     border-radius: 50%;
     border: 3px solid white;
     position:absolute;
-    top:150px;
+    top:130px;
     left:16px;
     background-color:white
 
@@ -17,7 +17,7 @@ a {
 .profile-header {
     /* background-image: url("/public/images/head-profile.jpg"); */
     background-color:blueviolet;
-    height: 200px;
+    height: 180px;
 }
 
 .profile-body {
@@ -38,6 +38,7 @@ a {
 
 .profile-bio {
     font-weight: lighter;
+    font-size: 16px;
 }
 
 .profile-link {

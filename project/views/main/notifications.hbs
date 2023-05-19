@@ -41,26 +41,11 @@
 
       {{#if eventsRequests}}
         <div class="row">
-          <p class="title">Solicitudes de eventos</p>
+          <p class="title">Recomendaciones de eventos:</p>
         </div>
 
         {{#each eventsRequests}}
-          <div class="row">
-            <p class="body-text">{{this.user.username}} solicita unirse a {{this.event.name}}</p>
-          </div>
-          <div class="row">
-            <div class="col-2">
-              <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/accept" method="POST">
-                <button class="link" type="submit">Aceptar</button>
-              </form>
-            </div>
-            <div class="col-2">
-              <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/cancel" method="POST">
-                <button class="link" type="submit">Cancelar</button>
-              </form>
-            </div>
-          </div>
-
+          <a href="/event-details/{{this.event}}"><p>{{this.user}} te recomienda el evento {{this.event.name}}</p></a>
         {{/each}}
       {{/if}}
       <br>

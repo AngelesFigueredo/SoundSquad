@@ -1,19 +1,44 @@
-{{#with conversation}}
-  <p>Chat con {{../otherUser.username}} 💭</p>
+<link rel="stylesheet" href="/stylesheets/general.css" />
+
+<div class="container">
+  {{#with conversation}}
+
+    <div class="row">
+      <div class="col">
+        <p>Chat con {{../otherUser.username}} 💭</p>
+      </div>
+    </div>
 
   {{#each messages}}
     {{#if (isNewDay ../messages @index)}}
-      <p><strong>{{getDate this.createdAt}}</strong></p>
-    {{/if}}
-    <p>{{this.author.username}} {{getTime this.createdAt}}:</p>
 
-    {{#if (ifEquals this.author.username ../../myUser.username) }}
-    <div class="my-message"><p>{{this.content}}</p></div>
-    {{else}}
-    <div class="others-message"><p>{{this.content}}</p></div>
+    <div class="row">
+      <div class="col">
+        <p><strong>{{getDate this.createdAt}}</strong></p>
+      </div>
+    </div>
     {{/if}}
 
-    <br>
+    <div class="row">
+      {{#if (ifEquals this.author.username ../../myUser.username) }}
+        <div class="col my-message">
+            <div><p>{{this.content}}</p></div>
+            <div><p class="message-hour">{{getTime this.createdAt}}</p></div>
+        </div>
+
+      {{else}}
+        <div class="col others-message">
+          <div class="col-2">
+            <div><img class="message-user-image" src="{{this.author.profileImg}}"></div>
+          </div>
+          <div class="col-2">
+            <div class="others-message"><p>{{this.content}}</p></div>
+            <div><p class="message-hour">{{getTime this.createdAt}}</p></div>
+          </div>
+        </div>
+        {{/if}}
+    </div>
+
   {{/each}}
 
   <form action="/new-message/{{../otherUser._id}}" method="POST">
@@ -28,7 +53,12 @@
 
     <br />
 
-    <div><button type="submit">Enviar mensaje</button></div>
+    <div><button class="link" type="submit">Enviar mensaje</button></div>
   </form>
 
-{{/with}}
+
+
+
+    </div>
+  {{/with}}
+</div>
