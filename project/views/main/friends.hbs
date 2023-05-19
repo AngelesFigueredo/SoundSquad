@@ -1,3 +1,19 @@
-{{#each friends}}
-{{> friendPartial this}}
-{{/each}}
+<link rel="stylesheet" href="/stylesheets/lists.css" />
+
+<div class="contariner">
+    <div class="row">
+        <p class="head-text">Mis amistades</p>
+        {{#each friends}}
+            <div class="row align-items-center">
+                <div class="col-3">
+                    <img class="preview-picture" src="{{this.profileImg}}" alt="profile-image">
+                </div>
+
+                <div class="col">
+                    <a href="/profile/{{this._id}}"><p class="profile-name">{{this.name}} {{this.lastName}}</p></a>
+                    <a href="/profile/{{this._id}}"><p class="profile-username">@{{this.username}}</p></a>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>

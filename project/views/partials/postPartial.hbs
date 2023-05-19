@@ -1,16 +1,60 @@
-<h2>Post de <a href="/profile/{{post.author._id}}">{{post.author.username}}</a></h2>
-<h2>{{post.title}}</h2>
-<h3>{{post.content}}</h3>
+<div class="col-1 ">
+    <img class="post-photo" src="{{post.author.profileImg}}">
+</div>
 
-{{#unless post.comments}}
-<p>Este post no tiene comentarios</p>
-{{/unless}}
+<div class="col post-body">
+    <div>
+      <a href="/profile/{{post.author._id}}"><p class="post-name">{{post.author.name}} {{post.author.lastName}}</p></a>
+    </div>
+  
+    <div>
+      <p>{{post.content}}</p> 
+    </div>
+  
+  {{#unless post.comments}}
+    <div class="row">
+      <div class="col-1">
+        <img class="comment-icon" src="images/icons/Comments.svg">
+      </div>
+  
+      <div class="col">
+        <p class="comment-counter">0</p>
+      </div>
+    </div>
+  {{/unless}}
+  
+  {{#if post.comments}}
 
-{{#each post.comments}}
-{{>commentPartial this}}
-{{#if (ifEquals this.author._id ../user)}}
-    <form action="comment/{{_id}}/delete" method="POST" id="delete-form">
-      <button type="submit">🗑 comentario</button>
-    </form>
+    <button class="btn btn-primary comments-button" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      <div class="row justify-content-left">
+        <div class="col-1">
+          <img class="comment-icon-yes" src="images/icons/Comments.svg">
+        </div>
+  
+        <div class="col">
+          <p class="comment-counter-yes">{{post.comments.length}}</p>
+        </div>
+      </div>
+    </button>
+  
+  
+  <div class="collapse" id="collapseExample">
+    {{#each post.comments}}
+
+      <div class="row card card-body">
+        {{>commentPartial this}}
+          {{#if (ifEquals this.author._id ../user)}}
+            <div class="col-2 dropleft">
+                <div>
+                  <form action="comment/{{_id}}/delete" method="POST" id="delete-form">
+                    <button class="delete-comment" type="submit">Borrar comentario</button>
+                  </form>
+                </div>
+            </div>
+          {{/if}}
+      </div>
+      <br>
+    {{/each}}
+  </div>
   {{/if}}
-{{/each}}
+</div>

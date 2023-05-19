@@ -65,21 +65,42 @@ router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
 
 
 router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
-
   try {
     const { currentUser } = req.session;
     const user = await User.findById(currentUser._id);
     const id = user._id;
     const ownedPlaylists = await Playlist.find({ author: user._id });
+
+    const playlistsWithPreviewPictures = [];
+    for (const playlist of ownedPlaylists) {
+      const playlistObj = playlist.toObject();
+      const firstSong = playlistObj.songs[0];
+      const firstSongInfo = await spotifyApi.getTrack(firstSong);
+      const previewPicture = firstSongInfo.body.album.images[0].url;
+
+      playlistObj.previewPicture = previewPicture;
+      playlistsWithPreviewPictures.push(playlistObj);
+    }
+
     const followedPlaylists = await Playlist.find({
       followers: { $in: user._id },
     });
+
+    const followedPlaylistsWithPreviewPictures = [];
+    for (const playlist of followedPlaylists) {
+      const playlistObj = playlist.toObject();
+      const firstSong = playlistObj.songs[0];
+      const firstSongInfo = await spotifyApi.getTrack(firstSong);
+      const previewPicture = firstSongInfo.body.album.images[0].url;
+
+      playlistObj.previewPicture = previewPicture;
+      followedPlaylistsWithPreviewPictures.push(playlistObj);
+    }
+
     res.render("main/playlists", {
-      ownedPlaylists,
-      followedPlaylists,
-
+      ownedPlaylists: playlistsWithPreviewPictures,
+      followedPlaylists: followedPlaylistsWithPreviewPictures,
       currentUser: req.session.currentUser,
-
       user,
       id,
     });
@@ -88,6 +109,8 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 
 router.get("/playlist-details/:id", isLoggedIn, async (req, res, next) => {

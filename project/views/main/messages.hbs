@@ -1,9 +1,32 @@
-<h1>Mensajes directos</h1>
-{{#unless conversationsForView}}
-  <p>No tienes mensajes directos</p>
-  <a href="/new-message/{{user._id}}">Manda un mensaje</a>
-{{/unless}}
+<link rel="stylesheet" href="/stylesheets/general.css" />
 
-{{#each conversationsForView}}
-  <a href="/messages/{{this._id}}"><p>{{#each users}}{{#if (ne this.username ../../currentUser.username)}}{{this.username}}{{/if}}{{/each}}</p></a>
-{{/each}}
+<div class="container">
+  <div class="row">
+    <div class="column">
+      <div class="row">
+        <img src=""
+      <p class="head-text">Mensajes directos</h1>
+      </div>
+        {{#unless conversationsForView}}
+          <div class="row">
+            <p class="body-text">No tienes mensajes directos</p>
+            <a class="link" href="/new-message/{{user._id}}">Manda un mensaje</a>
+          </div>
+        {{/unless}}
+        {{#each conversationsForView}}
+          <div class="row justify-content-start align-items-center conversation-card">
+            <div class="col-2">
+              <a href="/messages/{{this._id}}">
+                <img {{#each users}}{{#if (ne this.username ../../currentUser.username)}} src="{{this.profileImg}}" class="preview-picture double-border" {{/if}}{{/each}}/>
+              </a>
+            </div>
+            <div class="col">
+              <a class="notification-link" href="/messages/{{this._id}}">
+                {{#each users}}{{#if (ne this.username ../../currentUser.username)}}<p class="conversation-name">{{this.username}}</p>{{/if}}{{/each}}
+              </a>
+            </div>
+          </div>
+        {{/each}}
+    </div>
+  </div> 
+</div>

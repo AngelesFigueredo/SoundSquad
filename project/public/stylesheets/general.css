@@ -1,0 +1,78 @@
+.head-text {
+    color: #6324BB;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.title {
+    color: #6324BB;
+}
+
+.body-text {
+    font-size: 10px;
+}
+
+.link {
+    font-size: 10px;
+    color: #6324BB;
+    border: 1px solid #6324BB;
+    border-radius: 30px;
+    background-color: white;
+    padding: 2px;
+}
+
+.notification-link {
+    color: #8259bb;
+    font-weight: normal;
+    text-decoration: none !important;
+}
+
+.preview-picture {
+    width: 50px;
+    border-radius: 16px;
+    margin-left: 6px;
+}
+
+.double-border {
+    outline: 2px solid #fff;
+    box-shadow: 0 0 0 2px #BEBEBE, 0 0 0 2px #BEBEBE;
+}
+
+.conversation-card {
+    min-height: 100px;
+}
+
+.conversation-name {
+    padding-left: 20px;
+}
+
+.returned-picture {
+    width: 80vw;
+    border-radius: 10px;
+}
+
+.my-message {
+    text-align: right;
+    background-color: white;
+    border: 1px solid #6324BB;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: inline-block;
+    align-self: flex-end;
+}
+
+.others-message {
+    text-align: left;
+    background-color: #6324BB;
+    color:white;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+    display: inline-block;
+    align-self: flex-start;
+}
+
+.message-user-image {
+    width: 16px;
+}

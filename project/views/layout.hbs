@@ -14,8 +14,8 @@
          integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
       <link rel="stylesheet" href="/stylesheets/style.css" />
       <link rel="stylesheet" href="/stylesheets/buttons.css" />
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="preconnect" href="https://fonts.googleapis.com%22%3E"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
       <link
          href="https://fonts.googleapis.com/css2?family=Lora:ital@1&family=Noto+Serif+Tamil&family=Poppins:wght@100;300;400;500;700&family=Roboto+Condensed:wght@300&display=swap"
          rel="stylesheet">
@@ -26,40 +26,68 @@
          {{{body}}}
       </div>
 
-     
+
+      <header>
+         <link rel="stylesheet" href="/stylesheets/layout.css" />
+
          <nav class="navbar fixed-bottom">
-            <ul>
-               <li><a href="/">página desarrollo</a></l>
-               <li><a href="/home">Home</a></l>
-               <li><a href="/my-profile">Mi perfil</a></li>
-               <li><a href="/audd">Shazam!</a></li>
+            <div class="container">
+                  <div class="row justify-content-around">
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/my-playlists"><img class="color" src="/images/icons/Music.svg"></a> 
+                        <a href="/my-playlists"><p class="link-text text-center">Playlists</p></a>
+                     </div>
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/my-events"><img class="color" src="/images/icons/Calendar.svg"></a> 
+                        <a href="/my-events"><p class="link-text text-center">Eventos</p></a>
+                     </div>
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/home"><img class="color" src="/images/icons/Home.svg"></a> 
+                        <a href="/home"><p class="link-text text-center">Home</p></a>
+                     </div>
+                     <div class="col-2 d-flex flex-column align-items-center">
+                        <a href="/audd"><img class="size-gif" src="/images/listen-static.png"></a> 
+                        <a href="/audd"><p class="link-text text-center">Listen</p></a>
+                     </div>
 
-               {{#if currentUser}}
-                  {{#with currentUser}}
-                  <div>
-                  <li><img src="{{this.profileImg}}" width="30"><p>{{this.username}}</p></li>
-                  </div>
+                        {{#if currentUser}}
+                           {{#with currentUser}}
 
-                  <li><a href="/logout">Cerrar sesión</a></li>
-                  <li><a href="/notifications">Notificaciones</a></li>
-                  <li><a href="/messages">Mensajes</a></li>
+                     <div class="col-2 dropdown">
+                        <button class="dropbtn"><img class="layout-profile-image" src={{this.profileImg}} width="30"></button>
+                           <div class="dropdown-content">
+                              <a class="menu-link" href="/my-profile">Mi perfil</a>
+                              <a class="menu-link" href="/notifications">Notificaciones</a>
+                              <a class="menu-link" href="/messages">Mensajes</a>
+                              <a class="menu-link" href="/logout">Cerrar sesión</a>
+                           </div>
+                     </div>
+
+
+                     
                   {{/with}}
                {{else}}
-                  <li><a href="/login">Inicia sesión</a></li>
                {{/if}}
-
-               <li>
-                  <form action="/search" method="GET">
-                     <input type="text" placeholder="Buscar" name="query" />
-                     <button type="submit">Buscar</button>
-                  </form>
-               </li>
-            </ul>
+                  </div>
+            </div>
          </nav>
       
 
       
       <script src="/js/script.js"></script>
+      <script>
+         // Get the dropdown button element
+            const dropdownBtn = document.querySelector('.dropbtn');
+
+         // Get the dropdown content element
+            const dropdownContent = document.querySelector('.dropdown-content');
+
+         // Toggle the display of the dropdown content on button click
+            dropdownBtn.addEventListener('click', function() {
+            dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+            });
+      </script>
+
       
    </body>
 

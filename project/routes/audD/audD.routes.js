@@ -33,6 +33,7 @@ router.post("/song-details", async (req, res, next) => {
         songDetails,
         session: req.session,
         user,
+        currentUser:req.session.currentUser
       });
     })
     .catch((error) => {

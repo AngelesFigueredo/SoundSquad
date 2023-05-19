@@ -1,0 +1,30 @@
+a{
+    text-decoration: none;
+}
+
+.preview-picture {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+    margin-left: 6px
+}
+
+.head-text {
+    color: #6324BB  ;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.profile-name {
+    color: #6324BB;
+    font-weight: normal;
+    font-size: 18px;
+}
+.profile-username {
+    color: #BEBEBE;
+    font-weight: lighter;
+    font-size: 18px;
+}
+
+
+

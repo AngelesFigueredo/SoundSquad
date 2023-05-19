@@ -1,62 +1,79 @@
-{{#unless friendRequests}}
-  {{#unless eventsRequests}}
-    {{#unless posts}}
-      {{#unless comments}}
-        <p>No tienes notificaciones</p>
+<link rel="stylesheet" href="/stylesheets/general.css" />
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <p class="head-text">Notificaciones</p>
+      {{#unless friendRequests}}
+        {{#unless eventsRequests}}
+          {{#unless posts}}
+            {{#unless comments}}
+              <p class="body-text">No tienes notificaciones</p>
+            {{/unless}}
+          {{/unless}}
+        {{/unless}}
       {{/unless}}
-    {{/unless}}
-  {{/unless}}
-{{/unless}}
 
-{{#if friendRequests}}
-  <h2>Solicitudes de amistad</h2>
-  {{#each friendRequests}}
-    <p>{{this.username}} te ha enviado una solicitud de amistad</p>
+      {{#if friendRequests}}
+      <div class="row">
+        <p class="title">Solicitudes de amistad</p>
+      </div>
 
-    <form action="/friend-requests/{{this._id}}/accept" method="POST">
-      <button type="submit">Aceptar</button>
-    </form>
+        {{#each friendRequests}}
+          <div class="row">
+            <p class="body-text">{{this.username}} te ha enviado una solicitud de amistad</p>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <form action="/friend-requests/{{this._id}}/accept" method="POST">
+                <button class="link" type="submit">Aceptar</button>
+              </form>
+            </div>
+            <div class="col-2">
+              <form action="/friend-requests/{{this._id}}/cancel" method="POST">
+                <button class="link" type="submit">Cancelar</button>
+              </form>
+            </div>
+          </div>
+        {{/each}}
+      {{/if}}
+      <br>
 
-    <form action="/friend-requests/{{this._id}}/cancel" method="POST">
-      <button type="submit">Cancelar</button>
-    </form>
+      {{#if eventsRequests}}
+        <div class="row">
+          <p class="title">Recomendaciones de eventos:</p>
+        </div>
 
-  {{/each}}
-{{/if}}
+        {{#each eventsRequests}}
+          <a href="/event-details/{{this.event}}"><p>{{this.user}} te recomienda el evento {{this.event.name}}</p></a>
+        {{/each}}
+      {{/if}}
+      <br>
 
-{{#if eventsRequests}}
-<h2>Solicitudes de eventos</h2>
-  {{#each eventsRequests}}
-    <p>{{this.user.username}} solicita unirse a {{this.event.name}}</p>
-    <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/accept" method="POST">
-      <button type="submit">Aceptar</button>
-    </form>
 
-    <form action="/event-requests/{{this.user._id}}/{{this.event._id}}/cancel" method="POST">
-      <button type="submit">Cancelar</button>
-    </form>
+      {{#if posts}}
+        <div class="row">
+          <p class="title">Menciones en posts:</p>
+        </div>
 
-  {{/each}}
-{{/if}}
+        {{#each posts}}
+        <div class="row">
+          <a class="notification-link new-notification" href="/post/{{this._id}}/details"><p class="body-text">{{this.author.username}} te ha mencionado en su post</p></a>
+        </div>
+        {{/each}}
+        <br />
+      {{/if}}
+      <br>
 
-{{#if posts}}
-  <h2>Menciones en posts:</h2>
-  {{#each posts}}
-    <a class="new-notification" href="/post/{{this._id}}/details"><p
-      >{{this.author.username}} te ha mencionado en su post</p></a>
-  {{/each}}
-  <br />
-{{/if}}
 
-{{#if comments}}
-  <h2>Menciones en comentarios:</h2>
-  {{#each comments}}
-    <a class="new-notification" href="/post/{{this.fatherPost._id}}/details"><p
-      >{{this.author.username}}
-        te ha mencionado en un comentario de un post de
-        {{this.fatherPost.author.username}}</p></a>
-  {{/each}}
-  <br />
-{{/if}}
+      {{#if comments}}
+        <p class="title">Menciones en comentarios:<p>
+        {{#each comments}}
+          <a class="notification-link new-notification" href="/post/{{this.fatherPost._id}}/details"><p class="body-text">{{this.author.username}} te ha mencionado en un comentario de un post de {{this.fatherPost.author.username}}</p></a>
+        {{/each}}
+        <br />
+      {{/if}}
+      <br>
+
 
 <script src="scripts/check-notifications.js"></script>

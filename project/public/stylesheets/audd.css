@@ -1,0 +1,33 @@
+
+.audd-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listener {
+    width: 300px;
+}
+
+#start-btn {
+    border: none;
+    background-color: transparent;
+}
+
+#stop-btn {
+    border: none;
+    background-color: transparent;
+}
+
+.mic-icon {
+    width: 20px;
+}
+
+.color {
+    filter: invert(22%) sepia(27%) saturate(6436%) hue-rotate(255deg) brightness(88%) contrast(107%);
+}
+
+.upper-text {
+    margin-bottom: 30px;
+}

@@ -5,6 +5,8 @@ const chunks = [];
 const startRecording = () => {
   navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
+      startBtn.style.display = 'none';
+      stopBtn.style.display = 'block'
       mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
       mediaRecorder.addEventListener('dataavailable', e => {
