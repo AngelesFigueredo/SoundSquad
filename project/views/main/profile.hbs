@@ -59,9 +59,7 @@
       {{/if}}
     {{/if}}
   {{/if}}
-{{/if}}
-
-{{#if ../haveConversation}}
+  {{#if ../haveConversation}}
 <a class="profile-link" href="/messages/{{../conversation}}">Enviar mensaje</a>
 {{else}}
         <button type="button" class="btn btn-primary profile-link" data-toggle="modal" data-target="#exampleModal" id="create-post">
@@ -72,7 +70,7 @@
           <div class="modal-dialog modal-dialog-cenered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nuevo post</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Nuevo mensaje a {{this.username}}</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"></h5>
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -95,6 +93,9 @@
           </div>
         </div>
 {{/if}}
+{{/if}}
+
+
 
 
 {{/with}}
