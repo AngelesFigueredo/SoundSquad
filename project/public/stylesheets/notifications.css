@@ -23,7 +23,27 @@
 }
 
 .notification-link{
-    text-decoration: none;
     color: #8259bb;
     font-weight: normal;
+    text-decoration: none !important;
+
+}
+
+.preview-picture {
+    width: 50px;
+    border-radius: 16px;
+    margin-left: 6px
+}
+
+.double-border {
+        outline: 2px solid #fff;
+        box-shadow: 0 0 0 2px #BEBEBE, 0 0 0 2px #BEBEBE;
+}
+
+.conversation-card{
+    min-height: 100px;
+}
+
+.conversation-name {
+    padding-left: 20px
 }

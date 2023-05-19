@@ -1,0 +1,21 @@
+
+.audd-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.listener {
+    width: 300px;
+}
+
+#start-btn {
+    border: none;
+    background-color: transparent;
+}
+
+#stop-btn {
+    border: none;
+    background-color: transparent;
+}
