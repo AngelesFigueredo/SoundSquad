@@ -18,7 +18,7 @@
 
   <form action="/new-message/{{../otherUser._id}}" method="POST">
     <input hidden name="conversation" value="{{this._id}}"/>
-    <input hidden name="author" value="{{../../currentUser._id}}"/>
+    <input hidden name="author" value="{{../currentUser._id}}"/>
     <input hidden name="to" value="{{../otherUser._id}}"/>
 
     <div>

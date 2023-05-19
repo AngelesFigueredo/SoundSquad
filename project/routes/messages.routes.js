@@ -120,11 +120,13 @@ router.post("/new-message", async (req, res, next) => {
 router.post("/new-message/:id", async (req, res, next) => {
   const { currentUser } = req.session;
   const { body } = req;
-  const { conversation } = body;
+  const { conversation, author, to } = body;
 
   const message = await Message.create({
     body,
     content: body.content,
+    author,
+    to,
   });
 
   await Conversation.findByIdAndUpdate(conversation, {

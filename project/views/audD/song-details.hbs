@@ -15,7 +15,7 @@
         <button class="link" type="submit">Ver futuros conciertos</button>
     </form>
 
-    {{#if (ne ../user.playlists.length 0)}}
+    {{#if ../user.playlists.length}}
 
     <form action="/{{spotify.id}}/addtoplaylist" method="POST">
     <label for="playlists">Añadir canción a playlist</label>
