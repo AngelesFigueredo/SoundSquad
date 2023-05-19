@@ -182,21 +182,9 @@ router.get("/edit/:id", async (req, res, next) => {
 
 
 router.get("/notifications", isLoggedIn, async (req, res, next) => {
-
   try {
-    
     const currentUser = req.session.currentUser;
-    console.log(currentUser)
     const user = await User.findById(currentUser._id)
-    .populate({
-        path: "eventsRequests.event",
-        select: "name",
-        model: "Event",
-      })
-      .populate({
-        path: "eventsRequests.user",
-        model: "User",
-      })
       .populate({
         path: "postMentions",
         populate: {
@@ -225,17 +213,26 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
         path: "friendRequests",
         model: "User",
       });
+
+    const eventsRequests = user.eventsRequests.map((request) => ({
+      user: request.user,
+      event: request.event.toString(), // Convert ObjectId to string
+    }));
+
     const posts = user.postMentions;
     const comments = user.commentMentions;
     const friendRequests = user.friendRequests;
+
     res.render("main/notifications", {
+      eventsRequests,
       posts,
       comments,
       friendRequests,
       session: req.session,
-      currentUser: req.session.currentUser
+      currentUser: req.session.currentUser,
     });
   } catch (error) {
+    console.log(error);
     res.render("error", { error });
   }
 });

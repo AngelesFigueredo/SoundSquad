@@ -132,40 +132,6 @@ const {
       const {longitude, latitude} = req.body
       const apiToken = process.env.MAPBOX_TOKEN
       res.render("events/maps", {longitude, latitude, apiToken})
-  })
-
-  router.post("/event-requests/:userId/:eventId/accept", async(req, res, next)=>{
-    try{
-    const { id } = req.session
-    const { userId, eventId } = req.params
-    await Event.findByIdAndUpdate(eventId, { $push: { members: userId}})
-    await User.findByIdAndUpdate(id, {
-        $pull: {
-          eventsRequests: {
-            $elemMatch: { event: eventId, user: userId },
-          },
-        },
-      });
-      res.redirect("/notifications")
-  } catch (error)
-  {console.log(error)}
-})
-
-  router.post("/event-requests/:userId/:eventId/cancel", async(req, res, next)=>{
-    try{
-        const { id } = req.session
-        const { userId, eventId } = req.params
-        await User.findByIdAndUpdate(id, {
-            $pull: {
-              eventsRequests: {
-                $elemMatch: { event: eventId, user: userId },
-              },
-            },
-          });
-          res.redirect("/notifications")
-      } catch (error)
-      {console.log(error)}
-  })
-  
+  }) 
 
 module.exports = router;

@@ -50,9 +50,21 @@
             <button type="button" class="purple-button">Detalles</button>
         </a>
     </div>
+
+    {{#if users}}
     <div class="col-6">
-        <button type="button" class="white-button">Compartir</button>
+        <form action="/share-event/{{event._id}}/" method="POST">
+           <select name="user" id="user">
+                {{#each users}}
+                    <option value="{{this._id}}">{{this.username}}</option>
+                {{/each}}
+</select>
+
+        <button type="submit" class="white-button">Compartir</button>
+        </form>
     </div>
+    {{/if}}
+
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
