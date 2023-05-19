@@ -361,19 +361,26 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
         `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${tmApiKey}&keyword=${query}`
       )
       .then((response) => {
+        // so it does give the error "cannot read properties of undefined"
+        
         if (response.data && response.data._embedded
           && response.data._embedded.events) {
           let concerts = response.data._embedded.events;
-          
           
           concertsInfoShort = concerts.slice(0, 5).map((concert) => { 
             let imgSong = "/images/event-default.jpg"
             if(concert.images && concert.images[0]){
                 imgSong = concert.images[0].url
             }
+            let city =""
+            // so it does give the error "cannot read properties of undefined"
+            if(concert._embedded && concert._embedded.venues[0] &&
+              concert._embedded.venues[0].city){
+                city = concert._embedded.venues[0].city.name
+              }
             return({
             name: concert.name,
-            city: concert._embedded.venues[0].city.name,
+            city: city,
             date: concert.dates.start.localDate,
             id: concert.id,
             img: imgSong
@@ -384,9 +391,13 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
             if(concert.images && concert.images[0]){
                 imgSong = concert.images[0].url
             }
+            if(concert._embedded && concert._embedded.venues[0] &&
+              concert._embedded.venues[0].city){
+                city = concert._embedded.venues[0].city.name
+              }
             return({
             name: concert.name,
-            city: concert._embedded.venues[0].city.name,
+            city: city,
             date: concert.dates.start.localDate,
             id: concert.id,
             img: imgSong
