@@ -29,6 +29,7 @@ const {
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const Event = require("../models/Events.model");
+const Conversation = require("../models/Conversation.model")
 
 /* GET home page */
 router.get("/", isLoggedOut, (req, res, next) => {
@@ -111,62 +112,51 @@ router.get('/users/:username', isLoggedIn, async (req, res) => {
 
 
 router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
-
   const myProfile = false;
+  let haveConversation;
   try {
     const { id } = req.params;
     const user = await User.findById(req.params.id);
     const currentUser = req.session.currentUser;
     const myUser = await User.findById(req.session.currentUser._id);
+    const conversation = await Conversation.findOne({
+      users: { $all: [currentUser._id, user._id] }
+    });
+
+    haveConversation = !!conversation;
+
+    const renderData = {
+      user,
+      haveConversation,
+      myProfile,
+      currentUser: req.session.currentUser
+    };
 
     if (currentUser._id === id) {
       return res.redirect("/my-profile");
     }
 
     if (myUser.friends.includes(user._id)) {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "true",
-        currentUser: req.session.currentUser
-      });
+      renderData.friendship = "true";
     } else if (myUser.sentFriendRequests.includes(user._id)) {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "pendingOut",
-        currentUser: req.session.currentUser
-      });
+      renderData.friendship = "pendingOut";
     } else if (myUser.friendRequests.includes(user._id)) {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "pendingIn",
-        currentUser: req.session.currentUser
-      });
-      // } else if (myUser.pendingFriendRequests.includes(user._id)) {
-      //   res.render("main/profile", {
-      //     user,
-      //     myProfile: false,
-      //     friendship: "pending",
-      //   });
+      renderData.friendship = "pendingIn";
     } else {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "false",
-        currentUser: req.session.currentUser
-      });
+      renderData.friendship = "false";
     }
+
+    if (conversation) {
+      renderData.conversation = conversation._id;
+    }
+
+    res.render("main/profile", renderData);
   } catch (error) {
     console.log(error);
     res.render("error", { error });
   }
 });
+
 
 router.get("/edit/:id", async (req, res, next) => {
   try {

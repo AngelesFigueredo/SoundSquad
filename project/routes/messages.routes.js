@@ -70,48 +70,28 @@ router.get("/messages/:id", isLoggedIn, async (req, res, next) => {
 
 });
 
-router.post("/new-message", async (req, res, next) => {
+router.post("/new-message/create-conversation/:id", async (req, res, next) => {
   try {
     const { currentUser } = req.session;
-    const { content, to } = req.body;
+    const { content } = req.body;
+    const { id } = req.params
     const { ObjectId } = require("mongodb");
-    const toId = new ObjectId(to);
+    const toId = new ObjectId(id);
     const fromId = new ObjectId(currentUser._id);
 
     const message = await Message.create({
-      author: fromId,
-      for: toId,
+      author: currentUser._id,
+      to: id,
       content,
     });
 
-    let conversations = await Conversation.findOneAndUpdate(
-      {
-        $and: [{ users: fromId }, { users: toId }],
-      },
-      {
-        $push: { messages: message._id },
-      },
-      { new: true }
-    );
-
-    if (!conversations) {
-      conversations = await Conversation.create({
-        users: [fromId, toId],
+   const conversation = await Conversation.create({
+        users: [toId, fromId],
         messages: message._id,
       });
-    }
-    const conversationsForView = await Conversation.find({
-      users: { $in: currentUser._id },
-    }).populate({
-      path: "users",
-      select: ["_id", "username"],
-    });
-
-    res.render("main/messages", {
-      conversationsForView,
-      currentUser,
-    });
-  } catch (error) {
+    // console.log(conversation)
+    res.redirect(`/messages/${conversation._id}`)
+    } catch (error) {
     console.log(error);
     res.render("error", { error });
   }

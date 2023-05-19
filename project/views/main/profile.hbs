@@ -60,6 +60,43 @@
     {{/if}}
   {{/if}}
 {{/if}}
+
+{{#if ../haveConversation}}
+<a class="profile-link" href="/messages/{{../conversation}}">Enviar mensaje</a>
+{{else}}
+        <button type="button" class="btn btn-primary profile-link" data-toggle="modal" data-target="#exampleModal" id="create-post">
+          Enviar mensaje
+        </button>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-cenered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nuevo post</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"></h5>
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <form action="/new-message/create-conversation/{{this._id}}" method="POST">
+                <div class="modal-body">
+                  <div class="form-group row justify-content-center">
+                    <label for="content" class="col-sm-4 col-form-label text-right">Mensaje:</label>
+                      <div class="col-sm-8">
+                        <input required type="textarea" class="form-control" id="content" name="content" autocomplete="off" placeholder="¿Qué quieres decirle{{#if this.name}} a {{this.name}}{{/if}}?">
+                      </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
+                  <button type="submit" class="btn btn-primary create-btn">Enviar mensaje</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+{{/if}}
+
+
 {{/with}}
 
 {{#if posts}}
