@@ -101,6 +101,17 @@ p{
 }
 .padd-create{
     padding-top: 60px;
+}
+.modal-content{
+    margin: 20px;
+}
+.purple-close{
+    background-color:#6324BB;
+    color: white;
+    border: none;
+}
 
+.participants p{
+    color:#6324BB;
 }
 

@@ -7,6 +7,7 @@ install:
     6. multer   
     7. multer-storage-cloudinary
     8. express-session
+    9. socket.oi
 
 
 

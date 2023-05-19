@@ -84,7 +84,7 @@ router.post("/event-details/:eventId",  cors(), async (req, res, next) => {
 // routes for group admins
 
 // DELETE EVENT
-router.post("/delete-event/:eventId", async(req, res, next) => {
+router.get("/delete-event/:eventId", async(req, res, next) => {
     const eventId = req.params.eventId
     await Event.findByIdAndDelete(eventId)
     res.redirect("/home")

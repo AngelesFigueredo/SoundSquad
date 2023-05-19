@@ -1,14 +1,14 @@
+<link rel="stylesheet" href="/stylesheets/events.css" />
+<link rel="stylesheet" href="/stylesheets/search.css" />
 
 
 {{#if event}}
 
-<link rel="stylesheet" href="/stylesheets/events.css" />
-<link rel="stylesheet" href="/stylesheets/search.css" />
 <div class="row">
     <div class="col-md-5">
         <form action="/get-directions" method="post">
             <input type="text" id="key" value="{{key}}" hidden>
-            <img class="profile-pic" src="{{concertInfo.images.0.url}}" alt="Profile image">
+            <img class="profile-pic" src="{{event.profilePic}}" alt="Profile image">
 
             <div class="event-title-container container">
                 <h5 class="event-title">{{event.name}}</h5>
@@ -43,80 +43,131 @@
                 <input type="text" name="longitude" id="longitude" hidden>
                 <input type="text" name="latitude" id="latitude" hidden>
         </form>
-        <input type="text" id="apiId" value="{{concertInfo.id}}" hidden>
+        <input type="text" id="apiId" value="{{event.concertApiId}}" hidden>
         <div class="row separation">
             <div class="col-6">
-                <a href="{{concertInfo.url}}">
-                    <button type="button" class="purple-button">Comprar entradas</button>
-                </a>
+                <!-- Button trigger modal -->
+                <button type="button" class="purple-button" data-toggle="modal" data-target="#exampleModal">
+                    Salir del evento
+                </button>
+                
+                <!-- Modal -->
+                <div class="container modal-wrapper">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">¿Seguro que te quieres ir?</h5>
+                                    <button type="button" class="close purple-close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ♪ No te vayas de la fiesta ♪
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn white-button" data-dismiss="modal">Me quedo</button>
+                                    <form action="/leave-event/{{event._id}}" method="post">
+                                        <button type="submit" class="btn purple-button">Os abandono</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
-            <div class="col-6">
-                <a href="/create-event/{{concertInfo.id}}">
-                    <button type="button" class="white-button">Crear nuevo evento</button>
-                </a>
+            {{#if event.isAdmin}}
+                <div class="col-6">
+                    <a href="/edit-event/{{event._id}}">
+                        <button type="button" class="white-button">Editar </button>
+                    </a>
+                </div>
+
+            {{else}}
+                
+                <div class="col-6">
+                        <button type="button" class="white-button">No puedes editar </button>
+                </div>
+
+            {{/if}}
             </div>
         </div>
     </div>
-</div>
-</div>
+    <div class="col-md-5">
+        <h2>Participantes</h2>
+        <div class="container participants">
+            {{#each event.members}}
+            <a href="/profile/{{this._id}}">
+                <div class="user">
+                    <div class="row">
+                        <div class="col-2 picture">
+                            <img class="search-img" src="{{profileImg}}">
+                        </div>
+                        <div class="col-8 wrapper">
+                            <div class="other-message">
+                                <p>
+                                    {{username}}
+                                    {{#if isAdmin}}
+                                        {{#if isYou}} <b> (you)</b>
+                                    {{else}} <b> (admin)</b> {{/if}}
+                                    {{/if}}
 
-
-
-    {{#with event}}
-        <div class="card">
-            <div class="card-body">
-                <img src="{{profilePic}}" style="width: 10rem;">
-                <h5 class="card-title">{{name}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{description}}</h6>
-                <ul>
-                    <h6>PARTICIPANTES →</h6>
-                    {{#each members}}
-                        <li class="d-flex flex-row">
-                            <img src="{{this.profileImg}}" style="width: 5rem;">
-                            {{this.username}}
-                            {{#if this.isAdmin}}
-                                {{#if this.isYou}}   <b>(you)</b>
-                                {{else}}    <b>(admin)</b>    {{/if}}
-                            {{/if}}
-                        </li>
-                    {{/each}}
-                </ul>
-
-                <button class="leave">Abandonar el evento</button>
-                <div class="card pop-up" hidden>
-                    <form action="/leave-event/{{_id}}" method="POST">
-                        ¿Estás seguro que quieres abandonar este evento?
-                        <input hidden type="text" name="userId" value="{{session.currentUser._id}}">
-                        <button type="submit">Sí</button> 
-                    </form>
-                        <button class="no">No</button>
+                                    {{#unless isAdmin}}
+                                        {{#if isYou}} <b> (you)</b> {{/if}}
+                                    {{/unless}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </a>
+            {{/each}}
         </div>
-        {{#if isAdmin}}
-            <div class="card" >
-                Aquí puedes borrar este evento
-                <button class="delete">Borrar</button>
-                <div class="card pop-up-delete" hidden style="width: 10rem;">
-                    <form action="/delete-event/{{_id}}" method="POST">
-                        ¿Estás seguro que quieres borrar este evento?
-                        se perderá para siempre
-                        <button type="submit">Sí</button>
-                    </form>
-                    <button class="no-delete">No</button>
-                </div>
-                Edita este evento 
-                <a href="/edit-event/{{_id}}"><button>Editar evento</button></a>
+            <!-- Button trigger modal -->
+            <div class="container padd-create">
+                <button class="purple-button" data-toggle="modal" data-target="#deleteModal">
+                    Borrar Evento
+                </button>
             </div>
-        {{/if}}
-    {{/with}}
-{{else}}
+            
+            
+            <!-- Modal -->
+            <div class="container modal-wrapper">
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Borrar evento</h5>
+                                <button type="button" class="close purple-close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ¡Cuidado! Una vez que borrar el evento no habrá vuelta atrás. Se perderá para siempre. 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn white-button" data-dismiss="modal">No</button>
+                                <div class="d-flex justify-content-center">
+                                    <form action="/leave-event/{{event._id}}" method="post">
+                                        <button type="submit" class="btn purple-button">Borrar evento</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
 
-<h1>HA HABIDO ALGÚN PROBLEMITA</h1>
+</div>
 
 {{/if}}
 
-<script src="/scripts/events/leave-event.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/scripts/events/dateFormatter.js"></script>
 <script src="/scripts/events/concert-details.js"></script>
