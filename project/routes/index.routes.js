@@ -29,6 +29,7 @@ const {
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const Event = require("../models/Events.model");
+const Conversation = require("../models/Conversation.model")
 
 /* GET home page */
 router.get("/", isLoggedOut, (req, res, next) => {
@@ -111,62 +112,59 @@ router.get('/users/:username', isLoggedIn, async (req, res) => {
 
 
 router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
-
   const myProfile = false;
+  let haveConversation;
   try {
     const { id } = req.params;
     const user = await User.findById(req.params.id);
     const currentUser = req.session.currentUser;
     const myUser = await User.findById(req.session.currentUser._id);
+    const conversation = await Conversation.findOne({
+      users: { $all: [currentUser._id, user._id] }
+    });
+    const posts = await Post.find({ author: user._id })
+    .populate("author comments")
+    .populate({
+      path: "comments",
+      populate: { path: "author", model: "User" },
+    })
+    .sort({ createdAt: -1 });
+
+    haveConversation = !!conversation;
+
+    const renderData = {
+      user,
+      posts,
+      haveConversation,
+      myProfile,
+      currentUser: req.session.currentUser
+    };
 
     if (currentUser._id === id) {
       return res.redirect("/my-profile");
     }
 
     if (myUser.friends.includes(user._id)) {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "true",
-        currentUser: req.session.currentUser
-      });
+      renderData.friendship = "true";
     } else if (myUser.sentFriendRequests.includes(user._id)) {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "pendingOut",
-        currentUser: req.session.currentUser
-      });
+      renderData.friendship = "pendingOut";
     } else if (myUser.friendRequests.includes(user._id)) {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "pendingIn",
-        currentUser: req.session.currentUser
-      });
-      // } else if (myUser.pendingFriendRequests.includes(user._id)) {
-      //   res.render("main/profile", {
-      //     user,
-      //     myProfile: false,
-      //     friendship: "pending",
-      //   });
+      renderData.friendship = "pendingIn";
     } else {
-
-      res.render("main/profile", {
-        user,
-        myProfile,
-        friendship: "false",
-        currentUser: req.session.currentUser
-      });
+      renderData.friendship = "false";
     }
+
+    if (conversation) {
+      renderData.conversation = conversation._id;
+    }
+
+    res.render("main/profile", renderData);
   } catch (error) {
     console.log(error);
     res.render("error", { error });
   }
 });
+
 
 router.get("/edit/:id", async (req, res, next) => {
   try {
@@ -182,21 +180,9 @@ router.get("/edit/:id", async (req, res, next) => {
 
 
 router.get("/notifications", isLoggedIn, async (req, res, next) => {
-
   try {
-    
     const currentUser = req.session.currentUser;
-    console.log(currentUser)
     const user = await User.findById(currentUser._id)
-    .populate({
-        path: "eventsRequests.event",
-        select: "name",
-        model: "Event",
-      })
-      .populate({
-        path: "eventsRequests.user",
-        model: "User",
-      })
       .populate({
         path: "postMentions",
         populate: {
@@ -225,17 +211,26 @@ router.get("/notifications", isLoggedIn, async (req, res, next) => {
         path: "friendRequests",
         model: "User",
       });
+
+    const eventsRequests = user.eventsRequests.map((request) => ({
+      user: request.user,
+      event: request.event.toString(), // Convert ObjectId to string
+    }));
+
     const posts = user.postMentions;
     const comments = user.commentMentions;
     const friendRequests = user.friendRequests;
+
     res.render("main/notifications", {
+      eventsRequests,
       posts,
       comments,
       friendRequests,
       session: req.session,
-      currentUser: req.session.currentUser
+      currentUser: req.session.currentUser,
     });
   } catch (error) {
+    console.log(error);
     res.render("error", { error });
   }
 });
@@ -421,26 +416,76 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
 
 
 router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
-
   const { id } = req.params;
+
   try {
-    const urlSearch = `https://api.spotify.com/v1/artists/${id}`;
-    axios
-      .get(urlSearch, {
+    const artistUrl = `https://api.spotify.com/v1/artists/${id}`;
+    const topTracksUrl = `https://api.spotify.com/v1/artists/${id}/top-tracks?country=US`;
+    const tmApiKey = process.env.TICKET_CONSUMER_KEY;
+
+    const [artistResponse, topTracksResponse] = await Promise.all([
+      axios.get(artistUrl, {
         headers: {
           Authorization: `Bearer ${spotifyAccessToken}`,
         },
-      })
-      .then((response) => {
-        artist = response.data
+      }),
+      axios.get(topTracksUrl, {
+        headers: {
+          Authorization: `Bearer ${spotifyAccessToken}`,
+        },
+      }),
+    ]);
 
-        res.render("main/artist-details", { artist, currentUser: req.session.currentUser });
+    const artist = artistResponse.data;
+    const artistTopTracks = topTracksResponse.data.tracks.slice(0,3);
 
+    const concertsResponse = await axios.get(
+      `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${tmApiKey}&keyword=${artist.name}`
+    );
+
+    let artistConcerts = [];
+    if (
+      concertsResponse.data &&
+      concertsResponse.data._embedded &&
+      concertsResponse.data._embedded.events
+    ) {
+      const concerts = concertsResponse.data._embedded.events;
+
+      artistConcerts = concerts.map((concert) => {
+        let imgSong = "/images/event-default.jpg";
+        if (concert.images && concert.images[0]) {
+          imgSong = concert.images[0].url;
+        }
+        let city = "";
+        if (
+          concert._embedded &&
+          concert._embedded.venues[0] &&
+          concert._embedded.venues[0].city
+        ) {
+          city = concert._embedded.venues[0].city.name;
+        }
+
+        return {
+          name: concert.name,
+          city: city,
+          id: concert.id,
+          img: imgSong,
+        };
       });
+    }
+
+    res.render("main/artist-details", {
+      artist,
+      artistTopTracks,
+      artistConcerts,
+      currentUser: req.session.currentUser,
+    });
   } catch (error) {
     console.log(error);
   }
 });
+
+
 
 
 router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
@@ -513,8 +558,16 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
       },
     });
     const song = response.data
+    const artistId = response.data.artists[0].id
+    let artistId2;
+    if (response.data.artists.length > 1){
+    artistId2 = response.data.artists[1].id}
+    console.log(artistId)
+
     console.log(id)
-    res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser });
+
+    res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser, artistId, artistId2 });
+
   } catch (error) {
     console.log(error);
   }

@@ -24,7 +24,6 @@ a {
 }
 
 .comment-counter {
-    margin-left: 10px;
     margin-top: 3px;
     color: black
 }
@@ -47,7 +46,8 @@ a {
 
 .post-name{
     font-weight: bold;
-    color:#6324BB
+    color:#6324BB;
+    margin-bottom: 0px
 }
 
 .posts-home {
@@ -80,10 +80,11 @@ a {
   }
   
   .search-submit {
-    margin-left: 10px;
+    margin-left: 50px;
     border: none;
     background-color: transparent;
     color: white;
+    opacity: 50%;
   }
 
   .dropdown-toggle::after {
@@ -93,10 +94,13 @@ a {
 
   .dropdown-item{
     font-size: 10px;
+    text-align: right;
+    background-color: transparent;
   }
 
   .options-post-button {
     right: 30px;
+    width: auto;
   }
 
 
@@ -113,6 +117,7 @@ a {
   .dropdown-menu.show{
     text-align: right;
     border: none;
+    background-color: transparent;
   }
 
 
@@ -165,10 +170,60 @@ a {
 
   .post-body {
     padding-left: 20px
+
   }
 
   .plane-icon {
     width: 20px;
     filter: invert(22%) sepia(27%) saturate(6436%) hue-rotate(255deg) brightness(88%) contrast(107%);
-
   }
+
+  .white-link {
+    font-size: 10px;
+    background-color: white;
+    border: 1px solid #6324BB;
+    border-radius: 30px;
+    color: #6324BB;
+    padding: 2px;
+    padding:8px
+}
+
+.create-btn {
+  background-color: #6324BB;
+}
+
+.cancel-btn {
+  background-color: #6c757d
+}
+
+.close {
+  background-color: transparent;
+  border: none;
+  color:#6324BB
+}
+
+.purple-link {
+  font-size: 10px;
+  background-color: #6324BB;
+  border: 1px solid #6324BB;
+  border-radius: 30px;
+  color: white;
+  padding: 2px;
+  margin-top:20px;
+  padding:8px
+}
+
+.color {
+  filter: invert(22%) sepia(27%) saturate(6436%) hue-rotate(255deg) brightness(88%) contrast(107%);
+}
+
+.post-text {
+  font-size: 14px;
+  margin-bottom:4px
+}
+
+.card {
+  border: 1px solid #BEBEBE;
+  padding: 8px;
+  margin: 0px 1px
+}

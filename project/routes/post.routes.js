@@ -7,13 +7,6 @@ const {
   isLoggedIn
 } = require("../middlewares/route-guard");
 
-router.get("/post-create", isLoggedIn, async (req, res) => {
-  try {
-    res.render("posts/create", { currentUser: req.session.currentUser });
-  } catch (error) {
-    res.render("error", { error });
-  }
-});
 
 router.get("/post/:id/details", isLoggedIn, async (req, res, next) => {
   try {

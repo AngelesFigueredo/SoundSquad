@@ -1,23 +1,123 @@
-{{#with song}}
-<img src="{{this.album.images.[0].url}}">
-<h2>{{this.name}}</h2>
-<h3>{{this.artists.name}}</h3>
-<audio src="{{this.preview_url}}" controls></audio>
+<link rel="stylesheet" href="/stylesheets/track-details.css" />
 
-{{#if ../user.playlists.length}}
-<p>Añadir canción a una de tus playlists</p>
-      <form action="/{{this.id}}/addtoplaylist" method="POST">
-        <select name="playlists" id="playlists">
-          {{#each ../user.playlists}}
-          {{#if (ne ../../id this._id)}}
-          <option value="{{this._id}}">{{this.title}}</option>
-          {{/if}}
-          {{/each}}
-        </select>
-                  <input type="hidden" name="songs" value="{{this.id}}" />
-          <button type="submit">Añadir canción</button>
-        </form>
-{{/if}}
+<div class="container">
+  <div class="row">
+    <div class="col">
 
-<a href="/new-playlist/{{this.id}}">Crea una nueva playlist con esta canción!</a>
-{{/with}}
+      {{#with song}}
+        <div class="d-flex justify-content-center">
+          <img class="track-image" src="{{this.album.images.[0].url}}">
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-9">
+            <div>
+            <h2 class="song-title">{{this.name}}</h2>
+            </div>
+
+            <div class="artist-names">
+              <a href="/artist/{{../artistId}}"><p>{{this.artists.[0].name}}</p></a>
+                {{#if ../artistId2}}
+                  <a href="/artist/{{../artistId2}}"><p> - {{this.artists.[1].name}}</p></a>
+                {{/if}}
+            </div>
+          </div>
+          <div class="col-3">
+            <div>
+              {{!-- <audio src="{{this.preview_url}}" controls></audio> --}}
+              <button class="play-button" data-src="{{this.preview_url}}">
+                <img class="play-icon" src="/images/icons/Play.svg" alt="Play">
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        {{#if ../user.playlists.length}}
+          <div class="d-flex justify-content-center">
+            <form action="/{{this.id}}/addtoplaylist" method="POST">
+              <select class="select" name="playlists" id="playlists">
+                {{#each ../user.playlists}}
+                  {{#if (ne ../../id this._id)}}
+                    <option value="{{this._id}}">{{this.title}}</option>
+                  {{/if}}
+                {{/each}}
+              </select>
+                <input type="hidden" name="songs" value="{{this.id}}" />
+                <button class="white-link" type="submit">Añadir canción a una de tus playlists</button>
+              </form>
+          </div>
+        {{/if}}
+
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-primary purple-link" data-toggle="modal" data-target="#exampleModal">
+            Crea una nueva playlist con esta canción!
+          </button>
+
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Nueva playlist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form action="/new-playlist" method="POST">
+                    <div class="modal-body">
+                      <div class="form-group row justify-content-center">
+                        <label for="name" class="col-sm-4 col-form-label text-right">Nombre de la playlist:</label>
+                          <div class="col-sm-8">
+                            <input required type="text" class="form-control" id="name" name="title">
+                          </div>
+                      </div>
+                      <div class="form-group row justify-content-center">
+                        <label for="description" class="col-sm-4 col-form-label text-right">Descripción:</label>
+                          <div class="col-sm-8">
+                            <input required type="text" class="form-control" id="description" name="description">
+                          </div>
+                      </div>
+
+                      <input hidden type="text" name="author" value="{{../currentUser._id}}">
+                      <input hidden type="text" name="songs" value="{{this.id}}">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
+                      <button type="submit" class="btn btn-primary create-btn">Crear playlist</button>
+                    </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+
+      {{/with}}
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const playButtons = document.querySelectorAll(".play-button");
+
+  playButtons.forEach(function (button) {
+    const audioSrc = button.dataset.src;
+    const audio = new Audio(audioSrc);
+    let isPlaying = false;
+
+    button.addEventListener("click", function () {
+      if (isPlaying) {
+        audio.pause();
+        button.querySelector(".play-icon").src = "/images/icons/Play.svg";
+        isPlaying = false;
+      } else {
+        audio.play();
+        button.querySelector(".play-icon").src = "/images/icons/Pause.svg";
+        isPlaying = true;
+      }
+    });
+  });
+});
+
+
+</script>

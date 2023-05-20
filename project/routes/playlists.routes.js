@@ -19,8 +19,6 @@ spotifyApi
 
 const {
   isLoggedIn,
-  isLoggedOut,
-  checkRole,
 } = require("../middlewares/route-guard");
 
 const User = require("../models/User.model");
@@ -28,14 +26,7 @@ const Post = require("../models/Post.model");
 const Playlist = require("../models/Playlist.model");
 const Event = require("../models/Events.model");
 
-/* GET home page */
 
-
-router.get("/new-playlist", isLoggedIn, async (req, res, next) => {
-  const { currentUser } = req.session;
-  const user = await User.findById(currentUser._id);
-  res.render("main/new-playlist", { user, currentUser: req.session.currentUser });
-});
 
 router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
 
@@ -84,7 +75,7 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
 
     const followedPlaylists = await Playlist.find({
       followers: { $in: user._id },
-    });
+    }).populate("author", "username");
 
     const followedPlaylistsWithPreviewPictures = [];
     for (const playlist of followedPlaylists) {

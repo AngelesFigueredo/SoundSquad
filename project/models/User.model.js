@@ -52,11 +52,6 @@ const userSchema = new Schema(
       type: String,
     },
 
-    interests: {
-      type: ["String"],
-      default: []
-    },
-
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
     playlists: [{ type: Schema.Types.ObjectId, ref: "Playlist" }],
@@ -64,7 +59,8 @@ const userSchema = new Schema(
     posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 
     eventsRequests: {
-      type: [{ user: {type: String}, event: { type: Schema.Types.ObjectId, ref: "Event" } }]
+      type: [{ user: {type: String}, event: { type: String } }],
+      default: []
     },
 
     postMentions: [{ type: Schema.Types.ObjectId, ref: "Post" }],
