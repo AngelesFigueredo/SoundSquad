@@ -1,13 +1,22 @@
-<h1>No formas parte de este evento</h1>
+<link rel="stylesheet" href="/stylesheets/search.css" />
+<link rel="stylesheet" href="/stylesheets/events.css" />
 
-{{#if sentRequest}}
-    <h5>Ya has pedido acceso a este evento.</h5>
-{{else}}
-    <form action="/send-join-request/{{eventId}}" method="POST">
-        <input hidden name="userId" value="{{session.currentUser._id}}">
-        <button type="submit">Solicitar acesso</button>
-    </form>
-{{/if}}
 
-<h2>También puedes crear tu propio evento</h2>
-    <a href="/create-event/{{concertId}}"> Crea tu evento</a>
+<div class="container middleware padd-create">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <h1>No formas parte de este evento</h1>
+            {{#if sentRequest}}
+            <h5>Ya has pedido acceso a este evento.</h5>
+            <p class="text-center">
+                <a href="/event-details/{{eventId}}" >Revisa si te han aceptado</a>
+            </p>
+            {{else}}
+            <form action="/send-join-request/{{eventId}}" method="POST">
+                <input hidden name="userId" value="{{session.currentUser._id}}">
+                <button class="purple-button" type="submit">Solicitar acesso</button>
+            </form>
+            {{/if}}            
+        </div>
+    </div>
+</div>

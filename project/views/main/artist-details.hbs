@@ -1,58 +1,68 @@
 <link rel="stylesheet" href="/stylesheets/artist-details.css" />
 
+
+
 <div class="container">
-    <div class="row">
-        <div class="col">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
 
-            {{#with artist}}
-                <div class="d-flex justify-content-center">
-                    <img class="artist-image" src="{{this.images.[0].url}}">
-                </div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
 
-                <div class="d-flex justify-content-center">
-                    <h2 class="artist-name">{{this.name}}</h2>
-                </div>
-            {{/with}}
+                    {{#with artist}}
+                        <div class="d-flex justify-content-center">
+                            <img class="artist-image" src="{{this.images.[0].url}}">
+                        </div>
 
-            {{#if artistTopTracks}}
-  <div class="body-text">Canciones más populares:</div>
+                        <div class="d-flex justify-content-center">
+                            <h2 class="artist-name">{{this.name}}</h2>
+                        </div>
+                    {{/with}}
 
-  <div class="row">
-    {{#each artistTopTracks}}
-      <div class="col-3 d-flex align-items-center">
-        <a href="/song/{{this.id}}"><img class="preview-picture" src="{{this.album.images.[0].url}}" alt=""></a>
-      </div>
-      <div class="col-7">
-        <div><a href="/song/{{this.id}}"><p class="song-name">{{this.name}}</p></a></div>
-        <div><a href="/song/{{this.id}}"><p class="album">{{this.album.name}}</p></a></div>
-      </div>
-      <div class="col-2 d-flex align-items-center justify-content-end">
-        <button class="play-button" data-src="{{this.preview_url}}">
-          <img class="play-icon" src="/images/icons/Play.svg" alt="Play">
-        </button>
-      </div>
-    {{/each}}
+                    {{#if artistTopTracks}}
+          <div class="body-text">Canciones más populares:</div>
+
+          <div class="row">
+            {{#each artistTopTracks}}
+              <div class="col-3 d-flex align-items-center">
+                <a href="/song/{{this.id}}"><img class="preview-picture" src="{{this.album.images.[0].url}}" alt=""></a>
+              </div>
+              <div class="col-7">
+                <div><a href="/song/{{this.id}}"><p class="song-name">{{this.name}}</p></a></div>
+                <div><a href="/song/{{this.id}}"><p class="album">{{this.album.name}}</p></a></div>
+              </div>
+              <div class="col-2 d-flex align-items-center justify-content-end">
+                <button class="play-button" data-src="{{this.preview_url}}">
+                  <img class="play-icon" src="/images/icons/Play.svg" alt="Play">
+                </button>
+              </div>
+            {{/each}}
+          </div>
+        {{/if}}
+
+
+
+        {{#if artistConcerts}}
+            <div class="body-text">Próximos conciertos:</div>
+
+            <div class="row">
+                {{#each artistConcerts}}
+                        <div class="col-9">
+                            <div><a href="/concert/{{this.id}}"><p class="song-name">{{this.name}}</p></a></div>
+                            <div><a href="/concert/{{this.id}}"><p class="album">{{this.city}}</p></a></div>
+                        </div>
+                        <div class="col-3"><img class="preview-picture" src="{{this.img}}"></div>
+                {{/each}}
+        {{/if}}
+        </div>
+        </div>
+        </div>
+        </div>
+    </div>
   </div>
-{{/if}}
-
-
-
-{{#if artistConcerts}}
-    <div class="body-text">Próximos conciertos:</div>
-
-    <div class="row">
-        {{#each artistConcerts}}
-                <div class="col-9">
-                    <div><a href="/concert/{{this.id}}"><p class="song-name">{{this.name}}</p></a></div>
-                    <div><a href="/concert/{{this.id}}"><p class="album">{{this.city}}</p></a></div>
-                </div>
-                <div class="col-3"><img class="preview-picture" src="{{this.img}}"></div>
-        {{/each}}
-{{/if}}
 </div>
-</div>
-</div>
-</div>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

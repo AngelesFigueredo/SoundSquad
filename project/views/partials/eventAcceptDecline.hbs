@@ -1,22 +1,31 @@
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">{{notifications}} personas se quieren unir a este evento</h5>
 
+<div class="marg">
+    <div class="padd">
+        <h4 class="text-center">{{notifications}} personas se quieren unir a este evento</h4>
         {{#each joinRequests}}
-        <div class="card d-flex flex-row">
-            {{this.username}}
-            <form action="/accept-request" method="POST">
-                <input type="text" name="askerId" hidden value="{{this._id}}">
-                <input type="text" name="eventId" value="{{../event._id}}" hidden>
-                <button id="accept" type="submit">✅aceptar</button>
-            </form>
-            <form action="/decline-request" method="POST">
-                <input type="text" name="askerId" hidden value="{{this._id}}">
-                <input type="text" name="eventId" value="{{../event._id}}" hidden>
-                <button id="decline" type="submit">❌rechazar</button>
-            </form>
-
+        <div class="marg">
+            <div class="d-flex flex-row">
+                <div class="container">
+                    <button class="white-button"><b>{{this.username}}</b></button>
+                </div>
+                <div class="container">
+                    <form action="/decline-request" method="POST">
+                        <input type="text" name="askerId" hidden value="{{this._id}}">
+                        <input type="text" name="eventId" value="{{../event._id}}" hidden>
+                        <button id="decline" type="submit" class="white-button">rechazar</button>
+                    </form>
+                </div>
+                <div class="container">
+                    <form action="/accept-request" method="POST">
+                        <input type="text" name="askerId" hidden value="{{this._id}}">
+                        <input type="text" name="eventId" value="{{../event._id}}" hidden>
+                        <button id="accept" type="submit" class="purple-button">aceptar</button>
+                    </form>
+                </div>
+            </div>
         </div>
         {{/each}}
     </div>
+
+
 </div>
