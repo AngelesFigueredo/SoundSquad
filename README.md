@@ -3,15 +3,26 @@
 #### Authors
 
 Ángeles Figueredo
+
 Pepe Alacid
 
 ### UX/UI team
 
 Javier Vega
+
 Cristina San Juan
+
 Juanan Antona
 
 ## How it looks
+
+![Screen_view_1](./public/readme/preview1.jpg)
+
+![Screen_view_2](./public/readme/preview2.jpg)
+
+![Screen_view_3](./public/readme/preview3.jpg)
+
+![Screen_view_4](./public/readme/preview4.jpg)
 
 ## Description
 
