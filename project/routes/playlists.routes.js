@@ -64,11 +64,12 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
     const playlistsWithPreviewPictures = [];
     for (const playlist of ownedPlaylists) {
       const playlistObj = playlist.toObject();
-      const firstSong = playlistObj.songs[0];
-      const firstSongInfo = await spotifyApi.getTrack(firstSong);
-      const previewPicture = firstSongInfo.body.album.images[0].url;
-
-      playlistObj.previewPicture = previewPicture;
+      if (playlistObj.songs.length > 0) {
+        const firstSong = playlistObj.songs[0];
+        const firstSongInfo = await spotifyApi.getTrack(firstSong);
+        const previewPicture = firstSongInfo.body.album.images[0].url;
+        playlistObj.previewPicture = previewPicture;
+      }
       playlistsWithPreviewPictures.push(playlistObj);
     }
 
@@ -79,11 +80,12 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
     const followedPlaylistsWithPreviewPictures = [];
     for (const playlist of followedPlaylists) {
       const playlistObj = playlist.toObject();
-      const firstSong = playlistObj.songs[0];
-      const firstSongInfo = await spotifyApi.getTrack(firstSong);
-      const previewPicture = firstSongInfo.body.album.images[0].url;
-
-      playlistObj.previewPicture = previewPicture;
+      if (playlistObj.songs.length > 0) {
+        const firstSong = playlistObj.songs[0];
+        const firstSongInfo = await spotifyApi.getTrack(firstSong);
+        const previewPicture = firstSongInfo.body.album.images[0].url;
+        playlistObj.previewPicture = previewPicture;
+      }
       followedPlaylistsWithPreviewPictures.push(playlistObj);
     }
 
@@ -98,6 +100,7 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
     res.render("error", { error });
   }
 });
+
 
 
 
