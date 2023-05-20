@@ -114,4 +114,8 @@ p{
 .participants p{
     color:#6324BB;
 }
+.modal-footer form{
+    width: 100%;
+}
+
 

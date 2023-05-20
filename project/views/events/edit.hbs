@@ -1,13 +1,63 @@
-{{#if event}}
+
+
+
+
+
+
+<link rel="stylesheet" href="/stylesheets/events.css" />
+<link rel="stylesheet" href="/stylesheets/photo.css" />
+
+
+{{#with event}}
+    <form action="/edit-event/{{_id}}" method="POST" enctype="multipart/form-data">
+        <div class="container padd">
+            <div class="row justify-content-center">
+                <div class="col col-md-6">
+                    <div class="one-liner padd-create">
+                        <h2>Nombre del evento</h2>
+                        <input type="text" name="name" value="{{name}}"></input>
+                    </div>
+                    <div class="one-liner padd-create">
+                        <h2>Descripción</h2>
+                        <input type="text" name="description" value="{{description}}"> </input>
+                    </div>
+                    <div class="padd ">
+                        <button class="purple-button" type="submit">Guardar</button>
+                    </div>
+                    {{!-- fhgjhkjlñ CAMBIAR FOTO --}}
+                    <div>
+                        
+                        <input hidden type="text" value="{{profilePic}}" name="profilePic">
+                        <input hidden id="pic-url" name="picUrl">
+              
+                        <h2>Cambia tu foto the perfil</h2>
+                        <label for="image-input" class="custom-file-upload">
+                            Escoge una imagen
+                        </label>
+                        <input hidden type="file" id="image-input" name="profilePic" accept="image/jpeg, image/png">
                     
-                      
-                      
-                      
-                      
-                      
-                      
-                        <p hidden id="taken-pic"> Ya tienes una imagen que has tomado</p>
-                        <button hidden id="upload-button">Subir otra imagen</button>
+                        <p hidden id="taken-pic"> Se cambiará tu foto de perfil a la última que hayas tomado</p>
+                        <button hidden  id="upload-button">Descartar última foto</button>
+                        <a href="/take-photo"><button id="t-pic">Hacer foto</button></a>
+                        <input hidden type="text" value="{{profilePic}}" name="profilePic">
+                        <input hidden id="pic-url" name="picUrl">
+                    </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{{/with}}
+
+<hr>
+
+{{!-- sdfghjkl --}}
+{{!-- {{#if event}}
+                    
+    <p hidden id="taken-pic"> Ya tienes una imagen que has tomado</p>
+    <button hidden id="upload-button">Subir otra imagen</button>
     
     {{#with event}}
 
@@ -16,7 +66,6 @@
         
             <div class="card">
                 <div class="card-body">
-                    <img src="{{profilePic}}" style="width: 10rem;">
                     <div>
                         Imagen
                         <input type="file" id="image-input" name="profilePic" accept="image/jpeg, image/png">
@@ -30,8 +79,8 @@
 
             <button type="submit">Guardar cambios</button>
                     
-        </form>
-                    <ul>
+        </form> --}}
+                    {{!-- <ul>
                         <h6>PARTICIPANTES →</h6>
                         {{#each members}}
                         <li class="d-flex flex-row">
@@ -61,11 +110,11 @@
                         {{/each}}
                     </ul>
             </div>
-        </div>
+        </div> 
     {{/with}}
-
 {{else}}
     HA HABIDO UN PROBLEMITA.
 {{/if}}
+--}}
 
 <script src="/scripts/check-profilePic.js"></script>

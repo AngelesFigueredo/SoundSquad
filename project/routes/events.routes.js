@@ -12,21 +12,11 @@ const {
   const User = require("../models/User.model");
   
   
-  router.use(cors());
+  router.use(cors()); 
   
   
   // event creation 
-  router.get("/events/:concertId", async(req, res, next) => {
-      const concertId = req.params.concertId
-      const data = {concertId}
-      const createdEvents = await Event.find({concertApiId: concertId})
-      if(createdEvents.length === 0){
-          data.noEvents = "No events have been found you create your own event"
-      }else{
-          data.events = createdEvents
-      }
-    res.render("events/events", { session: req.session, data, currentUser: req.session.currentUser});
-  });
+
   
 
   router.get("/create-event/:concertId", (req, res, next) => {
@@ -38,8 +28,8 @@ const {
   router.post("/create-event/:concertId", async(req, res, next) => {
       const concertId = req.params.concertId
       try {
-          await Event.create(req.body)
-          res.redirect(`/events/${concertId}`);
+         const newEvent= await Event.create(req.body)
+          res.redirect(`/event-details/${newEvent._id}`);
       } catch (error) {
           console.log(error)
           next()
@@ -49,33 +39,20 @@ const {
   router.get("/user/events/:id", async(req,res,next)=>{
     try{
     const { currentUser } = req.session
-    const routeId = req.params.id
-    const otherUser = await User.findById(req.params.id)
-    const ownedEvents = await Event.find({ author: currentUser._id });
-    const followedEvents = await Event.find({ members: { $in: [currentUser._id] } });
-    const othersOwnedEvents = await Event.find({ author: routeId})
-    const othersFollowedEvents = await Event.find({ members: { $in: [routeId]}})
-
+    const ownedEvents = await Event.find({ author: currentUser._id }).populate("author")
+    const followedEvents = await Event.find({ members: { $in: [currentUser._id] } }).populate("author");
     res.render("events/user-events", { 
         ownedEvents,
         followedEvents,
-        otherUser,
-        othersOwnedEvents,
-        othersFollowedEvents,
-        myEvents: currentUser._id === routeId,
-        othersEvents: currentUser._id !== routeId,
         currentUser: req.session.currentUser
     })
     } catch (error) 
     {console.log(error)}
   })
 
-  //// comentar 
-
   router.get("/join/:eventId", async(req, res, next)=>{
       const event = await Event.findById(req.params.eventId)
       const userId = req.session.currentUser._id
-      
       res.render("events/ask-to-participate", { 
           session: req.session, 
           eventId : req.params.eventId, 
@@ -90,14 +67,9 @@ const {
       const eventId = req.params.eventId
       const userId = req.body.userId
       const event = Event.findById(eventId)
-      // const eventAuthor = event.author._id
       await Event.findByIdAndUpdate(eventId, { $push: { joinRequests: userId}})
-      // await User.findByIdAndUpdate(eventAuthor, { $push: { event: eventId, user: currentUser._id}})
       res.redirect(`/join/${req.params.eventId}`)
   }) 
-  
-  ////////comentar 
-
   // event's data
   router.get("/show-event/:eventId",isEventMember, async(req, res, next) => {
       const eventId = req.params.eventId
@@ -109,7 +81,6 @@ const {
               member.isYou = member._id == userId
       })
       const key = process.env.TICKET_CONSUMER_KEY
-      
       res.render("events/show-event", {session: req.session, event, currentUser: req.session.currentUser, key})
   });
   
@@ -121,9 +92,9 @@ const {
       //In case the event is left empty
       const event = await Event.findById(eventId)
       if(event.members.length == 0){
-          res.redirect(`/delete-event/${eventId}`)
+        res.redirect(`/delete-event/${eventId}`)
       }else{
-          res.redirect(`/join/${eventId}`)
+        res.redirect(`/join/${eventId}`)
       }
   });
   
@@ -167,5 +138,4 @@ const {
       {console.log(error)}
   })
   
-
 module.exports = router;

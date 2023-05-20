@@ -1,0 +1,36 @@
+.photo-canvas{
+    width: 100%;
+}
+.photo-wrapper{
+    height: calc(100vh - 90px);
+}
+.photo-buttons{
+    padding: 0 20px;
+}
+.purple-button{
+    margin-bottom: 20px ;
+}
+
+#upload-button{
+    background-color: #6324BB;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 9px;
+    margin: 5px;
+}
+.custom-file-upload {
+    background-color: white;
+        color: #6324BB;
+        border: #6324BB 1px solid;
+        border-radius: 20px;
+        padding: 9px;
+
+}
+#t-pic {
+    background-color: white;
+    color: #6324BB;
+    border: none;
+    border-radius: 20px;
+    padding: 9px;
+}
