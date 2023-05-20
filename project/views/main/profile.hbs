@@ -109,41 +109,78 @@
         
         
           {{/with}}
-        
+
           {{#if posts}}
-          <h2>Publicaciones:</h2>
-          {{#each posts}}
-          <div class="row">
-            {{>postPartial post=this user=currentUser}}
-            <div class="col-2 dropleft">
-              <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="options-post-button" src="/images/icons/More_options.svg">
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
-                  <button class="dropdown-item" type="submit">Borrar post</button>
-                </form>
-              </div>
-            </div>
-          </div>
+            {{#if myProfile}}
+              <h2>Mis publicaciones:</h2>
+              {{#each posts}}
+                <div class="row">
+                  {{>postPartial post=this user=currentUser}}
+                    <div class="col-2 dropleft">
+                    <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <img class="options-post-button" src="/images/icons/More_options.svg">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
+                        <button class="dropdown-item" type="submit">Borrar post</button>
+                      </form>
+                    </div>
+                    </div>
+                </div>
         
-          <div class="comment-box">
-            <div>
-              <form action="/{{_id}}/comment" method="POST">
-                <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" />
-            </div>
-            <div>
-              <button class="comment-submit" type="submit">
-                <img src="/images/icons/Tick.svg" alt="enviar" />
-              </button>
-            </div>
-            </form>
-          </div>
+                <div class="comment-box">
+                  <div>
+                    <form action="/{{_id}}/comment" method="POST">
+                      <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" />
+                  </div>
+                  <div>
+                    <button class="comment-submit" type="submit">
+                      <img src="/images/icons/Tick.svg" alt="enviar" />
+                    </button>
+                  </div>
+                    </form>
+                </div>
         
-          <hr>
-          <br>
-          {{/each}}
+                <hr>
+                <br>
+              {{/each}}
+            {{/if}}
+            {{#if (ifEquals friendship "true")}}
+              <h2>Publicaciones:</h2>
+                {{#each posts}}
+                  <div class="row">
+                    {{>postPartial post=this user=currentUser}}
+                      <div class="col-2 dropleft">
+                        <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <img class="options-post-button" src="/images/icons/More_options.svg">
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                          <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
+                            <button class="dropdown-item" type="submit">Borrar post</button>
+                          </form>
+                        </div>
+                      </div>
+                  </div>
+        
+                  <div class="comment-box">
+                    <div>
+                      <form action="/{{_id}}/comment" method="POST">
+                        <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" />
+                    </div>
+                    <div>
+                        <button class="comment-submit" type="submit">
+                          <img src="/images/icons/Tick.svg" alt="enviar" />
+                        </button>
+                    </div>
+                      </form>
+                  </div>
+        
+                   <hr>
+                    <br>
+                {{/each}}
+            {{/if}}
           {{/if}}
         
         
