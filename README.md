@@ -16,13 +16,13 @@ Juanan Antona
 
 ## How it looks
 
-![Screen_view_1](./public/readme/preview1.jpg)
+![Screen_view_1](./readme/preview1.jpg)
 
-![Screen_view_2](./public/readme/preview2.jpg)
+![Screen_view_2](./readme/preview2.jpg)
 
-![Screen_view_3](./public/readme/preview3.jpg)
+![Screen_view_3](./readme/preview3.jpg)
 
-![Screen_view_4](./public/readme/preview4.jpg)
+![Screen_view_4](./readme/preview4.jpg)
 
 ## Description
 
