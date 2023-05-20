@@ -10,9 +10,7 @@ const fileInputLabel = document.querySelector(".custom-file-upload")
 // to also upload a picture from our local machine
 // if we didn't want to use the picture we have taken we should
 // press the "Subir otra imagen" button
-console.log(localStorage.getItem("img"))
 if(localStorage.getItem("img")){
-    console.log("The localStorage is", localStorage.getItem("img")[0])
         picUrl.value = localStorage.getItem("img")
         takenPic.removeAttribute("hidden")
         uploadButton.removeAttribute("hidden")

@@ -1,91 +1,93 @@
 <link rel="stylesheet" href="/stylesheets/form.css" />
 
 <div class="container">
-  <div class="row">
-    <div class="col">
-      <p class="head-text">Registro</p>
-    </div>
-  </div>
-
-<form action="/sign-up" method="POST" enctype="multipart/form-data">
-  <div class="form-group row">
-    <label class="label" for="usernameInput">Nombre de usuario</label>
-      <div class="col-10">
-        <input required class="form-control" type="text" id="usernameInput" name="username" />
-        <p class="message">Requerido</p>
-        <br />
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="head-text">Registro</p>
+        </div>
       </div>
     
-    <label class="label" for="nameInput">Nombre</label>
-      <div class="col-10">
-        <input required class="form-control" type="text" id="nameInput" name="name" />
-        <p class="message">Requerido</p>
-        <br />
-      </div>
-
-    <label class="label" for="lastNameInput">Apellidos</label>
-      <div class="col-10">
-        <input required class="form-control" type="text" id="lastNameInput" name="lastName" />
-        <p class="message">Requerido</p>
-        <br />
-      </div>
-
-  <div>
-    <label class="label" for="emailInput">Dirección de email</label>
-      <div class="col-10">
-        <input required class="form-control" type="email" id="emailInput" name="email" />
-        <p class="message">Requerido</p>
-        <br />
-      </div>
-  </div>
-
-  <div>
-    <label class="label" for="pwdInput">Contraseña</label>
-    <div class="col-8">
-      <input
-        required
-        class="form-control"
-        type="password"
-        id="pwdInput"
-        name="password"
-        pattern="^(?=.*[A-Z]).{8,}$"
-      />
-
-      <button class="see" type="button" id="toggle-password"><img id="toggle-image1" class="see" src="/images/icons/see.png" alt="show"></button>
-      <p class="message">Requerido</p>
+      <form action="/sign-up" method="POST" enctype="multipart/form-data">
+        <div class="form-group row">
+          <label class="label" for="usernameInput">Nombre de usuario</label>
+          <div class="col-10">
+            <input required class="form-control" type="text" id="usernameInput" name="username" />
+            <p class="message">Requerido</p>
+            <br />
+          </div>
+    
+          <label class="label" for="nameInput">Nombre</label>
+          <div class="col-10">
+            <input required class="form-control" type="text" id="nameInput" name="name" />
+            <p class="message">Requerido</p>
+            <br />
+          </div>
+    
+          <label class="label" for="lastNameInput">Apellidos</label>
+          <div class="col-10">
+            <input required class="form-control" type="text" id="lastNameInput" name="lastName" />
+            <p class="message">Requerido</p>
+            <br />
+          </div>
+    
+          <div>
+            <label class="label" for="emailInput">Dirección de email</label>
+            <div class="col-10">
+              <input required class="form-control" type="email" id="emailInput" name="email" />
+              <p class="message">Requerido</p>
+              <br />
+            </div>
+          </div>
+    
+          <div>
+            <label class="label" for="pwdInput">Contraseña</label>
+            <div class="col-8">
+              <input required class="form-control" type="password" id="pwdInput" name="password"
+                pattern="^(?=.*[A-Z]).{8,}$" />
+    
+              <button class="see" type="button" id="toggle-password"><img id="toggle-image1" class="see"
+                  src="/images/icons/see.png" alt="show"></button>
+              <p class="message">Requerido</p>
+            </div>
+          </div>
+    
+          <div class="password-requirements">
+            <p>La contraseña debe contener:</p>
+            <ul>
+              <li class="uppercase">Una letra mayúscula</li>
+              <li class="pwd-length">Al menos ocho caracteres</li>
+            </ul>
+          </div>
+          <br />
+        </div>
+    
+        <div>
+          <label class="label" for="pwdInput2">Repita su contraseña</label>
+          <div class="password-wrapper">
+            <input required type="password" id="pwdInput2" name="password2" />
+            <button class="see" type="button" id="toggle-password2"><img id="toggle-image2" class="see"
+                src="/images/icons/see.png" alt="show"></button>
+            <p class="message" id="pwd-check-message"></p>
+            <p class="message">Requerido</p>
+            <br />
+          </div>
+    
+          <div><button class="link" type="submit">Completar registro</button></div>
+    
+          {{#if errorMessage}}
+          <p class="error-message">{{errorMessage}}</p>
+          {{/if}}
+      </form>
+      <p class="message">Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+    
     </div>
   </div>
-
-    <div class="password-requirements">
-      <p>La contraseña debe contener:</p>
-      <ul>
-        <li class="uppercase">Una letra mayúscula</li>
-        <li class="pwd-length">Al menos ocho caracteres</li>
-      </ul>
-    </div>
-    <br />
-  </div>
-
-  <div>
-    <label class="label" for="pwdInput2">Repita su contraseña</label>
-    <div class="password-wrapper">
-      <input required type="password" id="pwdInput2" name="password2" />
-            <button class="see" type="button" id="toggle-password2"><img id="toggle-image2" class="see" src="/images/icons/see.png" alt="show"></button>
-    <p class="message" id="pwd-check-message"></p>
-    <p class="message">Requerido</p>
-    <br />
-  </div>
-
-  <div><button class="link" type="submit">Completar registro</button></div>
-
-  {{#if errorMessage}}
-    <p class="error-message">{{errorMessage}}</p>
-  {{/if}}
-</form>
-<p class="message">Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
-
 </div>
+</div>
+
 
 <script src="scripts/show-pwd.js"></script>
 <script src="scripts/check-pwd.js"></script>
-{{!-- <script src="scripts/check-profilePic.js"></script> --}}

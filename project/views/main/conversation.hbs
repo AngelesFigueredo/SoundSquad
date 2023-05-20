@@ -1,79 +1,68 @@
 <link rel="stylesheet" href="/stylesheets/conversation.css" />
 
-<div class="conversation-container">
-  {{#with conversation}}
-
-    <div class="row">
-      <div class="col">
-        <div>
-          <p>Chat con {{../otherUser.username}} 💭</p>
-        </div>
-
-
-  {{#each messages}}
-    {{#if (isNewDay ../messages @index)}}
-
-      <div>
-        <p class="new-day-date">{{getDate this.createdAt}}</p>
-      </div>
-
-    {{/if}}
-
-      {{#if (ifEquals this.author.username ../../myUser.username) }}
-        <div class="row justify-content-end">
-          <div class="col-6 to-the-right">
-            <p class="my-message">{{this.content}}</p>
-            <p class="message-hour">{{getTime this.createdAt}}</p>
-          </div>
-        </div>
-
-      {{else}}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="conversation-container">
+        {{#with conversation}}
         <div class="row">
           <div class="col">
-            <div class="row">
-              <div class="col-1">
-                <img class="message-user-image" src="{{this.author.profileImg}}">
-              </div>
-              <div class="col-6 message-left-margin">
-                <p class="others-message">{{this.content}}</p>
+            <div>
+              <p>Chat con {{../otherUser.username}} 💭</p>
+            </div>
+
+            {{#each messages}}
+            {{#if (isNewDay ../messages @index)}}
+            <div>
+              <p class="new-day-date">{{getDate this.createdAt}}</p>
+            </div>
+            {{/if}}
+
+            {{#if (ifEquals this.author.username ../../myUser.username)}}
+            <div class="row justify-content-end">
+              <div class="col-6 to-the-right">
+                <p class="my-message">{{this.content}}</p>
                 <p class="message-hour">{{getTime this.createdAt}}</p>
               </div>
             </div>
+            {{else}}
+            <div class="row">
+              <div class="col">
+                <div class="row">
+                  <div class="col-1">
+                    <img class="message-user-image" src="{{this.author.profileImg}}">
+                  </div>
+                  <div class="col-6 message-left-margin">
+                    <p class="others-message">{{this.content}}</p>
+                    <p class="message-hour">{{getTime this.createdAt}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{/if}}
+            {{/each}}
+
+            <div class="message-box">
+              <form action="/new-message/{{../otherUser._id}}" method="POST">
+                <input type="hidden" name="conversation" value="{{this._id}}" />
+                <input type="hidden" name="author" value="{{../currentUser._id}}" />
+                <input type="hidden" name="to" value="{{../otherUser._id}}" />
+
+                <input required type="text" name="content" class="message-input" placeholder="Envía un mensaje" />
+                <br />
+                <button class="message-submit" type="submit">
+                  <img class="plane-icon" src="/images/icons/plane.png" alt="enviar" />
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-
-        {{/if}}
-
-
-  {{/each}}
-
-<div class="message-box">
-  <div>
-  <form action="/new-message/{{../otherUser._id}}" method="POST">
-    <input hidden name="conversation" value="{{this._id}}"/>
-    <input hidden name="author" value="{{../currentUser._id}}"/>
-    <input hidden name="to" value="{{../otherUser._id}}"/>
-
-    <input required type="text" name="content" class="message-input" placeholder="Envía un mensaje" />
-  </div>
-    <br />
-
-    <div><button class="message-submit" type="submit">
-      <img class="plane-icon" src="/images/icons/plane.png" alt="enviar" />
-    </button></div>
-  </form>
-    </div>
-  {{/with}}
-
-
-
-
-{{!-- col --}}
-        </div>
-{{!-- row --}}
+        {{/with}}
       </div>
-{{!-- container --}}
+    </div>
+  </div>
 </div>
+
 
 
 

@@ -16,9 +16,6 @@ const {
   
   
   // event creation 
-
-  
-
   router.get("/create-event/:concertId", (req, res, next) => {
       const concertId = req.params
       const apiKey = process.env.TICKET_CONSUMER_KEY

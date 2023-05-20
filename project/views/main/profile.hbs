@@ -1,126 +1,134 @@
 <link rel="stylesheet" href="/stylesheets/profile.css" />
 
-{{#with user}}
-
-<div class="profile-header"></div>
-<img class="profile-image" src="{{this.profileImg}}" alt="user's profile pic">
-
-<div class="profile-body">
-  <div class="row">
-    <div class="col">
-      <h2 class="profile-name">{{this.name}} {{this.lastName}}</h2>
-      <h3 class="profile-username">@{{this.username}}</h3>
-      <h4 class="profile-bio">{{this.description}}</h4>
-    </div>
-
-    {{#if ../myProfile}}
-      <div class="col">
-        <a class="profile-link edit-profile-link" href="/edit/{{this._id}}">Edita tu perfil</a>
-      </div>
-    {{/if}} 
-  </div> 
-
-  {{#if ../myProfile}}
-  <div class="row justify-content-around">
-  <a class="col-auto mr-auto profile-link" href="/{{this._id}}/friends">Mis amistades</a>
-  <a class="col-auto mr-auto profile-link" href="/my-playlists">Mis playlists</a>
-  <a class="col-auto mr-auto profile-link" href="/user/events/{{this._id}}">Mis eventos</a>
-  </div>
-  <br>
-
-{{else}}
-  
-  {{#if (ifEquals ../friendship "false")}}
-    <form id="friend-request-form" action="/friend-requests/{{this._id}}" method="POST">
-      <button class="profile-link" type="submit">Enviar petición de amistad</button>
-    </form>
-  {{else}}
-    {{#if (ifEquals ../friendship "pendingOut")}}
-      <p>Has enviado una solicitud de amistad a {{this.username}}</p>
-    {{else}}
-      {{#if (ifEquals ../friendship "true")}}
-        <p class="profile-message">{{this.username}} es tu amigx</p>
-        <form id="unfollow-form" action="/unfollow/{{this._id}}" method="POST">
-          <button class="profile-link" type="submit">Cancelar amistad</button>
-        </form>
-        <br>
-        <h3>Explorar</h3>
-        <div class="row justify-content-around">
-        <a class="col-auto mr-auto profile-link" href="/{{this._id}}/friends">Amistades de {{this.name}}</a>
-        <a class="col-auto mr-auto profile-link" href="/playlists-list/{{this._id}}">Playlists de {{this.name}}</a></li>
-        <a class="col-auto mr-auto profile-link" href="/user/events/{{this._id}}">Eventos de {{this.name}}</a></li>
-        </div>
-
-        <br>
-      {{else}}
-        {{#if (ifEquals ../friendship "pendingIn")}}
-          <p>{{this.username}} te ha enviado una solicitud de amistad, ve a <a href="/notifications">notificaciones</a> para contestarla</p>
-        {{/if}}
-      {{/if}}
-    {{/if}}
-  {{/if}}
-  {{#if ../haveConversation}}
-<a class="profile-link" href="/messages/{{../conversation}}">Enviar mensaje</a>
-{{else}}
-        <button type="button" class="btn btn-primary profile-link" data-toggle="modal" data-target="#exampleModal" id="create-post">
-          Enviar mensaje
-        </button>
-
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-cenered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nuevo mensaje a {{this.username}}</h5>
+<div>
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+        {{#with user}}
+        
+        <div class="profile-header"></div>
+        <img class="profile-image" src="{{this.profileImg}}" alt="user's profile pic">
+        
+        <div class="profile-body">
+          <div class="row">
+            <div class="col">
+              <h2 class="profile-name">{{this.name}} {{this.lastName}}</h2>
+              <h3 class="profile-username">@{{this.username}}</h3>
+              <h4 class="profile-bio">{{this.description}}</h4>
+            </div>
+        
+            {{#if ../myProfile}}
+            <div class="col">
+              <a class="profile-link edit-profile-link" href="/edit/{{this._id}}">Edita tu perfil</a>
+            </div>
+            {{/if}}
+          </div>
+        
+          {{#if ../myProfile}}
+          <div class="row justify-content-around">
+            <a class="col-auto mr-auto profile-link" href="/{{this._id}}/friends">Mis amistades</a>
+            <a class="col-auto mr-auto profile-link" href="/my-playlists">Mis playlists</a>
+            <a class="col-auto mr-auto profile-link" href="/user/events/{{this._id}}">Mis eventos</a>
+          </div>
+          <br>
+        
+          {{else}}
+        
+          {{#if (ifEquals ../friendship "false")}}
+          <form id="friend-request-form" action="/friend-requests/{{this._id}}" method="POST">
+            <button class="profile-link" type="submit">Enviar petición de amistad</button>
+          </form>
+          {{else}}
+          {{#if (ifEquals ../friendship "pendingOut")}}
+          <p>Has enviado una solicitud de amistad a {{this.username}}</p>
+          {{else}}
+          {{#if (ifEquals ../friendship "true")}}
+          <p class="profile-message">{{this.username}} es tu amigx</p>
+          <form id="unfollow-form" action="/unfollow/{{this._id}}" method="POST">
+            <button class="profile-link" type="submit">Cancelar amistad</button>
+          </form>
+          <br>
+          <h3>Explorar</h3>
+          <div class="row justify-content-around">
+            <a class="col-auto mr-auto profile-link" href="/{{this._id}}/friends">Amistades de {{this.name}}</a>
+            <a class="col-auto mr-auto profile-link" href="/playlists-list/{{this._id}}">Playlists de {{this.name}}</a></li>
+            <a class="col-auto mr-auto profile-link" href="/user/events/{{this._id}}">Eventos de {{this.name}}</a></li>
+          </div>
+        
+          <br>
+          {{else}}
+          {{#if (ifEquals ../friendship "pendingIn")}}
+          <p>{{this.username}} te ha enviado una solicitud de amistad, ve a <a href="/notifications">notificaciones</a> para
+            contestarla</p>
+          {{/if}}
+          {{/if}}
+          {{/if}}
+          {{/if}}
+          {{#if ../haveConversation}}
+          <a class="profile-link" href="/messages/{{../conversation}}">Enviar mensaje</a>
+          {{else}}
+          <button type="button" class="btn btn-primary profile-link" data-toggle="modal" data-target="#exampleModal"
+            id="create-post">
+            Enviar mensaje
+          </button>
+        
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-cenered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Nuevo mensaje a {{this.username}}</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"></h5>
                     <span aria-hidden="true">&times;</span>
                   </button>
-              </div>
-              <form action="/new-message/create-conversation/{{this._id}}" method="POST">
-                <div class="modal-body">
-                  <div class="form-group row justify-content-center">
-                    <label for="content" class="col-sm-4 col-form-label text-right">Mensaje:</label>
+                </div>
+                <form action="/new-message/create-conversation/{{this._id}}" method="POST">
+                  <div class="modal-body">
+                    <div class="form-group row justify-content-center">
+                      <label for="content" class="col-sm-4 col-form-label text-right">Mensaje:</label>
                       <div class="col-sm-8">
-                        <input required type="textarea" class="form-control" id="content" name="content" autocomplete="off" placeholder="¿Qué quieres decirle{{#if this.name}} a {{this.name}}{{/if}}?">
+                        <input required type="textarea" class="form-control" id="content" name="content" autocomplete="off"
+                          placeholder="¿Qué quieres decirle{{#if this.name}} a {{this.name}}{{/if}}?">
                       </div>
+                    </div>
                   </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
-                  <button type="submit" class="btn btn-primary create-btn">Enviar mensaje</button>
-                </div>
-              </form>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary create-btn">Enviar mensaje</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
-{{/if}}
-{{/if}}
-
-
-
-
-{{/with}}
-
-{{#if posts}}
-    <h2>Publicaciones:</h2>
-    {{#each posts}}
-    <div class="row">
-        {{>postPartial post=this user=currentUser}}
-        <div class="col-2 dropleft">
-              <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{/if}}
+          {{/if}}
+        
+        
+        
+        
+          {{/with}}
+        
+          {{#if posts}}
+          <h2>Publicaciones:</h2>
+          {{#each posts}}
+          <div class="row">
+            {{>postPartial post=this user=currentUser}}
+            <div class="col-2 dropleft">
+              <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="options-post-button" src="/images/icons/More_options.svg">
               </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
-                    <button class="dropdown-item" type="submit">Borrar post</button>
-                  </form>
-                </div>
-        </div>
-    </div>
-
-<div class="comment-box">
-          <div>
-            <form action="/{{_id}}/comment" method="POST">
-              <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" />
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
+                  <button class="dropdown-item" type="submit">Borrar post</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        
+          <div class="comment-box">
+            <div>
+              <form action="/{{_id}}/comment" method="POST">
+                <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" />
             </div>
             <div>
               <button class="comment-submit" type="submit">
@@ -129,11 +137,16 @@
             </div>
             </form>
           </div>
+        
+          <hr>
+          <br>
+          {{/each}}
+          {{/if}}
+        
+        
+        </div>
 
-      <hr>
-      <br>
-    {{/each}}
-  {{/if}}
-
-
+    </div>
+  </div>
 </div>
+
