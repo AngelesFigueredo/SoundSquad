@@ -2,36 +2,19 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
-            {{#ifIsTheSame currentUser._id id}}
-                <a class="link" href="/new-playlist">Crear nueva playlist</a>
+        <div class="col main-body">
 
             {{#unless ownedPlaylists}}
                 <p>No tienes ninguna playlist todavía, crea la primera!</p>
             {{/unless}}
 
+            {{#ifIsTheSame currentUser._id id}}
             {{#if ownedPlaylists}}
                 <h2 class="playlist-head">Tus playlists:</h2>
                     {{#each ownedPlaylists}}
-                    
-                        <div class="row">
-                                <div class="col-3">
-                                    <a href="/playlist-details/{{this._id}}"><img class="preview-picture" src="{{this.previewPicture}}" alt=""></a>
-                                </div>
-                                <div class="col">
-                                    <a href="/playlist-details/{{this._id}}"><p class="playlist-title">{{this.title}}</p></a>
-                                    <a href="/playlist-details/{{this._id}}"><p class="playlist-description">{{this.description}}</p></a>
-                                </div>
-                        </div>
-                        <br>
-                    {{/each}}
-            {{/if}}
 
-            {{#if followedPlaylists}}
-                <h2>Playlists de otros usuarios:</h2>
-                    {{#each followedPlaylists}}
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-3 d-flex align-items-center">
                                 <a href="/playlist-details/{{this._id}}"><img class="preview-picture" src="{{this.previewPicture}}" alt=""></a>
                             </div>
                             <div class="col">
@@ -39,7 +22,24 @@
                                 <a href="/playlist-details/{{this._id}}"><p class="playlist-description">{{this.description}}</p></a>
                             </div>
                         </div>
-                        <br>                    
+                        <hr>
+                    {{/each}}
+            {{/if}}
+
+            {{#if followedPlaylists}}
+                <h2 class="playlist-head">Playlists de otros usuarios:</h2>
+                    {{#each followedPlaylists}}
+                        <div class="row">
+                            <div class="col-3 d-flex align-items-center">
+                                <a href="/playlist-details/{{this._id}}"><img class="preview-picture" src="{{this.previewPicture}}" alt=""></a>
+                            </div>
+                            <div class="col">
+                                <a href="/playlist-details/{{this._id}}"><p class="playlist-title">{{this.title}}</p></a>
+                                <a href="/playlist-details/{{this._id}}"><p class="playlist-description">{{this.description}}</p></a>
+                                <a href="/playlist-details/{{this._id}}"><p class="playlist-description">{{this.author.username}}</p></a>
+                            </div>
+                        </div
+                        <hr>
                     {{/each}}
             {{/if}}
 
@@ -52,15 +52,14 @@
                     <h2 class="playlist-head">Playlists de {{user.username}}:</h2>
                         {{#each ownedPlaylists}}
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-3 d-flex align-items-center">
                                     <a href="/playlist-details/{{this._id}}"><img class="preview-picture" src="{{this.previewPicture}}" alt=""></a>
                                 </div>
                                 <div class="col">
                                     <a href="/playlist-details/{{this._id}}"><p class="playlist-title">{{this.title}}</p></a>
                                     <a href="/playlist-details/{{this._id}}"><p class="playlist-description">{{this.description}}</p></a>
+                                </div>
                             </div>
-                        </div>
-                        <br>
                         {{/each}}
                 {{/if}}
 
@@ -68,7 +67,7 @@
                     <h2 class="playlist-head">Playlists seguidas por {{user.username}}:</h2>
                         {{#each followedPlaylists}}
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-3 d-flex align-items-center">
                                     <a href="/playlist-details/{{this._id}}"><img class="preview-picture" src="{{this.previewPicture}}" alt=""></a>
                                 </div>
                                 <div class="col">
@@ -76,12 +75,11 @@
                                     <a href="/playlist-details/{{this._id}}"><p class="playlist-description">{{this.description}}</p></a>
                                 </div>
                             </div>
-                            <br>
                         {{/each}}
                 {{/if}}
 
             {{/ifIsTheSame}}
-            
+
         </div>
     </div>
 </div>
