@@ -25,8 +25,7 @@ router.get("/messages", isLoggedIn, async (req, res, next) => {
     res.render("main/messages", { conversationsForView, currentUser: req.session.currentUser });
 
   } catch (error) {
-    console.log(error);
-    res.render("error", { error });
+    res.render("error", { error })
   }
 });
 
@@ -92,8 +91,7 @@ router.post("/new-message/create-conversation/:id", async (req, res, next) => {
     // console.log(conversation)
     res.redirect(`/messages/${conversation._id}`)
     } catch (error) {
-    console.log(error);
-    res.render("error", { error });
+      res.render("error", { error })
   }
 });
 

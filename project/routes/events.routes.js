@@ -31,8 +31,7 @@ const {
          const newEvent= await Event.create(req.body)
           res.redirect(`/event-details/${newEvent._id}`);
       } catch (error) {
-          console.log(error)
-          next()
+        res.render("error", { error })
       }
   });
   
@@ -46,8 +45,8 @@ const {
         followedEvents,
         currentUser: req.session.currentUser
     })
-    } catch (error) 
-    {console.log(error)}
+    } catch (error) {
+    res.render("error", { error })}
   })
 
   router.get("/join/:eventId", async(req, res, next)=>{

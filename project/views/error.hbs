@@ -1,2 +1,9 @@
-<h1>Error!</h1>
-<h2>There was an error on the server! Check the console!</h2>
+<link rel="stylesheet" href="/stylesheets/error.css" />
+
+<h1 class="top-message">Oh, oh...</h1>
+
+<img class="error-pic" src="/images/error.png" alt="Sad Boy Png - Sad Boy Cartoon@seekpng.com">
+
+{{#if error}}
+<p>{{error}}</p>
+{{/if}}

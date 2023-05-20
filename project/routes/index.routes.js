@@ -171,7 +171,7 @@ router.get("/edit/:id", async (req, res, next) => {
     const user = await User.findById(req.params.id);
 
     console.log(user)
-    res.render("auth/edit-profile", { user, session: req.session, currentUser: req.session.currentUser});
+    res.render("edit-profile", { user, session: req.session, currentUser: req.session.currentUser});
 
   } catch (error) {
     res.render("error", { error });
@@ -246,15 +246,16 @@ router.get("/new-message", isLoggedIn, async (req, res, next) => {
   res.render("main/new-message", { users, currentUser: req.session.currentUser });
 });
 
+
 router.get("/:id/friends", isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).populate("friends", "name lastName username profileImg");
     res.render("main/friends", { friends: user.friends, currentUser: req.session.currentUser });
   } catch (error) {
-    console.log(error);
-    next(error);
+    res.render("error", { error })
   }
 });
+
 
 router.get("/search", isLoggedIn, async (req, res, next) => {
 
@@ -410,7 +411,7 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
         });
       });
   } catch (error) {
-    next(error);
+    res.render("error", { error })
   }
 });
 
@@ -481,7 +482,7 @@ router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
       currentUser: req.session.currentUser,
     });
   } catch (error) {
-    console.log(error);
+    res.render("error", { error })
   }
 });
 
@@ -535,10 +536,10 @@ router.get("/concert/:id", isLoggedIn, async (req, res, next) => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        res.render("error", { error })
       });
   } catch (error) {
-    console.log(error);
+    res.render("error", { error })
   }
 });
 
@@ -569,7 +570,7 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
     res.render("main/track-details", { song, user, id, currentUser: req.session.currentUser, artistId, artistId2 });
 
   } catch (error) {
-    console.log(error);
+    res.render("error", { error })
   }
 });
 
@@ -599,8 +600,7 @@ router.post("/edit/:id", uploader.single("profileImg"), async (req, res, next) =
     // Redirect to the profile edit page
     res.redirect("/my-profile");
   } catch (error) {
-    console.log(error);
-    // Handle the error
+    res.render("error", { error })
   }
 });
 

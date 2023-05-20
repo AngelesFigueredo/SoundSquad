@@ -49,8 +49,7 @@ router.get("/playlists-list/:id", isLoggedIn, async (req, res, next) => {
 
     });
   } catch (error) {
-    console.log(error);
-    next(error);
+    res.render("error", { error })
   }
 });
 
@@ -96,8 +95,7 @@ router.get("/my-playlists", isLoggedIn, async (req, res, next) => {
       id,
     });
   } catch (error) {
-    console.log(error);
-    next(error);
+    res.render("error", { error });
   }
 });
 
@@ -135,8 +133,7 @@ router.get("/playlist-details/:id", isLoggedIn, async (req, res, next) => {
 
     });
   } catch (error) {
-    console.log(error);
-    next(error);
+    res.render("error", { error })
   }
 });
 
@@ -172,7 +169,7 @@ router.post("/:id/addtoplaylist", async (req, res, next) => {
     });
     res.redirect("/my-playlists");
   } catch (error) {
-    console.log(error);
+    res.render("error", { error })
   }
 });
 
@@ -186,8 +183,7 @@ router.post("/follow-playlist/:id", async (req, res, next) => {
     });
     res.redirect(`/playlist-details/${id}`);
   } catch (error) {
-    console.log(error);
-    next(error);
+    res.render("error", { error })
   }
 });
 
@@ -202,9 +198,20 @@ router.post("/unfollow-playlist/:id", async (req, res, next) => {
     });
     res.redirect(`/playlist-details/${id}`);
   } catch (error) {
-    console.log(error);
+    res.render("error", { error })
   }
 });
+
+router.post("/delete-song/:songId/:playlistId", async (req, res, next)=>{
+  try{
+  const { songId, playlistId } = req.params;
+  await Playlist.findByIdAndUpdate(playlistId, { $pull: { songs: songId } })
+  res.redirect(`/playlist-details/${playlistId}`)
+  } catch (error) {
+    console.log(error)
+    res.render("error", { error })
+  }
+})
 
 router.post("/delete-playlist/:id", async (req, res, next)=> {
   try {
@@ -212,7 +219,7 @@ router.post("/delete-playlist/:id", async (req, res, next)=> {
     await Playlist.findByIdAndDelete(id)
     res.redirect("/my-playlists")
   } catch (error) {
-    console.log(error)
+    res.render("error", { error })
   }
 })
 

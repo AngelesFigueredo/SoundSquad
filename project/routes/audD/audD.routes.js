@@ -9,31 +9,41 @@ router.get("/audd", (req, res, next) => {
 });
 
 router.post("/song-details", async (req, res, next) => {
-  const { currentUser } = req.session;
-  const user = await User.findById(currentUser._id).populate({
-    path: "playlists",
-    select: "title",
-  });
-  const base64Audio = req.body.audioData;
-  const data = {
-    api_token: process.env.AUDD_TOKEN,
-    audio: base64Audio,
-    return: "apple_music,spotify",
-  };
-  axios({
-    method: "post",
-    url: "https://api.audd.io/",
-    data: data,
-    headers: { "Content-Type": "multipart/form-data" },
-  })
-    .then((response) => {
-      const songId = response.data.result.spotify.id
-      res.redirect(`/song/${songId}`)
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const { currentUser } = req.session;
+    const user = await User.findById(currentUser._id).populate({
+      path: "playlists",
+      select: "title",
     });
+    const base64Audio = req.body.audioData;
+    const data = {
+      api_token: process.env.AUDD_TOKEN,
+      audio: base64Audio,
+      return: "apple_music,spotify",
+    };
+    axios({
+      method: "post",
+      url: "https://api.audd.io/",
+      data: data,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then((response) => {
+        if (response.data.result && response.data.result.spotify) {
+          const songId = response.data.result.spotify.id;
+          res.redirect(`/song/${songId}`);
+        } else {
+          throw new Error("No Spotify data found in the response");
+        }
+      })
+      .catch((error) => {
+        res.render("error", { error });
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error occurred during the song details retrieval.");
+  }
 });
+
 
 router.post("/concerts-audd", (req, res, next) => {
   const tmApiKey = process.env.TICKET_CONSUMER_KEY;
