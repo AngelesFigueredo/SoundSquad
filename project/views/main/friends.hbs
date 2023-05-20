@@ -6,7 +6,7 @@
         {{#each friends}}
             <div class="row align-items-center">
                 <div class="col-3">
-                    <img class="preview-picture" src="{{this.profileImg}}" alt="profile-image">
+                    <a href="/profile/{{this._id}}"><img class="preview-picture" src="{{this.profileImg}}" alt="profile-image"></a>
                 </div>
 
                 <div class="col">

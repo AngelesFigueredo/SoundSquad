@@ -122,11 +122,19 @@ router.get("/profile/:id", isLoggedIn, async (req, res, next) => {
     const conversation = await Conversation.findOne({
       users: { $all: [currentUser._id, user._id] }
     });
+    const posts = await Post.find({ author: user._id })
+    .populate("author comments")
+    .populate({
+      path: "comments",
+      populate: { path: "author", model: "User" },
+    })
+    .sort({ createdAt: -1 });
 
     haveConversation = !!conversation;
 
     const renderData = {
       user,
+      posts,
       haveConversation,
       myProfile,
       currentUser: req.session.currentUser
