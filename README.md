@@ -16,13 +16,13 @@ Juanan Antona
 
 ## How it looks
 
-<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview1_olbzpa.jpg" width="100" alt="Screen_view_1">
+<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview1_olbzpa.jpg" width="300" alt="Screen_view_1">
 
-<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview3_tifnam.jpg" width="100" alt="Screen_view_2">
+<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview3_tifnam.jpg" width="300" alt="Screen_view_2">
 
-<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567602/preview2_pshs41.jpg" width="100" alt="Screen_view_3">
+<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567602/preview2_pshs41.jpg" width="300" alt="Screen_view_3">
 
-<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview4_w7t018.jpg" width="100" alt="Screen_view_4">
+<img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview4_w7t018.jpg" width="300" alt="Screen_view_4">
 
 ## Description
 
