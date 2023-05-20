@@ -171,7 +171,7 @@ router.get("/edit/:id", async (req, res, next) => {
     const user = await User.findById(req.params.id);
 
     console.log(user)
-    res.render("edit-profile", { user, session: req.session, currentUser: req.session.currentUser});
+    res.render("main/edit-profile", { user, session: req.session, currentUser: req.session.currentUser});
 
   } catch (error) {
     res.render("error", { error });
@@ -575,32 +575,25 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
 });
 
 router.post("/edit/:id", uploader.single("profileImg"), async (req, res, next) => {
-  const { body } = req;
-  const { id } = req.params;
-  let { profileImg } = req.body;
+  const id = req.params.id
+    console.log("el req.file", req.file)
+    let {name, lastName, age, description, profileImg} = req.body
     // si nos viene la url desde una cosa que se ha subido
-    if (req.file && req.file.path) {
-      profileImg = req.file.path;
+    if(req.file && req.file.path){
+      profileImg = req.file.path
     }
     // si nos viene de una foto que hemos tomado 
-    if(req.body.picUrl){
-      profileImg= trimUrl(req.body.picUrl)
+    if(req.body.picUrl && !req.file){
+      profileImg= trimUrl(req.body.picUrl[0])
     }
   try {
-    const interests = body.interests; 
-    const updatedData = {
-      name: body.name,
-      lastName: body.lastName,
-      age: body.age,
-      description: body.description,
-      profileImg
-    };
     // Update the user with the updated data
-    await User.findByIdAndUpdate(id, updatedData);
+    await User.findByIdAndUpdate(id, {name, lastName, age, description, profileImg});
     // Redirect to the profile edit page
     res.redirect("/my-profile");
   } catch (error) {
-    res.render("error", { error })
+    console.log(error)
+    //res.render("error", { error })
   }
 });
 
