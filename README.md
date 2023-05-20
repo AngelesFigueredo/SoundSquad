@@ -3,17 +3,23 @@
 #### Authors
 
 Ángeles Figueredo
+
 Pepe Alacid
 
 ### UX/UI team
 
 Javier Vega
+
 Cristina San Juan
+
 Juanan Antona
 
 ## How it looks
 
+![Screen_view_1](https://res.cloudinary.com/dioxc2frd/image/upload/v1684568269/previews_vgowmo.jpg)
+
 ## Description
+
 
 SoundSquad is a social network that will help you make teams so you don't go alone to see your favorite concerts. Also, it will allow you to update your friends on your musical concerns.
 
