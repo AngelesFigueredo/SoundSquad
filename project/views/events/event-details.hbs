@@ -1,13 +1,13 @@
 <link rel="stylesheet" href="/stylesheets/events.css" />
 
-{{#if notifications}}
-  {{>eventAcceptDecline 
-     notifications=notifications
-     joinRequests=joinRequests}}
 
-{{/if}}
 <div class="row justify-content-center">
         <div class="col-md-5">
+            {{#if notifications}}
+                {{>eventAcceptDecline
+                notifications=notifications
+                joinRequests=joinRequests}}
+            {{/if}}
             {{>chatData users=users event=event}}
         </div>
         <div class="col-md-7 ">

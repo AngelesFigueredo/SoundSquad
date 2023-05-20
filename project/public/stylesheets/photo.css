@@ -34,3 +34,7 @@
     border-radius: 20px;
     padding: 9px;
 }
+
+.one-liner input{
+    width: 100%;
+}

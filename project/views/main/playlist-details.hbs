@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/stylesheets/playlists.css" />
 
 <div class="container">
-  <div class="row">
-    <div class="col main-body">
+  <div class="row justify-content-center">
+    <div class="col-md-5 main-body">
       {{#with playlist}}
       <h2 class="playlist-head">{{this.title}}</h2>
       {{#if (ne this.author.username ../currentUser.username)}}

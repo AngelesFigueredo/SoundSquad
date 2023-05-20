@@ -123,6 +123,27 @@
                                 </p>
                             </div>
                         </div>
+                        {{#if ../event.isAdmin}}
+                            <div class="col-1">
+                                {{#unless isYou}}
+                                <form action="/kick-out/{{this._id}}" method="POST">
+                                    <input hidden type="text" name="eventId" value="{{../event._id}}">
+                                    <button class="remove-button-styling" type="submit"><p>x</p></button>
+                                </form>
+                                {{/unless}}
+                            </div>
+                            <div class="col-1">
+                                {{#unless isYou}}
+                                    {{#unless this.isAdmin}}
+                                        <form action="/make-admin/{{this._id}}" method="POST">
+                                            <input hidden type="text" name="eventId" value="{{../event._id}}">
+                                            <button class="remove-button-styling" type="submit"><p>♪</p></button>
+                                        </form>
+                                    {{/unless}}
+                                {{/unless}}
+                            </div>
+                        {{/if}}
+                        
                     </div>
                 </div>
             </a>

@@ -1,34 +1,73 @@
-<h2>Editar perfil - ADMIN</h2>
-
+<link rel="stylesheet" href="/stylesheets/search.css" />
+<link rel="stylesheet" href="/stylesheets/events.css" />
+<link rel="stylesheet" href="/stylesheets/photo.css" />
+<h1 class="text-center">Mi perfil</h1>
 {{#with user}}
 
-<form action="/admin/edit/{{this._id}}" method="POST">
-    <label>Nombre:
-        <input type="text" name="name" value="{{this.name}}"/>
-    </label>
+    <form action="/edit/{{_id}}" method="POST" enctype="multipart/form-data">
+        <div class="container padd">
+            <div class="row justify-content-center">
+                <div class="col col-md-6">
+                    <div class="one-liner justify-content-center">
+                        <label><b>Nombre</b>
+                            <div>
+                                <input type="text" name="name" value="{{this.name}}"  />
+                            </div>
+                        </label>
+                    </div>
+                    <div class="one-liner">
+                        <label><b>Apellidos</b>
+                            <div>
+                                <input type="text" name="lastName" value="{{this.lastName}}" />
+                            </div>
+                        </label>
+                    </div>
+                    <div class="one-liner">
+                        <label><b>Edad</b>
+                            <div>
+                                <input type="number" name="age" value="{{this.age}}" />
+                            </div>
+                        </label>
+                    </div>
+                    <div class="one-liner">
+                        <label><b>BIO</b>
+                            <div>
+                                <input type="text" name="description" value="{{this.desciption}}" />
+                            </div>
+                        </label>
+                    </div>
 
-    <label>Apellidos:
-        <input type="text" name="lastName" value="{{this.lastName}}"/>
-    </label>
-
-    <label>Edad:
-        <input type="number" name="age" value="{{this.age}}"/>
-    </label>
-
-    <label>BIO:
-        <input type="text" name="description" value="{{this.desciption}}"/>
-    </label>
-
-    <label>Role:
-        <input type="text" name="role" value="{{this.role}}"/>
-    </label>
-
-    {{!-- <label>Foto de perfil: 
-        <input type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
-        <a href="/take-photo">Hazte una foto de perfil</a>
-    </label> --}}
+                    <div class="padd ">
+                        <button class="purple-button" type="submit">Guardar</button>
+                    </div>
+                    {{!-- CHANGE PICTURE --}}
+                    <div>
+    
+                        <input hidden type="text" value="{{profileImg}}" name="profileImg">
+                        <input hidden id="pic-url" name="picUrl">
+    
+                        <h2>Cambia tu foto the perfil</h2>
+                        <label for="image-input" class="custom-file-upload">
+                            Escoge una imagen
+                        </label>
+                        <input hidden type="file" id="image-input" name="profileImg" accept="image/jpeg, image/png">
+    
+                        <p hidden id="taken-pic"> Se cambiará tu foto de perfil a la última que hayas tomado</p>
+                        <button hidden id="upload-button">Descartar última foto</button>
+                        <a href="/take-photo"><button id="t-pic">Hacer foto</button></a>
+                        <input hidden type="text" value="{{profileImg}}" name="profileImg">
+                        <input hidden id="pic-url" name="picUrl">
+                    </div>
+    
+    
+                </div>
+            </div>
+        </div>
+        </div>
+    </form>
 
 {{/with}}
 
-<button type="submit"> Editar perfil </button>
-</form>
+
+
+<script src="/scripts/check-profilePic.js"></script>

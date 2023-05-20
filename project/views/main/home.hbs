@@ -1,92 +1,107 @@
 <link rel="stylesheet" href="/stylesheets/home.css" />
-      
-<div class="container" >
 
-  <div class="row">
-    <div class="col">
-
-      <div class="d-flex justify-content-center">
-        <img id="logo" src="images/Logo.svg" alt="SoundSquad">
-      </div>
-
-      <div class="d-flex justify-content-center search-box">
-        <form action="/search" method="GET">
-          <input class="search-input" type="text" placeholder="Buscar" name="query" autocomplete="off" />
-          <button class="search-submit" type="submit"> <img class="color" src="images/icons/search.svg"> </button>
-        </form>
-      </div>
-
-      <div>
-        <button type="button" class="btn btn-primary white-link" data-toggle="modal" data-target="#exampleModal" id="create-post">
-          Publica un nuevo post!
-        </button>
-
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-cenered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nuevo post</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"></h5>
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+<div>
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="container">
+        
+          <div class="row">
+            <div class="col">
+        
+              <div class="d-flex justify-content-center">
+                <img id="logo" src="images/Logo.svg" alt="SoundSquad">
               </div>
-              <form action="/post-create" method="POST">
-                <div class="modal-body">
-                  <div class="form-group row justify-content-center">
-                    <label for="content" class="col-sm-4 col-form-label text-right">Mensaje:</label>
-                      <div class="col-sm-8">
-                        <input required type="textarea" class="form-control" id="content" name="content" autocomplete="off" placeholder="¿Qué quieres contar?">
+        
+              <div class="d-flex justify-content-center search-box">
+                <form action="/search" method="GET">
+                  <input class="search-input" type="text" placeholder="Buscar" name="query" autocomplete="off" />
+                  <button class="search-submit" type="submit"> <img class="color" src="images/icons/search.svg"> </button>
+                </form>
+              </div>
+        
+              <div>
+                <button type="button" class="btn btn-primary white-link" data-toggle="modal" data-target="#exampleModal"
+                  id="create-post">
+                  Publica un nuevo post!
+                </button>
+        
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-cenered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Nuevo post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></h5>
+                          <span aria-hidden="true">&times;</span>
+                        </button>
                       </div>
+                      <form action="/post-create" method="POST">
+                        <div class="modal-body">
+                          <div class="form-group row justify-content-center">
+                            <label for="content" class="col-sm-4 col-form-label text-right">Mensaje:</label>
+                            <div class="col-sm-8">
+                              <input required type="textarea" class="form-control" id="content" name="content"
+                                autocomplete="off" placeholder="¿Qué quieres contar?">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
+                          <button type="submit" class="btn btn-primary create-btn">Publicar post</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary cancel-btn" data-dismiss="modal">Cerrar</button>
-                  <button type="submit" class="btn btn-primary create-btn">Publicar post</button>
+        
+        
+                {{#each posts}}
+                <div class="row">
+        
+                  {{> postPartial post=this user=../currentUser._id}}
+        
+                  {{#if (ifEquals author._id ../currentUser._id)}}
+                  <div class="col-2 dropleft">
+                    <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <img class="options-post-button" src="images/icons/More_options.svg">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
+                        <button class="dropdown-item" type="submit">Borrar post</button>
+                      </form>
+                    </div>
+                  </div>
+                  {{/if}}
                 </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-
-        {{#each posts}}
-          <div class="row">
-
-              {{> postPartial post=this user=../currentUser._id}}
-
-            {{#if (ifEquals author._id ../currentUser._id)}}
-            <div class="col-2 dropleft">
-              <button class="btn btn-secondary dropdown-toggle white-button" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="options-post-button" src="images/icons/More_options.svg">
-              </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <form action="posts/{{_id}}/home/delete" method="POST" id="delete-form">
-                    <button class="dropdown-item" type="submit">Borrar post</button>
+        
+                <div class="comment-box">
+                  <div>
+                    <form action="/{{_id}}/comment" method="POST">
+                      <input class="comment-input" type="text" name="content" placeholder="Deja un comentario"
+                        autocomplete="off" />
+                  </div>
+                  <div>
+                    <button class="comment-submit" type="submit">
+                      <img class="plane-icon" src="images/icons/plane.png" alt="enviar" />
+                    </button>
+                  </div>
                   </form>
                 </div>
+        
+        
+        
+                <hr>
+                {{/each}}
+        
+        
+              </div>
             </div>
-                {{/if}}
           </div>
-
-        <div class="comment-box">
-          <div>
-            <form action="/{{_id}}/comment" method="POST">
-              <input class="comment-input" type="text" name="content" placeholder="Deja un comentario" autocomplete="off" />
-            </div>
-            <div>
-              <button class="comment-submit" type="submit">
-                <img class="plane-icon" src="images/icons/plane.png" alt="enviar" />
-              </button>
-            </div>
-            </form>
-          </div>
-
-
-
-          <hr>
-        {{/each}}
-          
 
     </div>
   </div>
 </div>
+
+
+

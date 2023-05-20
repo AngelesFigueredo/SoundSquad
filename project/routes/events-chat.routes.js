@@ -119,7 +119,6 @@ router.post("/edit-event/:eventId",  uploader.single("profilePic"),async(req, re
     }
     // si nos viene de una foto que hemos tomado 
     if(req.body.picUrl && !req.file){
-      console.log("el req.pichUr", req.body.picUrl)
       profilePic= trimUrl(req.body.picUrl[0])
     }
     await Event.findByIdAndUpdate(eventId, {name, description, profilePic})

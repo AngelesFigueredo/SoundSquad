@@ -117,5 +117,17 @@ p{
 .modal-footer form{
     width: 100%;
 }
+.middleware a{
+    color: #6324BB;
+    border: #6324BB 1px solid;
+    border-radius: 20px;
+    padding: 5px;
+}
+.marg{
+    margin: 9px;
+}
+
+
+
 
 
