@@ -16,23 +16,7 @@ Juanan Antona
 
 ## How it looks
 
-<div style="display: flex; justify-content: center;">
-  <div style="flex: 50%; padding: 5px;">
-    <img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview1_olbzpa.jpg" width="300" alt="Screen_view_1">
-  </div>
-  <div style="flex: 50%; padding: 5px;">
-    <img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview3_tifnam.jpg" width="300" alt="Screen_view_2">
-  </div>
-</div>
-
-<div style="display: flex; justify-content: center;">
-  <div style="flex: 50%; padding: 5px;">
-    <img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567602/preview2_pshs41.jpg" width="300" alt="Screen_view_3">
-  </div>
-  <div style="flex: 50%; padding: 5px;">
-    <img src="https://res.cloudinary.com/dioxc2frd/image/upload/v1684567599/preview4_w7t018.jpg" width="300" alt="Screen_view_4">
-  </div>
-</div>
+![Screen_view_1]([./images/readme/Screen1.png](https://res.cloudinary.com/dioxc2frd/image/upload/v1684568269/previews_vgowmo.jpg))
 
 ## Description
 
