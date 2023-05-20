@@ -30,7 +30,6 @@ app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
 const indexRoutes = require("./routes/index.routes");
 const authRoutes = require("./routes/auth.routes");
 const auddRoutes = require("./routes/audD/audD.routes");
-const adminRoutes = require("./routes/admin.routes");
 const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 const eventsRoutes = require("./routes/events.routes");
@@ -47,7 +46,6 @@ app.use("/", eventsChatRoutes);
 app.use("/", eventsRoutes);
 app.use("/", messagesRoutes);
 app.use("/", playlistsRoutes)
-app.use("/admin", adminRoutes);
 
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes

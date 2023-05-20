@@ -46,8 +46,7 @@ router.post(
         )
         .then(() => res.redirect("/"))
         .catch((error) => {
-          console.log(error);
-          next(error);
+          res.render("error", { error })
         });
     } else {
       res.render("auth/signup-form", {
@@ -92,7 +91,7 @@ router.post("/login", async (req, res, next) => {
         res.redirect("/home");
       }
     })
-    .catch((error) => next(error));
+    .catch((error) => res.render("error", { error }));
 });
 
 // Logout

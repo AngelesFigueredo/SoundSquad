@@ -46,6 +46,11 @@
           </div>
         </div>
       </div>
+      {{#if ../isOwner}}
+      <form action="/delete-song/{{this.id}}/{{../playlist._id}}" method="POST">
+        <button type="submit" class="delete-song"><p class="delete-text">Eliminar canción</p></button>
+      </form>
+      {{/if}}
       <hr>
       {{/each}}
       {{else}}

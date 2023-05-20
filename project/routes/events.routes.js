@@ -41,8 +41,7 @@ const {
           await Event.create(req.body)
           res.redirect(`/events/${concertId}`);
       } catch (error) {
-          console.log(error)
-          next()
+        res.render("error", { error })
       }
   });
   
@@ -66,8 +65,8 @@ const {
         othersEvents: currentUser._id !== routeId,
         currentUser: req.session.currentUser
     })
-    } catch (error) 
-    {console.log(error)}
+    } catch (error) {
+    res.render("error", { error })}
   })
 
   //// comentar 

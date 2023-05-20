@@ -60,3 +60,16 @@ a {
 hr {
     margin:8px;
     }
+
+.delete-song {
+        font-size: 10px;
+        color:#6324BB;
+        border: 1px solid #6324BB;
+        border-radius: 30px;
+        background-color: white;
+        margin: 0px
+    }
+
+    .delete-text {
+        margin: 0px
+    }

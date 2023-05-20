@@ -58,8 +58,7 @@ router.post("/post-create", async (req, res) => {
 
     res.redirect("/home");
   } catch (error) {
-    console.log(error);
-    res.render("error", { error });
+    res.render("error", { error })
   }
 });
 
