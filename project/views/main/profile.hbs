@@ -49,27 +49,16 @@
           <br>
           <h3>Explorar</h3>
           <div class="row justify-content-around">
-            <a class="col-auto mr-auto profile-link" href="/{{this._id}}/friends">Amistades de {{this.name}}</a>
-            <a class="col-auto mr-auto profile-link" href="/playlists-list/{{this._id}}">Playlists de {{this.name}}</a></li>
-            <a class="col-auto mr-auto profile-link" href="/user/events/{{this._id}}">Eventos de {{this.name}}</a></li>
-          </div>
-        
-          <br>
-          {{else}}
-          {{#if (ifEquals ../friendship "pendingIn")}}
-          <p>{{this.username}} te ha enviado una solicitud de amistad, ve a <a href="/notifications">notificaciones</a> para
-            contestarla</p>
-          {{/if}}
-          {{/if}}
-          {{/if}}
-          {{/if}}
-          {{#if ../haveConversation}}
-          <a class="profile-link" href="/messages/{{../conversation}}">Enviar mensaje</a>
-          {{else}}
-          <button type="button" class="btn btn-primary profile-link" data-toggle="modal" data-target="#exampleModal"
+            <a class="col-3 mr-auto profile-link" href="/{{this._id}}/friends">Amistades de {{this.name}}</a>
+            <a class="col-3 mr-auto profile-link" href="/playlists-list/{{this._id}}">Playlists de {{this.name}}</a></li>
+            <a class="col-3 mr-auto profile-link" href="/user/events/{{this._id}}">Eventos de {{this.name}}</a></li>
+            {{#if ../haveConversation}}
+            <a class="col-3 mr-auto profile-link" href="/messages/{{../conversation}}">Enviar mensaje</a>
+              {{else}}
+            <button type="button" class="col-auto mr-auto btn btn-primary profile-link" data-toggle="modal" data-target="#exampleModal"
             id="create-post">
             Enviar mensaje
-          </button>
+            </button>
         
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -99,6 +88,17 @@
               </div>
             </div>
           </div>
+          {{/if}}
+          </div>
+        
+          <br>
+          {{else}}
+          {{#if (ifEquals ../friendship "pendingIn")}}
+          <p>{{this.username}} te ha enviado una solicitud de amistad, ve a <a href="/notifications">notificaciones</a> para
+            contestarla</p>
+          {{/if}}
+          {{/if}}
+          {{/if}}
           {{/if}}
           {{/if}}
         
