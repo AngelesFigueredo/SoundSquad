@@ -482,6 +482,7 @@ router.get("/artist/:id", isLoggedIn, async (req, res, next) => {
       currentUser: req.session.currentUser,
     });
   } catch (error) {
+    console.log(error)
     res.render("error", { error })
   }
 });
