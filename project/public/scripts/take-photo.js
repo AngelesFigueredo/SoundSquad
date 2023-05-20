@@ -8,8 +8,6 @@ const profilePicInput = document.querySelector("#profile-pic");
 const cancelBtn = document.querySelector("#cancel-photo");
 let imgUrl;
 
-
-
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices
     .getUserMedia({ video: true })
@@ -28,14 +26,23 @@ captureBtn.addEventListener("click", (event) => {
   const dataURL = canvas.toDataURL("image/png");
   const myImg = document.createElement("img");
   myImg.src = dataURL;
-  profilePicInput.parentNode.insertBefore(myImg, profilePicInput.nextSibling);
+  myImg.style.width = "100%";
+
+  const photoCanvas = document.querySelector(".photo-canvas");
+  photoCanvas.style.display = "none";
+  photoCanvas.parentNode.insertBefore(myImg, photoCanvas);
+  captureBtn.style.display = "none";
+  repeatBtn.removeAttribute("hidden");
+  submitPhotoBtn.removeAttribute("hidden");
+
   imgUrl = dataURL;
+
+  // Save image URL to localStorage
+  localStorage.setItem("img", JSON.stringify(imgUrl));
 });
 
-repeatBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  imgUrl = null;
-  context.clearRect(0, 0, canvas.width, canvas.height);
+repeatBtn.addEventListener("click", () => {
+  location.reload();
 });
 
 submitPhotoBtn.addEventListener("click", async (event) => {
@@ -52,7 +59,9 @@ submitPhotoBtn.addEventListener("click", async (event) => {
     console.log("Image uploaded successfully: ", response.data.secure_url);
     imgUrl = response.data.secure_url;
     localStorage.setItem("img", JSON.stringify(imgUrl))
+    location.reload()
     history.back()
+    
   } else {
     console.log("No image has been upload");
   }
@@ -62,6 +71,6 @@ submitPhotoBtn.addEventListener("click", async (event) => {
 cancelBtn.addEventListener("click", (event) => {
   event.preventDefault();
   localStorage.clear()
-  window.location.replace("/my-profile")
+  history.back()
   context.clearRect(0, 0, canvas.width, canvas.height);
 });

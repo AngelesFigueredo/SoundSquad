@@ -88,3 +88,6 @@ nav .active a {
     cursor: pointer;
     outline: inherit;
   }
+.no-b-padd{
+  padding-bottom: 0;
+}

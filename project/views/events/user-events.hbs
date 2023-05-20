@@ -1,52 +1,62 @@
-{{#unless ownedEvents}}
-    {{#unless followedEvents}}
 
-        {{#if myEvents}}
-        <p>No tienes eventos</p>
-        <a href="/">Crea un nuevo evento!</a>
-        {{/if}}
+<link rel="stylesheet" href="/stylesheets/search.css" />
+<link rel="stylesheet" href="/stylesheets/events.css" />
 
-        {{#if othersEvents}}
-        {{#with otherUser}}
-        <p>{{this.username}} no tiene eventos</p>
-        {{/with}}
-        {{/if}}
-
-    {{/unless}}
-{{/unless}}
-
-{{#if myEvents}}
-    {{#if ownedEvents}}
-    <h2>Tus eventos:</h2>
-    {{#each ownedEvents}}
-    <a href="/">{{this.name}}</a>
-    {{/each}}
-    {{/if}}
-
-    {{#if followedEvents}}
-    <h2 >Eventos en los que participas:</h2>
-    {{#each followedEvents}}
-    <a href="/">{{this.name}}, de {{this.author}}</a>
-    {{/each}}
-    {{/if}}
-{{/if}}
-
-{{#if othersEvents}}
-    {{#if othersOwnedEvents}}
-        {{#with otherUser}}
-        <h2>Eventos de {{this.username}}:</h2>
-            {{#each othersOwnedEvents}}
-            <a href="/">{{this.name}}</a>
+<div class="container justify-content-center">
+    <div class=" row justify-content-center responsive-col">
+        <div class="d-flex justify-content-center padd">
+            <h1>Eventos</h1>
+            <hr>
+        </div>
+        <div class="col-md-5">
+            <h2>Creados por mí</h2>
+            {{#if followedEvents}}
+            {{#each followedEvents}}
+            <a href="/event-details/{{_id}}">
+                <div class="row event">
+                    <div class="col-6 event-pic">
+                        <img src="{{profilePic}}" alt="">
+                    </div>
+                    <div class="col-6">
+                        <div class="title">
+                            <p>{{name}}</p>
+                        </div>
+                        <p>
+                            {{artist}}
+                        </p>
+                        <p>Creado por: {{author.username}}</p>
+                    </div>
+                </div>
+            </a>
             {{/each}}
-        {{/with}}
-    {{/if}}
-
-    {{#if ohtersFollowedEvents}}
-        {{#with otherUser}}
-        <h2>Eventos en los que participa {{this.username}}:</h2>
-            {{#each othersFollowedEvents}}
-            <a href="/">{{this.name}}, de {{this.author}}</a>
+            {{else}}
+            <p>No has creado ningún evento. Búsca algún concierto ♪</p>
+            {{/if}}
+        </div>
+        <div class="col-md-5">
+            <h2>Eventos en los que participo</h2>
+            {{#if followedEvents}}
+            {{#each followedEvents}}
+            <a href="/event-details/{{_id}}">
+                <div class="row event">
+                    <div class="col-6 event-pic">
+                        <img src="{{profilePic}}" alt="">
+                    </div>
+                    <div class="col-6">
+                        <div class="title">
+                            <p>{{name}}</p>
+                        </div>
+                        <p>
+                            {{artist}}
+                        </p>
+                        <p>Creado por: {{author.username}}</p>
+                    </div>
+                </div>
+            </a>
             {{/each}}
-        {{/with}}
-    {{/if}}
-{{/if}}
+            {{else}}
+            <p>No se han encontrado eventos.</p>
+            {{/if}}
+        </div>
+    </div>
+</div>

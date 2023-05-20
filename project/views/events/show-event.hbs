@@ -71,6 +71,7 @@
                                     <form action="/leave-event/{{event._id}}" method="post">
                                         <button type="submit" class="btn purple-button">Os abandono</button>
                                     </form>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -96,7 +97,9 @@
         </div>
     </div>
     <div class="col-md-5">
-        <h2>Participantes</h2>
+        <div class="container padd">
+            <h2 class="text-center">Participantes</h2>
+        </div>
         <div class="container participants">
             {{#each event.members}}
             <a href="/profile/{{this._id}}">
@@ -124,33 +127,31 @@
                 </div>
             </a>
             {{/each}}
-        </div>
-            <!-- Button trigger modal -->
-            <div class="container padd-create">
-                <button class="purple-button" data-toggle="modal" data-target="#deleteModal">
-                    Borrar Evento
-                </button>
-            </div>
-            
-            
-            <!-- Modal -->
-            <div class="container modal-wrapper">
-                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel">Borrar evento</h5>
-                                <button type="button" class="close purple-close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                ¡Cuidado! Una vez que borrar el evento no habrá vuelta atrás. Se perderá para siempre. 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn white-button" data-dismiss="modal">No</button>
-                                <div class="d-flex justify-content-center">
+            {{#if event.isAdmin}}
+                </div>
+                <!-- Button trigger modal -->
+                <div class="container padd-create">
+                    <button class="purple-button" data-toggle="modal" data-target="#deleteModal">
+                        Borrar Evento
+                    </button>
+                </div>
+                <!-- Modal -->
+                <div class="container modal-wrapper">
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Borrar evento</h5>
+                                    <button type="button" class="close purple-close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ¡Cuidado! Una vez que borrar el evento no habrá vuelta atrás. Se perderá para siempre.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn white-button" data-dismiss="modal">No</button>
                                     <form action="/leave-event/{{event._id}}" method="post">
                                         <button type="submit" class="btn purple-button">Borrar evento</button>
                                     </form>
@@ -159,9 +160,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-    
-        </div>
+                
+                </div>
+
+            {{/if}}
+        
     </div>
 
 </div>

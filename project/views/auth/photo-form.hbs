@@ -1,15 +1,31 @@
 <link rel="stylesheet" href="/stylesheets/form.css" />
+<link rel="stylesheet" href="/stylesheets/photo.css" />
+<link rel="stylesheet" href="/stylesheets/buttons.css" />
 
 
-<form action="/sign-up" method="POST" enctype="multipart/form-data">
+  
 
-  <input type="file" id="profile-pic" accept="image/*" capture>
-  <video class="photo-canvas" id="video"></video>
-  <button class="link" id="capture-btn">Take Photo</button>
-  <button class="link" id="repeat-btn">Repeat Photo</button>
-  <button class="link" id="submit-photo" type="submit">Usar foto</button>
-  <button class="link" id="cancel-photo">Cancelar</button>
-  <input type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
+  <input hidden type="file" id="profile-pic" accept="image/*" capture>
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="d-flex align-content-center photo-wrapper">
+          <div class="row ">
+            <div class="col-12">
+              <video class="photo-canvas" id="video"></video>
+            </div>
+            <div class="col-12">
+              <div class="photo-buttons">
+                <button class="link purple-button" id="capture-btn">Tomar foto</button>
+                <button class="link white-button" id="cancel-photo">Cancelar</button>
+                <button hidden class="link white-button" id="repeat-btn">Repeat Photo</button>
+                <button hidden class="link white-button" id="submit-photo" type="submit">Usar foto</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <input hidden type="file" id="imageInput" name="profileImg" accept="image/jpeg, image/png">
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="
