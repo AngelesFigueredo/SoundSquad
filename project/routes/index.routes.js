@@ -242,7 +242,6 @@ router.get("/my-events", isLoggedIn, (req, res, next) => {
 })
 
 router.get("/new-message", isLoggedIn, async (req, res, next) => {
-
   const users = await User.find().populate("username");
   res.render("main/new-message", { users, currentUser: req.session.currentUser });
 });
@@ -256,8 +255,6 @@ router.get("/:id/friends", isLoggedIn, async (req, res, next) => {
     res.render("error", { error })
   }
 });
-
-
 
 
 router.get("/search", isLoggedIn, async (req, res, next) => {
@@ -410,9 +407,7 @@ router.get("/search", isLoggedIn, async (req, res, next) => {
           songsInfoLong,
           concertsInfoShort,
           concertsInfoLong,
-
           currentUser: req.session.currentUser
-
         });
       });
   } catch (error) {
@@ -557,7 +552,6 @@ router.get("/song/:id", isLoggedIn, async (req, res, next) => {
     const user = await User.findById(currentUser._id).populate({
       path: "playlists",
       select: "title"})
-
     const urlSearch = `https://api.spotify.com/v1/tracks/${id}`;
     const response = await axios.get(urlSearch, {
       headers: {
@@ -592,7 +586,6 @@ router.post("/edit/:id", uploader.single("profileImg"), async (req, res, next) =
     if(req.body.picUrl){
       profileImg= trimUrl(req.body.picUrl)
     }
-
   try {
     const interests = body.interests; 
     const updatedData = {
@@ -602,10 +595,8 @@ router.post("/edit/:id", uploader.single("profileImg"), async (req, res, next) =
       description: body.description,
       profileImg
     };
-
     // Update the user with the updated data
     await User.findByIdAndUpdate(id, updatedData);
-
     // Redirect to the profile edit page
     res.redirect("/my-profile");
   } catch (error) {

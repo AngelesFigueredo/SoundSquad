@@ -49,6 +49,7 @@ router.get("/event-details/:eventId", [cors(), isEventMember], async (req, res, 
         sort: { createdAt: 1 },
       },
     })
+  event.noMessagesYet = event.messages.length == 0
   event.messages.forEach((message) => {
     message.isYou = message.author._id == req.session.currentUser._id
     const dateString = message.createdAt
@@ -117,8 +118,9 @@ router.post("/edit-event/:eventId",  uploader.single("profilePic"),async(req, re
       profilePic = req.file.path
     }
     // si nos viene de una foto que hemos tomado 
-    if(req.body.picUrl){
-      profilePic= trimUrl(req.body.picUrl)
+    if(req.body.picUrl && !req.file){
+      console.log("el req.pichUr", req.body.picUrl)
+      profilePic= trimUrl(req.body.picUrl[0])
     }
     await Event.findByIdAndUpdate(eventId, {name, description, profilePic})
     
