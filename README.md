@@ -1,19 +1,27 @@
 # SoundSquad
 
+[Link to the app](https://soundsquad.fly.dev/)
+
 #### Authors
 
 Ángeles Figueredo
+
 Pepe Alacid
 
 ### UX/UI team
 
 Javier Vega
+
 Cristina San Juan
+
 Juanan Antona
 
 ## How it looks
 
+![Screen_view_1](https://res.cloudinary.com/dioxc2frd/image/upload/v1684568269/previews_vgowmo.jpg)
+
 ## Description
+
 
 SoundSquad is a social network that will help you make teams so you don't go alone to see your favorite concerts. Also, it will allow you to update your friends on your musical concerns.
 
@@ -279,20 +287,15 @@ Implement the functionalities of:
 
 #### Trello
 
+URL for the project organization tables
 [Link url](https://trello.com/b/MaED7yyT/proyecto-2)
 
 #### Git
 
-URls for the project repo and deploy
+URL for the project repo
 [Link Repo](https://github.com/AngelesFigueredo/shazam)
 
 #### Slides
 
-URls for the project presentation
-[Link Canva](https://www.google.com)
-
-
-
-
-
-
+URL for the project presentation
+[Link Canva](https://www.canva.com/design/DAFjZ9wqacs/euVjV1vW5txUwZwuP8TKbw/edit?utm_content=DAFjZ9wqacs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
